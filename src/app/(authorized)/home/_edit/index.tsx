@@ -36,8 +36,8 @@ const EditNote = ({
 
   // Convert labelList to the format required by MultiSelect
   const labelsOptions = labels.list.map((label) => ({
-    value: label,
-    label: label,
+    value: label._id,
+    label: label.name,
   }));
 
   const form = useForm<z.infer<typeof updateNoteSchema>>({
