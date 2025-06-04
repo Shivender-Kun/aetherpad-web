@@ -20,7 +20,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { z } from "zod";
 
-export const LoginForm = () => {
+const LoginForm = () => {
   const { setIsLoading, setAPIMessage, apiMessage } = useStore();
   const router = useRouter();
 
@@ -99,9 +99,9 @@ export const LoginForm = () => {
 
           <Button>Login</Button>
 
-          {/* <Link href="forgot-password" className="text-right">
+          <Link href="forgot-password" className="text-right">
             Forgot Password?
-          </Link> */}
+          </Link>
         </form>
       </Form>
 

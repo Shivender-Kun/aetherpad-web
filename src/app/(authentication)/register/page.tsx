@@ -24,7 +24,7 @@ import { User } from "lucide-react";
 import { useStore } from "@/store";
 import { z } from "zod";
 
-export const RegisterForm = () => {
+const RegisterForm = () => {
   const { isLoading, setIsLoading, setAPIMessage, apiMessage } = useStore();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
