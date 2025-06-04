@@ -3,20 +3,15 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const Error = ({
-  error,
-  reset,
-}: {
+const Error = ({}: {
   error: Error & { digest?: string };
   reset: () => void;
 }) => {
   const route = useRouter();
 
   useEffect(() => {
-    console.error("Error Page", error);
-
     setTimeout(() => route.replace("/login"), 1000);
-  }, [error]);
+  }, [route]);
 
   return (
     <div className="flex flex-col gap-4 items-center justify-center h-full">

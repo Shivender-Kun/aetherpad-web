@@ -1,15 +1,10 @@
 "use client";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { ArchiveRestore, EllipsisVertical, Trash2 } from "lucide-react";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import { ArchiveRestore, Trash2 } from "lucide-react";
 import { INote, StoreContextType } from "@/types";
 import noteAction from "@/lib/api/noteAction";
 import NoteCard from "@/components/NoteCard";
-import DeleteNote from "../../home/_delete";
 import { NOTE_ACTIONS } from "@/constants";
 import { useState } from "react";
 

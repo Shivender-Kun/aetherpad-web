@@ -19,12 +19,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import updateDoc from "@/lib/api/updateDoc";
+import noteAction from "@/lib/api/noteAction";
 import { useForm } from "react-hook-form";
 import { useStore } from "@/store";
 import { INote } from "@/types";
 import z from "zod";
-import noteAction from "@/lib/api/noteAction";
 
 const EditNote = ({
   selectedNote,

@@ -38,7 +38,7 @@ export const LoginForm = () => {
 
   useEffect(() => {
     if (apiMessage?.type === "success") router.replace("/home");
-  }, [apiMessage]);
+  }, [apiMessage, router]);
 
   return (
     <div className="flex flex-col gap-4 justify-center items-center p-6 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md w-full max-w-md mx-auto">

@@ -50,7 +50,7 @@ export const RegisterForm = () => {
 
   useEffect(() => {
     if (apiMessage?.type === "success") router.replace("/login");
-  }, [apiMessage]);
+  }, [apiMessage, router]);
 
   const handleImageSelection = async (
     e: React.ChangeEvent<HTMLInputElement>
