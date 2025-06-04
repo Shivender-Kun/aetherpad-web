@@ -1,0 +1,95 @@
+"use client";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { EditIcon } from "lucide-react";
+import { ILabel } from "@/types";
+import z from "zod";
+import { useState } from "react";
+
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Label name is required")
+    .max(30, "Label name can not be longer than 30 characters."),
+});
+
+const EditLabel = ({
+  label,
+  updateLabel,
+}: {
+  label: ILabel;
+  updateLabel: (labelId: string, data: { name: string }) => Promise<void>;
+}) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { name: label.name },
+  });
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    updateLabel(label._id, data);
+    setDialogOpen(false);
+    form.reset();
+  };
+
+  return (
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <DialogTrigger asChild>
+        <Button onClick={() => setDialogOpen(true)}>
+          <EditIcon />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit Label</DialogTitle>
+        </DialogHeader>
+
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="name">Label Name</FormLabel>
+                  <FormControl>
+                    <Input id="name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button>Save</Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default EditLabel;
