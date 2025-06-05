@@ -1,0 +1,80 @@
+import { useCallback, useEffect, useState } from "react";
+import Note from "@/app/(authorized)/_notes/Note";
+import { useStore } from "@/store";
+import { INote } from "@/types";
+
+const OrganizeNotes = ({
+  gap = 16,
+  notes = [],
+  parentId,
+  itemWidth = 304,
+}: {
+  gap?: number;
+  notes?: INote[];
+  parentId: string;
+  itemWidth?: number;
+}) => {
+  const [organizedList, setOrganizedList] = useState([] as INote[][]);
+  const [parentWidth, setParentWidth] = useState(0);
+  const { setAPIMessage } = useStore();
+
+  const getParentWidth = useCallback(() => {
+    const parentElement = document.getElementById(parentId);
+    if (parentElement) {
+      const boundingRect = parentElement.getBoundingClientRect();
+      setParentWidth(boundingRect.width);
+    }
+  }, [parentId]);
+
+  const calculateColumns = useCallback(() => {
+    if (parentWidth === 0) return 1; // Avoid division by zero
+
+    const columns = Math.floor(parentWidth / itemWidth);
+    const columnsWidth = columns * itemWidth + (columns - 1) * gap;
+    const remainingSpace = parentWidth - columnsWidth;
+
+    if (remainingSpace < 0) {
+      return Math.max(1, columns - 1); // Ensure at least one column
+    }
+
+    return columns;
+  }, [parentWidth, itemWidth, gap]);
+
+  useEffect(() => {
+    getParentWidth();
+
+    window.addEventListener("resize", getParentWidth);
+    return () => {
+      window.removeEventListener("resize", getParentWidth);
+    };
+  }, [getParentWidth]);
+
+  useEffect(() => {
+    if (notes.length > 0) {
+      const columns = calculateColumns();
+
+      if (columns) {
+        const newList = Array.from({ length: columns }, () => [] as INote[]);
+
+        notes.forEach((note, index) => {
+          newList[index % columns]?.push(note);
+        });
+        setOrganizedList(newList);
+      }
+    }
+  }, [notes, calculateColumns]);
+
+  const renderItems = useCallback(() => {
+    return organizedList.map((list, idx) => (
+      <div className="flex flex-col gap-4" key={idx}>
+        {list.map((note) => (
+          <Note key={note._id} note={note} setAPIMessage={setAPIMessage} />
+        ))}
+      </div>
+    ));
+  }, [organizedList]);
+
+  return renderItems();
+};
+
+export default OrganizeNotes;

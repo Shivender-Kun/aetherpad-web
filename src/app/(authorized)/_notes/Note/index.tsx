@@ -87,7 +87,7 @@ const Note = ({
         title="Pin"
         onClick={(e) => {
           e.stopPropagation();
-          handleCardAction(NOTE_ACTIONS[5]);
+          handleCardAction(NOTE_ACTIONS[note.isPinned ? 6 : 5]);
         }}
       >
         {note.isPinned ? <PinOff /> : <Pin />}

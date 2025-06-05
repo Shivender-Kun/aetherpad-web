@@ -26,7 +26,7 @@ const NoteCard = ({
   const labels = note.labels.length ? (
     <div className="flex flex-wrap gap-4">
       {note.labels.map((label) => (
-        <Badge key={label}>{label}</Badge>
+        <Badge key={label._id}>{label.name}</Badge>
       ))}
     </div>
   ) : null;

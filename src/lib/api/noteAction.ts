@@ -31,14 +31,12 @@ const noteAction = async ({
   let response;
 
   if (action === "ADD") endpoint = API.NOTES.ADD;
-  else if (action === "DELETE_PERMANENTLY") endpoint = API.NOTES.DELETE(id!);
   else endpoint = API.NOTES[action](id!);
 
   try {
     if (action === "ADD") response = await axios.post(endpoint, data);
-    else if (action === "DELETE") response = await axios.delete(endpoint);
     else if (action === "DELETE_PERMANENTLY")
-      response = await axios.delete(`${endpoint}?permanently=true`);
+      response = await axios.delete(endpoint);
     else response = await axios.patch(endpoint, data);
 
     if (response.status !== 200) throw Error(response.data.message);

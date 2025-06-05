@@ -21,7 +21,8 @@ const API = {
   NOTES: {
     ADD: `${BASE_URL}/notes`,
     UPDATE: (id: string) => `${BASE_URL}/notes/${id}`,
-    DELETE: (id: string) => `${BASE_URL}/notes/${id}`,
+    DELETE_PERMANENTLY: (id: string) => `${BASE_URL}/notes/${id}`,
+    DELETE: (id: string) => `${BASE_URL}/notes/${id}/delete`,
     ARCHIVE: (id: string) => `${BASE_URL}/notes/${id}/archive`,
     UNARCHIVE: (id: string) => `${BASE_URL}/notes/${id}/unarchive`,
     PIN: (id: string) => `${BASE_URL}/notes/${id}/pin`,

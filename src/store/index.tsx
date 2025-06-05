@@ -41,7 +41,7 @@ const StoreContextProvider = ({
     setArchivedNotes: (archivedNotes) => {
       setState((prev) => ({ ...prev, archivedNotes }));
     },
-    pinnedNotes: initialPaginatedData,
+    pinnedNotes: [],
     setPinnedNotes: (pinnedNotes) => {
       setState((prev) => ({ ...prev, pinnedNotes }));
     },

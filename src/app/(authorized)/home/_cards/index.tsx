@@ -1,6 +1,6 @@
 "use client";
 
-import Note from "@/app/(authorized)/_notes/Note";
+import OrganizeNotes from "@/components/layout/organizeNotes";
 import { INote, PaginatedData } from "@/types";
 import { useStore } from "@/store";
 import { API } from "@/constants";
@@ -8,18 +8,23 @@ import { useEffect } from "react";
 import axios from "axios";
 
 const NoteCards = (props: { notes: PaginatedData<INote> }) => {
-  const { setNotes, apiMessage, notes, setAPIMessage } = useStore();
+  const { setNotes, apiMessage, notes, setPinnedNotes, pinnedNotes } =
+    useStore();
 
-  useEffect(() => {
-    setNotes(props.notes);
-  }, []);
+  const splitNotes = (notes: INote[]) => {
+    const pinned = notes.filter((note) => note.isPinned);
+    const unpinned = notes.filter((note) => !note.isPinned);
+    return { pinned, unpinned };
+  };
 
   const fetchNotesList = async () => {
     try {
       const response = await axios.get(API.NOTES.GET_LIST);
       if (response.status !== 200) throw Error(response.data.message);
 
-      setNotes(response.data.data);
+      const { pinned, unpinned } = splitNotes(response.data.data.list);
+      setPinnedNotes(pinned);
+      setNotes({ ...props.notes, list: unpinned });
     } catch (error) {
       if (error instanceof Error) console.error(error.message);
       else console.error(error);
@@ -27,14 +32,42 @@ const NoteCards = (props: { notes: PaginatedData<INote> }) => {
   };
 
   useEffect(() => {
+    if (props.notes) {
+      const { pinned, unpinned } = splitNotes(props.notes.list);
+      setPinnedNotes(pinned);
+      setNotes({ ...props.notes, list: unpinned });
+    }
+  }, [props.notes]);
+
+  useEffect(() => {
     if (apiMessage?.type === "success") fetchNotesList();
   }, [apiMessage]);
 
+  const renderNotes = (title: string, notes: INote[]) => {
+    return (
+      <section className="flex flex-col gap-4">
+        <h3 className="text-lg font-semibold pl-4">{title}</h3>
+        <div className="flex flex-wrap gap-4">
+          <OrganizeNotes
+            parentId="notes-container"
+            notes={notes}
+            itemWidth={304}
+            gap={16}
+          />
+        </div>
+      </section>
+    );
+  };
+
   return (
-    <div className="flex flex-wrap gap-8 px-4 overflow-auto">
-      {notes.list.map((note) => (
-        <Note key={note._id} note={note} setAPIMessage={setAPIMessage} />
-      ))}
+    <div className="px-4 overflow-auto h-full">
+      <div id="notes-container" className="flex flex-col gap-8">
+        {pinnedNotes &&
+          pinnedNotes.length > 0 &&
+          renderNotes("Pinned", pinnedNotes)}
+
+        {renderNotes("Others", notes.list)}
+      </div>
     </div>
   );
 };
