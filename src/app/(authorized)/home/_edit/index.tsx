@@ -45,7 +45,7 @@ const EditNote = ({
     defaultValues: {
       title: selectedNote.title,
       content: selectedNote.content,
-      labels: selectedNote.labels,
+      labels: selectedNote.labels.map((label) => label._id),
     },
   });
 
