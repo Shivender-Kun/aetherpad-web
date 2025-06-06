@@ -73,7 +73,10 @@ const TermsOfUse = () => {
       <h2 className="text-xl font-semibold mt-6 mb-2">10. Contact</h2>
       <p>
         Email us at:{" "}
-        <a href="mailto:[your email here]" className="text-blue-600 underline">
+        <a
+          href="mailto:shivenderkumar761@gmail.com"
+          className="text-blue-600 underline"
+        >
           shivenderkumar761@gmail.com
         </a>
       </p>
