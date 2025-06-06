@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -25,7 +26,7 @@ import { useForm } from "react-hook-form";
 import { useStore } from "@/store";
 import { INote } from "@/types";
 import z from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PALETTE_OPTIONS } from "@/constants";
 import {
   Popover,
@@ -37,9 +38,13 @@ import { Palette, Pin, PinOff, Tags } from "lucide-react";
 const EditNote = ({
   selectedNote,
   closeDialog,
+  open,
+  onOpenChange,
 }: {
   selectedNote: INote;
   closeDialog: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }) => {
   const { labels, setAPIMessage } = useStore();
   const [noteAttributes, setNoteAttributes] = useState(() => ({
@@ -61,6 +66,16 @@ const EditNote = ({
       labels: selectedNote.labels.map((label) => label._id),
     },
   });
+
+  useEffect(() => {
+    if (selectedNote) {
+      form.reset({
+        title: selectedNote.title,
+        content: selectedNote.content,
+        labels: selectedNote.labels.map((label) => label._id),
+      });
+    }
+  }, [selectedNote, form]);
 
   const HeaderOptions = (
     <Popover>
@@ -161,68 +176,70 @@ const EditNote = ({
   };
 
   return (
-    <DialogContent
-      className="[&>button]:hidden"
-      style={{
-        backgroundColor: `var(--${
-          noteAttributes.bgColor ? `color-${noteAttributes.bgColor}` : "card"
-        })`,
-      }}
-    >
-      <DialogHeader>
-        <DialogTitle className="pr-5">Edit Note</DialogTitle>
-        {HeaderOptions}
-      </DialogHeader>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        className="[&>button]:hidden"
+        style={{
+          backgroundColor: `var(--${
+            noteAttributes.bgColor ? `color-${noteAttributes.bgColor}` : "card"
+          })`,
+        }}
+      >
+        <DialogHeader>
+          <DialogTitle className="pr-5">Edit Note</DialogTitle>
+          {HeaderOptions}
+        </DialogHeader>
 
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
-        >
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="title">Title</FormLabel>
-                <FormControl>
-                  <Input id="title" placeholder="Title" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="title">Title</FormLabel>
+                  <FormControl>
+                    <Input id="title" placeholder="Title" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="content">Content</FormLabel>
-                <FormControl>
-                  <Textarea
-                    id="content"
-                    className="h-64 resize-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="content">Content</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      id="content"
+                      className="h-64 resize-none"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <DialogFooter>
-            <div className="flex gap-4 justify-between w-full">
-              <div className="flex gap-4">
-                {renderPaletteOption}
-                {renderLabelsOption}
+            <DialogFooter>
+              <div className="flex gap-4 justify-between w-full">
+                <div className="flex gap-4">
+                  {renderPaletteOption}
+                  {renderLabelsOption}
+                </div>
               </div>
-            </div>
-            <Button>Save</Button>
-          </DialogFooter>
-        </form>
-      </Form>
-    </DialogContent>
+              <Button>Save</Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

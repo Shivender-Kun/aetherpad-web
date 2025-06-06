@@ -15,13 +15,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { INote, StoreContextType } from "@/types";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { NOTE_ACTIONS, PALETTE_OPTIONS } from "@/constants";
+import noteAction from "@/lib/api/noteAction";
 import NoteCard from "@/components/NoteCard";
 import DeleteNote from "../../home/_delete";
 import EditNote from "../../home/_edit";
 import { useState } from "react";
-import noteAction from "@/lib/api/noteAction";
 
 const Note = ({
   note,
@@ -155,34 +154,29 @@ const Note = ({
   );
 
   return (
-    <Dialog
-      key={note._id}
-      open={editDialogOpen}
-      onOpenChange={setEditDialogOpen}
-    >
-      <DialogTrigger asChild className="h-fit">
-        <div>
-          <NoteCard
-            {...{
-              note,
-              HeaderOptions,
-              FooterOptions,
-              showOptions: hoverActive,
-              cardEvents: {
-                onMouseEnter: () => setHoverActive(true),
-                onMouseLeave: () => setHoverActive(false),
-                // onClick: () => setEditDialogOpen(true),
-              },
-            }}
-          />
-        </div>
-      </DialogTrigger>
+    <>
+      <NoteCard
+        {...{
+          note,
+          HeaderOptions,
+          FooterOptions,
+          showOptions: hoverActive,
+          cardEvents: {
+            onMouseEnter: () => setHoverActive(true),
+            onMouseLeave: () => setHoverActive(false),
+            onClick: () => setEditDialogOpen(true),
+          },
+        }}
+      />
 
       <EditNote
         selectedNote={note}
         closeDialog={() => setEditDialogOpen(false)}
+        key={note._id}
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
       />
-    </Dialog>
+    </>
   );
 };
 
