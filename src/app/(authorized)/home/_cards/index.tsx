@@ -47,7 +47,7 @@ const NoteCards = (props: { notes: PaginatedData<INote> }) => {
     return (
       <section className="flex flex-col gap-4">
         <h3 className="text-lg font-semibold pl-4">{title}</h3>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 max-[668]:justify-center">
           <OrganizeNotes
             parentId="notes-container"
             notes={notes}
