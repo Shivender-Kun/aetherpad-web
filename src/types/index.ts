@@ -3,6 +3,7 @@ export interface IUser {
   username: string;
   coverPicture: string;
   profilePicture: string;
+  createdAt: Date;
 }
 
 export interface INote {
