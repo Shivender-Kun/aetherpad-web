@@ -1,9 +1,10 @@
-import React from "react";
-import { ThemeModeToggle } from "../Theme/theme-mode-toggle";
-import { NotebookPen } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { NotebookPen, User2 } from "lucide-react";
 import { SidebarTrigger } from "../ui/sidebar";
+import { IUser } from "@/types";
+import Link from "next/link";
 
-const Header = () => {
+const Header = ({ user }: { user: IUser }) => {
   return (
     <header className="border-y flex justify-between items-center p-4 gap-4">
       <div className="md:hidden">
@@ -14,7 +15,21 @@ const Header = () => {
         <h1 className="text-2xl font-bold text-center">Personal Notes</h1>
       </div>
 
-      <ThemeModeToggle />
+      <div>
+        <Link className="w-full" href="/profile">
+          <div className="flex items-center gap-2">
+            <Avatar className="w-8 h-8">
+              <AvatarImage src={user?.profilePicture} />
+              <AvatarFallback>
+                <User2 />
+              </AvatarFallback>
+            </Avatar>
+            <span className="max-sm:hidden">
+              {user?.username?.toLocaleUpperCase()}
+            </span>
+          </div>
+        </Link>
+      </div>
     </header>
   );
 };
