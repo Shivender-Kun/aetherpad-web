@@ -24,6 +24,7 @@ const noteAction = async ({
     content?: string;
     labels?: string[];
     bgColor?: string;
+    isPinned?: boolean;
   };
   showToast: (props: StoreContextType["apiMessage"] | null) => void;
 }) => {
