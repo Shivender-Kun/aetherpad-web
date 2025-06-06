@@ -2,17 +2,20 @@ import { useCallback, useEffect, useState } from "react";
 import Note from "@/app/(authorized)/_notes/Note";
 import { useStore } from "@/store";
 import { INote } from "@/types";
+import DeletedNote from "@/app/(authorized)/_notes/DeletedNote";
 
 const OrganizeNotes = ({
   gap = 16,
   notes = [],
   parentId,
   itemWidth = 304,
+  isDeletedList = false,
 }: {
   gap?: number;
   notes?: INote[];
   parentId: string;
   itemWidth?: number;
+  isDeletedList?: boolean;
 }) => {
   const [organizedList, setOrganizedList] = useState([] as INote[][]);
   const [parentWidth, setParentWidth] = useState(0);
@@ -67,9 +70,17 @@ const OrganizeNotes = ({
   const renderItems = useCallback(() => {
     return organizedList.map((list, idx) => (
       <div className="flex flex-col gap-4" key={idx}>
-        {list.map((note) => (
-          <Note key={note._id} note={note} setAPIMessage={setAPIMessage} />
-        ))}
+        {list.map((note) =>
+          isDeletedList ? (
+            <DeletedNote
+              key={note._id}
+              note={note}
+              setAPIMessage={setAPIMessage}
+            />
+          ) : (
+            <Note key={note._id} note={note} setAPIMessage={setAPIMessage} />
+          )
+        )}
       </div>
     ));
   }, [organizedList]);
