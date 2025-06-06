@@ -107,8 +107,6 @@ const EditNote = ({
           const role = target.role;
           if (role === "button") {
             const bgColor = target.dataset.bgColor;
-            console.log("Background Color:", bgColor);
-
             if (bgColor) setNoteAttributes((prev) => ({ ...prev, bgColor }));
           }
         }}
