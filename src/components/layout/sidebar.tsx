@@ -13,15 +13,9 @@ import {
   SidebarFooter,
   SidebarGroupLabel,
 } from "../ui/sidebar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
-import { ChevronUp, LogOut, LucideProps, User2 } from "lucide-react";
+import { LogOut, LucideProps, User2 } from "lucide-react";
 import logoutUser from "@/lib/api/users/logout";
 import { usePathname } from "next/navigation";
 import { USER_ROUTES } from "@/constants";
@@ -32,8 +26,6 @@ import { InlineThemeModeToggle } from "../Theme/theme-mode-toggle";
 
 const AppSidebar = ({ user }: { user?: IUser }) => {
   const pathname = usePathname();
-
-  const username = user?.username || "Guest";
 
   const renderMenuOption = (option: {
     name: string;
@@ -98,7 +90,7 @@ const AppSidebar = ({ user }: { user?: IUser }) => {
                 <InlineThemeModeToggle />
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
+                <SidebarMenuButton onClick={logoutUser}>
                   <LogOut /> Logout
                 </SidebarMenuButton>
               </SidebarMenuItem>
