@@ -1,5 +1,3 @@
-"use client";
-
 import { Suspense } from "react";
 import LabelsList from "./_list";
 import AddLabel from "./_add";
