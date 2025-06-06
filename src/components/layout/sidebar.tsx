@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
   Sidebar,
   SidebarFooter,
+  SidebarGroupLabel,
 } from "../ui/sidebar";
 import {
   DropdownMenu,
@@ -20,13 +21,14 @@ import {
 } from "../ui/dropdown-menu";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
-import { ChevronUp, LucideProps, User2 } from "lucide-react";
+import { ChevronUp, LogOut, LucideProps, User2 } from "lucide-react";
 import logoutUser from "@/lib/api/users/logout";
 import { usePathname } from "next/navigation";
 import { USER_ROUTES } from "@/constants";
 import { cn } from "@/lib/utils";
 import { IUser } from "@/types";
 import Link from "next/link";
+import { InlineThemeModeToggle } from "../Theme/theme-mode-toggle";
 
 const AppSidebar = ({ user }: { user?: IUser }) => {
   const pathname = usePathname();
@@ -69,46 +71,42 @@ const AppSidebar = ({ user }: { user?: IUser }) => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          {/* <SidebarGroupLabel>Personal Notes</SidebarGroupLabel> */}
+          <SidebarGroupLabel>Personal Notes</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>{renderAllRoutes}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <Avatar className="w-4 h-4">
-                    <AvatarImage src={user?.profilePicture} />
-                    <AvatarFallback>
-                      <User2 />
-                    </AvatarFallback>
-                  </Avatar>
 
-                  {username.toLocaleUpperCase()}
-                  <ChevronUp className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
-              >
-                <DropdownMenuItem>
-                  <Link className="w-full" href="/profile">
+        <SidebarGroup>
+          <SidebarGroupLabel>Settings</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <Link className="w-full" href="/profile">
+                  <SidebarMenuButton>
+                    <Avatar className="w-4 h-4">
+                      <AvatarImage src={user?.profilePicture} />
+                      <AvatarFallback>
+                        <User2 />
+                      </AvatarFallback>
+                    </Avatar>
                     Profile
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={logoutUser}>
-                  <span>Sign out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <InlineThemeModeToggle />
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <LogOut /> Logout
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter></SidebarFooter>
     </Sidebar>
   );
 };
