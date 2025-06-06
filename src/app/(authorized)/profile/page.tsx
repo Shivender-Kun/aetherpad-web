@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Edit, Mail, User2 } from "lucide-react";
+import { Mail, User2 } from "lucide-react";
 import { useStore } from "@/store";
 import Image from "next/image";
 
