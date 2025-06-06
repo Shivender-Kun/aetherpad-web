@@ -1,15 +1,14 @@
 "use client";
 
+import OrganizeNotes from "@/components/layout/organizeNotes";
 import { API, DEFAULT_PAGINATION_LIMIT } from "@/constants";
-import Note from "@/app/(authorized)/_notes/Note";
 import { INote, PaginatedData } from "@/types";
 import { useStore } from "@/store";
 import { useEffect } from "react";
 import axios from "axios";
 
 const NoteCards = (props: { notes: PaginatedData<INote> }) => {
-  const { setArchivedNotes, apiMessage, archivedNotes, setAPIMessage } =
-    useStore();
+  const { setArchivedNotes, apiMessage, archivedNotes } = useStore();
 
   useEffect(() => {
     setArchivedNotes(props.notes);
@@ -33,10 +32,18 @@ const NoteCards = (props: { notes: PaginatedData<INote> }) => {
   }, [apiMessage]);
 
   return (
-    <div className="flex flex-wrap gap-8 px-4 overflow-auto">
-      {archivedNotes.list.map((note) => (
-        <Note key={note._id} note={note} setAPIMessage={setAPIMessage} />
-      ))}
+    <div
+      className="flex flex-wrap gap-8 px-4 overflow-auto"
+      id="notes-container"
+    >
+      <div className="flex flex-wrap gap-4 max-[668]:justify-center">
+        <OrganizeNotes
+          parentId="notes-container"
+          notes={archivedNotes.list}
+          itemWidth={304}
+          gap={16}
+        />
+      </div>
     </div>
   );
 };
