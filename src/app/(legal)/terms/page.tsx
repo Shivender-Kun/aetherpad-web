@@ -5,11 +5,11 @@ const TermsOfUse = () => {
       <p className="mb-4">Effective Date: {new Date().toDateString()}</p>
 
       <p className="mb-4">
-        {`Welcome to <strong>Personal Notes</strong>, a web-based application
-        developed by <strong>Shiv</strong> ("we," "us," or "our"). By accessing
-        or using the Personal Notes app ("App"), you agree to be bound by these
-        Terms of Use ("Terms"). If you do not agree to these Terms, please do
-        not use the App.`}
+        Welcome to <strong>Personal Notes</strong>, a web-based application
+        developed by <strong>Shiv</strong> {`("we," "us," or "our")`}. By
+        accessing or using the Personal Notes app {`("App")`}, you agree to be
+        bound by these Terms of Use {`("Terms")`}. If you do not agree to these
+        Terms, please do not use the App.
       </p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">1. Eligibility</h2>
@@ -74,7 +74,7 @@ const TermsOfUse = () => {
       <p>
         Email us at:{" "}
         <a href="mailto:[your email here]" className="text-blue-600 underline">
-          [your email here]
+          shivenderkumar761@gmail.com
         </a>
       </p>
     </div>

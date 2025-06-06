@@ -5,8 +5,8 @@ const PrivacyPolicy = () => {
       <p className="mb-4">Effective Date: {new Date().toDateString()}</p>
 
       <p className="mb-4">
-        {`Personal Notes ("we", "our", or "us") values your privacy. This policy
-        explains how we handle your data.`}
+        Personal Notes {`("we", "our", or "us")`} values your privacy. This
+        policy explains how we handle your data.
       </p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">
@@ -70,7 +70,7 @@ const PrivacyPolicy = () => {
       <p>
         Email us at:{" "}
         <a href="mailto:[your email here]" className="text-blue-600 underline">
-          [your email here]
+          shivenderkumar761@gmail.com
         </a>
       </p>
     </div>
