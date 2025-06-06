@@ -50,14 +50,16 @@ const EditNote = ({
   });
 
   const onSubmit = async (data: z.infer<typeof updateNoteSchema>) => {
-    noteAction({
-      id: selectedNote._id,
-      action: "UPDATE",
-      data,
-      showToast: setAPIMessage,
-    });
-    closeDialog();
-    form.reset();
+    console.log(data);
+
+    // noteAction({
+    //   id: selectedNote._id,
+    //   action: "UPDATE",
+    //   data,
+    //   showToast: setAPIMessage,
+    // });
+    // closeDialog();
+    // form.reset();
   };
 
   return (
@@ -123,6 +125,7 @@ const EditNote = ({
                       options={labelsOptions}
                       placeholder="Labels"
                       className="bg-inherit dark:bg-inherit border-0"
+                      defaultValue={field.value}
                       {...field}
                     />
                   </FormControl>
