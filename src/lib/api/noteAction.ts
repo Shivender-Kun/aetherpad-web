@@ -1,6 +1,10 @@
 import { StoreContextType } from "@/types";
 import { API } from "@/constants";
 import axios from "axios";
+import getCSRFToken from "./getCSRFToken";
+
+axios.defaults.xsrfHeaderName = "X-CSRF-Token";
+axios.defaults.xsrfCookieName = "csrf_token";
 
 const noteAction = async ({
   id,
@@ -30,15 +34,21 @@ const noteAction = async ({
 }) => {
   let endpoint;
   let response;
+  const csrfToken = getCSRFToken();
+  const headers = {
+    "Content-Type": "application/json",
+    "X-CSRF-Token": csrfToken || "",
+  };
 
   if (action === "ADD") endpoint = API.NOTES.ADD;
   else endpoint = API.NOTES[action](id!);
 
   try {
-    if (action === "ADD") response = await axios.post(endpoint, data);
+    if (action === "ADD")
+      response = await axios.post(endpoint, data, { headers });
     else if (action === "DELETE_PERMANENTLY")
-      response = await axios.delete(endpoint);
-    else response = await axios.patch(endpoint, data);
+      response = await axios.delete(endpoint, { headers });
+    else response = await axios.patch(endpoint, data, { headers });
 
     if (response.status !== 200) throw Error(response.data.message);
 
