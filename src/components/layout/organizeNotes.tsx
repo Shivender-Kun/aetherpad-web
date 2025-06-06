@@ -83,7 +83,7 @@ const OrganizeNotes = ({
         )}
       </div>
     ));
-  }, [organizedList]);
+  }, [organizedList, isDeletedList, setAPIMessage]);
 
   return renderItems();
 };

@@ -4,7 +4,7 @@ import OrganizeNotes from "@/components/layout/organizeNotes";
 import { API, DEFAULT_PAGINATION_LIMIT } from "@/constants";
 import { INote, PaginatedData } from "@/types";
 import { useStore } from "@/store";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import axios from "axios";
 
 const NoteCards = (props: { notes: PaginatedData<INote> }) => {
@@ -12,9 +12,9 @@ const NoteCards = (props: { notes: PaginatedData<INote> }) => {
 
   useEffect(() => {
     setArchivedNotes(props.notes);
-  }, []);
+  }, [setArchivedNotes, props.notes]);
 
-  const fetchArchivedNotesList = async () => {
+  const fetchArchivedNotesList = useCallback(async () => {
     const queries = `archived=true&page=1&limit=${DEFAULT_PAGINATION_LIMIT}`;
     try {
       const response = await axios.get(`${API.NOTES.GET_LIST}?${queries}`);
@@ -25,11 +25,11 @@ const NoteCards = (props: { notes: PaginatedData<INote> }) => {
       if (error instanceof Error) console.error(error.message);
       else console.error(error);
     }
-  };
+  }, [setArchivedNotes]);
 
   useEffect(() => {
     if (apiMessage?.type === "success") fetchArchivedNotesList();
-  }, [apiMessage]);
+  }, [apiMessage, fetchArchivedNotesList]);
 
   return (
     <div

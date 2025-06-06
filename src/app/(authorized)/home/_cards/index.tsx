@@ -4,7 +4,7 @@ import OrganizeNotes from "@/components/layout/organizeNotes";
 import { INote, PaginatedData } from "@/types";
 import { useStore } from "@/store";
 import { API } from "@/constants";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import axios from "axios";
 
 const NoteCards = (props: { notes: PaginatedData<INote> }) => {
@@ -17,7 +17,7 @@ const NoteCards = (props: { notes: PaginatedData<INote> }) => {
     return { pinned, unpinned };
   };
 
-  const fetchNotesList = async () => {
+  const fetchNotesList = useCallback(async () => {
     try {
       const response = await axios.get(API.NOTES.GET_LIST);
       if (response.status !== 200) throw Error(response.data.message);
@@ -29,7 +29,7 @@ const NoteCards = (props: { notes: PaginatedData<INote> }) => {
       if (error instanceof Error) console.error(error.message);
       else console.error(error);
     }
-  };
+  }, [props.notes, setNotes, setPinnedNotes]);
 
   useEffect(() => {
     if (props.notes) {
@@ -37,11 +37,11 @@ const NoteCards = (props: { notes: PaginatedData<INote> }) => {
       setPinnedNotes(pinned);
       setNotes({ ...props.notes, list: unpinned });
     }
-  }, [props.notes]);
+  }, [props.notes, setNotes, setPinnedNotes]);
 
   useEffect(() => {
     if (apiMessage?.type === "success") fetchNotesList();
-  }, [apiMessage]);
+  }, [apiMessage, fetchNotesList]);
 
   const renderNotes = (title: string, notes: INote[]) => {
     return (

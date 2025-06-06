@@ -11,7 +11,7 @@ import {
 import labelAction from "@/lib/api/labelAction";
 import DeleteLabel from "../_delete";
 import { useStore } from "@/store";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { API } from "@/constants";
 import { ILabel } from "@/types";
 import EditLabel from "../_edit";
@@ -35,7 +35,7 @@ const LabelsList = () => {
       showToast: setAPIMessage,
     });
 
-  const fetchLablesList = async () => {
+  const fetchLablesList = useCallback(async () => {
     try {
       const response = await axios.get(API.LABELS.GET_LIST);
       if (response.status !== 200) throw Error(response.data.message);
@@ -45,11 +45,11 @@ const LabelsList = () => {
       if (error instanceof Error) console.error(error.message);
       else console.error(error);
     }
-  };
+  }, [setLabels]);
 
   useEffect(() => {
     if (apiMessage?.type === "success") fetchLablesList();
-  }, [apiMessage]);
+  }, [apiMessage, fetchLablesList]);
 
   const renderLabelRow = (label: ILabel, idx: number) => (
     <TableRow className="p-4 border rounded-md max-w-80" key={label._id}>
