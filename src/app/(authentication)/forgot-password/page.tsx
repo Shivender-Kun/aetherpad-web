@@ -8,21 +8,31 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import ResetEmailSentDialog from "@/components/dialog/resetEmailSent";
 import { forgotPasswordSchema } from "@/validations/user.validation";
+import forgotPassword from "@/lib/api/users/forgotPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { z } from "zod";
 
 const ForgotPasswordForm = () => {
+  const [emailSentDialog, setEmailSentDialog] = useState(false);
+
   const form = useForm<z.infer<typeof forgotPasswordSchema>>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: { email: "" },
   });
 
-  const onSubmit = (data: z.infer<typeof forgotPasswordSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
+    const success = await forgotPassword(data.email);
+
+    if (success) {
+      setEmailSentDialog(true);
+      form.reset();
+    }
   };
 
   return (
@@ -34,7 +44,7 @@ const ForgotPasswordForm = () => {
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <p className="text-sm text-center text-gray-500">
-            Send a reset link to your email
+            Send a password reset link to your registered email
           </p>
           <FormField
             control={form.control}
@@ -57,6 +67,11 @@ const ForgotPasswordForm = () => {
           <Button>Forgot Password</Button>
         </form>
       </Form>
+
+      <ResetEmailSentDialog
+        open={emailSentDialog}
+        onOpenChange={setEmailSentDialog}
+      />
     </div>
   );
 };
