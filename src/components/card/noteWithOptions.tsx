@@ -17,10 +17,11 @@ import {
 import { INote, StoreContextType } from "@/types";
 import { NOTE_ACTIONS, PALETTE_OPTIONS } from "@/constants";
 import noteAction from "@/lib/api/noteAction";
-import NoteCard from "@/components/NoteCard";
-import DeleteNote from "../../home/_delete";
-import EditNote from "../../home/_edit";
+import NoteCard from "@/components/card/note";
+
 import { useState } from "react";
+import DeleteNote from "@/app/(authorized)/home/_delete";
+import EditNote from "@/app/(authorized)/home/_edit";
 
 const Note = ({
   note,

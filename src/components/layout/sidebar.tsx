@@ -15,14 +15,21 @@ import {
 } from "../ui/sidebar";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
-import { LogOut, LucideProps, User2 } from "lucide-react";
+import {
+  GlobeLock,
+  Heart,
+  LogOut,
+  LucideProps,
+  ReceiptText,
+  User2,
+} from "lucide-react";
 import logoutUser from "@/lib/api/users/logout";
 import { usePathname } from "next/navigation";
 import { USER_ROUTES } from "@/constants";
 import { cn } from "@/lib/utils";
 import { IUser } from "@/types";
 import Link from "next/link";
-import { InlineThemeModeToggle } from "../Theme/theme-mode-toggle";
+import { InlineThemeModeToggle } from "../theme/theme-mode-toggle";
 
 const AppSidebar = ({ user }: { user?: IUser }) => {
   const pathname = usePathname();
@@ -89,16 +96,57 @@ const AppSidebar = ({ user }: { user?: IUser }) => {
               <SidebarMenuItem>
                 <InlineThemeModeToggle />
               </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Legal</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton onClick={logoutUser}>
-                  <LogOut /> Logout
-                </SidebarMenuButton>
+                <Link
+                  href="/privacy-policy"
+                  className="w-full flex items-center gap-2"
+                >
+                  <SidebarMenuButton>
+                    <GlobeLock /> Privacy Policy
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <Link
+                  href="/terms-&-conditions"
+                  className="w-full flex items-center gap-2"
+                >
+                  <SidebarMenuButton>
+                    <ReceiptText />
+                    Terms of Use
+                  </SidebarMenuButton>
+                </Link>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter></SidebarFooter>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={logoutUser}>
+              <LogOut /> Logout
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+
+          <SidebarMenuItem>
+            <Link href="mailto:shivenderkumar761@gmail.com" target="_blank">
+              <SidebarMenuButton className="underline">
+                <Heart className="mr-2" fill="red" color="red" />
+                Made by Shiv
+              </SidebarMenuButton>
+            </Link>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 };

@@ -196,11 +196,17 @@ const RegisterForm = () => {
 
       <p className="text-center text-sm text-gray-500">
         {"By signing in, you agree to our "}
-        <Link href="/terms" className="text-blue-600 hover:text-blue-500">
+        <Link
+          href="/terms-&-conditions"
+          className="text-blue-600 hover:text-blue-500"
+        >
           Terms of Service
         </Link>
         {" and "}
-        <Link href="/privacy" className="text-blue-600 hover:text-blue-500">
+        <Link
+          href="/privacy-policy"
+          className="text-blue-600 hover:text-blue-500"
+        >
           Privacy Policy
         </Link>
       </p>

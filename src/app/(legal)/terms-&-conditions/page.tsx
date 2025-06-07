@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const TermsOfUse = () => {
   return (
     <div className="max-w-3xl mx-auto p-6">
@@ -73,12 +75,12 @@ const TermsOfUse = () => {
       <h2 className="text-xl font-semibold mt-6 mb-2">10. Contact</h2>
       <p>
         Email us at:{" "}
-        <a
-          href="mailto:shivenderkumar761@gmail.com"
+        <Link
+          href="mailto:support@shivender.pro"
           className="text-blue-600 underline"
         >
-          shivenderkumar761@gmail.com
-        </a>
+          support@shivender.pro
+        </Link>
       </p>
     </div>
   );

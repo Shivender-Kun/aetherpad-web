@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import Note from "@/app/(authorized)/_notes/Note";
+import DeletedNote from "../card/deletedNoteWithOptions";
+import Note from "../card/noteWithOptions";
 import { useStore } from "@/store";
 import { INote } from "@/types";
-import DeletedNote from "@/app/(authorized)/_notes/DeletedNote";
 
 const OrganizeNotes = ({
   gap = 16,

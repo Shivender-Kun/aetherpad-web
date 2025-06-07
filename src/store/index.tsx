@@ -73,7 +73,7 @@ const StoreContextProvider = ({
 
       setTimeout(() => state.setAPIMessage(null), 2000);
     }
-  }, [state]);
+  }, [state.apiMessage, state.setAPIMessage]);
 
   return (
     <StoreContext.Provider value={state}>{children}</StoreContext.Provider>

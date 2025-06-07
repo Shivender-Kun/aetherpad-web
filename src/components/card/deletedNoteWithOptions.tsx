@@ -4,7 +4,7 @@ import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { ArchiveRestore, Trash2 } from "lucide-react";
 import { INote, StoreContextType } from "@/types";
 import noteAction from "@/lib/api/noteAction";
-import NoteCard from "@/components/NoteCard";
+import NoteCard from "@/components/card/note";
 import { NOTE_ACTIONS } from "@/constants";
 import { useState } from "react";
 
