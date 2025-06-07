@@ -13,8 +13,6 @@ import {
   SidebarFooter,
   SidebarGroupLabel,
 } from "../ui/sidebar";
-import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
 import {
   GlobeLock,
   Heart,
@@ -23,15 +21,18 @@ import {
   ReceiptText,
   User2,
 } from "lucide-react";
-import logoutUser from "@/lib/api/users/logout";
+import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
+import { InlineThemeModeToggle } from "../theme/theme-mode-toggle";
+import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
+import ConfirmLogoutDialog from "../dialog/confirmLogout";
 import { usePathname } from "next/navigation";
 import { USER_ROUTES } from "@/constants";
 import { cn } from "@/lib/utils";
 import { IUser } from "@/types";
 import Link from "next/link";
-import { InlineThemeModeToggle } from "../theme/theme-mode-toggle";
 
 const AppSidebar = ({ user }: { user?: IUser }) => {
+  const [confirmLogoutDialog, setConfirmLogoutDialog] = useState(false);
   const pathname = usePathname();
 
   const renderMenuOption = (option: {
@@ -68,6 +69,7 @@ const AppSidebar = ({ user }: { user?: IUser }) => {
       <SidebarHeader className="flex items-end">
         <SidebarTrigger />
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Personal Notes</SidebarGroupLabel>
@@ -129,12 +131,17 @@ const AppSidebar = ({ user }: { user?: IUser }) => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={logoutUser}>
+            <SidebarMenuButton onClick={() => setConfirmLogoutDialog(true)}>
               <LogOut /> Logout
             </SidebarMenuButton>
+            <ConfirmLogoutDialog
+              open={confirmLogoutDialog}
+              onOpenChange={setConfirmLogoutDialog}
+            />
           </SidebarMenuItem>
 
           <SidebarMenuItem>
