@@ -1,13 +1,3 @@
-import React from "react";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
 import {
   AlertDialog,
   AlertDialogCancel,
