@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/components/theme/theme-provider";
+import { ThemeProvider } from "@/components/Theme/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Poppins } from "next/font/google";
 import type { Metadata } from "next";

@@ -22,7 +22,7 @@ import {
   User2,
 } from "lucide-react";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
-import { InlineThemeModeToggle } from "../theme/theme-mode-toggle";
+import { InlineThemeModeToggle } from "../Theme/theme-mode-toggle";
 import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
 import ConfirmLogoutDialog from "../dialog/confirmLogout";
 import { usePathname } from "next/navigation";
