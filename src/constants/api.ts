@@ -16,6 +16,7 @@ const API = {
     LOGOUT: `${BASE_URL}/users/logout`,
     UPDATE_PROFILE: `${BASE_URL}/users/update`,
     FORGOT_PASSWORD: `${BASE_URL}/users/forgot-password`,
+    RESET_PASSWORD: `${BASE_URL}/users/reset-password`,
   },
 
   // NOTE API ENDPOINTS
