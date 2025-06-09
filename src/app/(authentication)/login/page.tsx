@@ -12,16 +12,18 @@ import { loginSchema } from "@/validations/user.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
 import userLogin from "@/lib/api/users/login";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useStore } from "@/store";
-import { useEffect } from "react";
 import Link from "next/link";
 import { z } from "zod";
 
 const LoginForm = () => {
   const { setIsLoading, setAPIMessage, apiMessage } = useStore();
+  const [hidePassword, setHidePassword] = useState(true);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -31,6 +33,16 @@ const LoginForm = () => {
       password: "",
     },
   });
+
+  const renderShowPassword = () => {
+    const handleClick = () => setHidePassword((prev) => !prev);
+
+    return (
+      <div className="p-1" onClick={handleClick}>
+        {hidePassword ? <Eye /> : <EyeOff />}
+      </div>
+    );
+  };
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     userLogin({ data, setAPIMessage, setIsLoading });
@@ -64,16 +76,21 @@ const LoginForm = () => {
                   Email
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="example@abc.com"
-                    {...field}
-                    autoComplete="email"
-                  ></Input>
+                  <div className="flex gap-2 items-center border-2 rounded-md bg-input dark:bg-input/30">
+                    <Input
+                      type="email"
+                      id={field.name}
+                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
+                      placeholder="example@abc.com"
+                      {...field}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="password"
@@ -86,11 +103,16 @@ const LoginForm = () => {
                   Password
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="********"
-                    {...field}
-                  ></Input>
+                  <div className="flex gap-2 items-center border-2 rounded-md bg-input dark:bg-input/30">
+                    <Input
+                      id={field.name}
+                      placeholder="*******"
+                      type={hidePassword ? "password" : "text"}
+                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
+                      {...field}
+                    />
+                    {renderShowPassword()}
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

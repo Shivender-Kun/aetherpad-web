@@ -1,8 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-
 import {
   FormField,
   FormItem,
@@ -16,15 +13,21 @@ import { registerUserSchema } from "@/validations/user.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import userRegister from "@/lib/api/users/register";
+import { Eye, EyeOff, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { compressImage } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { User } from "lucide-react";
 import { useStore } from "@/store";
+import Link from "next/link";
 import { z } from "zod";
 
 const RegisterForm = () => {
+  const [hiddenFields, setHiddenFields] = useState({
+    password: true,
+    confirmPassword: true,
+  });
   const { isLoading, setIsLoading, setAPIMessage, apiMessage } = useStore();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
@@ -38,6 +41,19 @@ const RegisterForm = () => {
       profilePicture: "",
     },
   });
+
+  const renderShowPassword = (fieldName: "password" | "confirmPassword") => {
+    const fieldHidden = hiddenFields[fieldName];
+
+    const handleClick = () =>
+      setHiddenFields((prev) => ({ ...prev, [fieldName]: !prev[fieldName] }));
+
+    return (
+      <div className="p-1" onClick={handleClick}>
+        {fieldHidden ? <Eye /> : <EyeOff />}
+      </div>
+    );
+  };
 
   const onSubmit = async (data: z.infer<typeof registerUserSchema>) => {
     userRegister({
@@ -109,10 +125,11 @@ const RegisterForm = () => {
                 <FormControl>
                   <input
                     type="file"
+                    id={field.name}
                     accept="image/*"
-                    {...field}
                     onChangeCapture={handleImageSelection}
                     className="w-[0px] h-[0px] absolute"
+                    {...field}
                     ref={imageInputRef}
                   />
                 </FormControl>
@@ -133,11 +150,15 @@ const RegisterForm = () => {
                   Email
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="example@abc.com"
-                    {...field}
-                  ></Input>
+                  <div className="flex gap-2 items-center border-2 rounded-md bg-input dark:bg-input/30">
+                    <Input
+                      type="email"
+                      id={field.name}
+                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
+                      placeholder="example@abc.com"
+                      {...field}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -156,11 +177,16 @@ const RegisterForm = () => {
                   Password
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="********"
-                    {...field}
-                  ></Input>
+                  <div className="flex gap-2 items-center border-2 rounded-md bg-input dark:bg-input/30">
+                    <Input
+                      id={field.name}
+                      placeholder="*******"
+                      type={hiddenFields[field.name] ? "password" : "text"}
+                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
+                      {...field}
+                    />
+                    {renderShowPassword(field.name)}
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -174,16 +200,21 @@ const RegisterForm = () => {
               <FormItem>
                 <FormLabel
                   htmlFor="confirmPassword"
-                  className="flex flex-col gap-4  items-start"
+                  className="flex flex-col gap-4 items-start"
                 >
                   Confirm Password
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="********"
-                    {...field}
-                  ></Input>
+                  <div className="flex gap-2 items-center border-2 rounded-md bg-input dark:bg-input/30">
+                    <Input
+                      id={field.name}
+                      placeholder="*******"
+                      type={hiddenFields[field.name] ? "password" : "text"}
+                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
+                      {...field}
+                    />
+                    {renderShowPassword(field.name)}
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>

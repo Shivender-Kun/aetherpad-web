@@ -16,8 +16,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { z } from "zod";
 import Link from "next/link";
+import { z } from "zod";
 
 const ForgotPasswordForm = () => {
   const [emailSentDialog, setEmailSentDialog] = useState(false);
@@ -66,8 +66,10 @@ const ForgotPasswordForm = () => {
               </FormItem>
             )}
           />
+
           <Button>Forgot Password</Button>
         </form>
+
         <div className="flex flex-col gap-2">
           <p className="text-sm text-center text-gray-500 mt-4">
             Remembered your password?{" "}
@@ -75,6 +77,7 @@ const ForgotPasswordForm = () => {
               Log in
             </Link>
           </p>
+
           <p className="text-sm text-center text-gray-500">
             {`Don't`} have an account?{" "}
             <Link href="/register" className="text-blue-500 hover:underline">
