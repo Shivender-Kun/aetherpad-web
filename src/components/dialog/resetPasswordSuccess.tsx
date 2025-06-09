@@ -10,7 +10,7 @@ import {
   AlertDialogTitle,
 } from "../ui/alert-dialog";
 
-const ResetEmailSentDialog = ({
+const ResetPasswordSuccessDialog = ({
   open,
   onOpenChange,
 }: {
@@ -23,10 +23,9 @@ const ResetEmailSentDialog = ({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Password Reset Email Sent</AlertDialogTitle>
+          <AlertDialogTitle>Password Reset Successfull</AlertDialogTitle>
           <AlertDialogDescription>
-            A password reset link has been sent to your email address. Please
-            check your inbox and follow the instructions to reset your password.
+            You can use the new password to login now.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -40,4 +39,4 @@ const ResetEmailSentDialog = ({
   );
 };
 
-export default ResetEmailSentDialog;
+export default ResetPasswordSuccessDialog;
