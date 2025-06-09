@@ -3,7 +3,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { Poppins } from "next/font/google";
 import type { Metadata } from "next";
 import "@/styles/globals.css";
-import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Personal Notes",
@@ -70,13 +69,17 @@ export default function RootLayout({
           <Toaster />
         </ThemeProvider>
       </body>
-      <Script src="https://web.cmp.usercentrics.eu/modules/autoblocker.js"></Script>
-      <Script
-        id="usercentrics-cmp"
-        src="https://web.cmp.usercentrics.eu/ui/loader.js"
-        data-settings-id="7rGMwDzT_b8aLf"
-        async
-      ></Script>
     </html>
   );
+}
+
+// ! Cookies Policy Handler
+{
+  /* <Script src="https://web.cmp.usercentrics.eu/modules/autoblocker.js"></Script>
+<Script
+  id="usercentrics-cmp"
+  src="https://web.cmp.usercentrics.eu/ui/loader.js"
+  data-settings-id="7rGMwDzT_b8aLf"
+  async
+></Script> */
 }
