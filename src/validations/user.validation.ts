@@ -27,8 +27,8 @@ const loginSchema = z.object({
 });
 
 const updateUserSchema = z.object({
+  email: z.string(),
   username: z.string(),
-  coverPicture: z.string(),
   profilePicture: z.string(),
 });
 
