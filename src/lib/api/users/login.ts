@@ -4,33 +4,28 @@ import { API } from "@/constants";
 import axios from "axios";
 
 type UserLoginProps = {
-  setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
-  setIsLoading: (isLoading: boolean) => void;
   data: { email: string; password: string };
+  setIsLoading: (isLoading: boolean) => void;
+  setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
 };
 
 const userLogin = async ({
-  setAPIMessage,
-  setIsLoading,
   data,
-}: UserLoginProps) => {
-  setAPIMessage(null);
-  setIsLoading(true);
-
-  try {
-    const response = await axios.post(API.USER.LOGIN, data);
-
-    if (response.status === 200)
-      setAPIMessage({
-        notify: true,
-        type: "success",
-        message: response.data.message,
-      });
-  } catch (error) {
-    errorHandler(error, setAPIMessage);
-  }
-
-  setIsLoading(false);
-};
+  setIsLoading,
+  setAPIMessage,
+}: UserLoginProps) =>
+  await errorHandler({
+    apiCall: async () => {
+      const response = await axios.post(API.USER.LOGIN, data);
+      if (response.status === 200)
+        setAPIMessage({
+          notify: true,
+          type: "success",
+          message: response.data.message,
+        });
+    },
+    setIsLoading,
+    setAPIMessage,
+  });
 
 export default userLogin;

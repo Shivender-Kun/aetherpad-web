@@ -4,34 +4,31 @@ import { API } from "@/constants";
 import axios from "axios";
 
 type UserUpdateProps = {
-  setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
-  setIsLoading: (isLoading: boolean) => void;
   data: Partial<IUser>;
+  setIsLoading: (isLoading: boolean) => void;
+  setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
 };
 
 const updateProfile = async ({
   data,
-  setAPIMessage,
   setIsLoading,
-}: UserUpdateProps) => {
-  setAPIMessage(null);
-  setIsLoading(true);
+  setAPIMessage,
+}: UserUpdateProps) =>
+  await errorHandler({
+    apiCall: async () => {
+      const payload = { ...data };
+      delete payload.email;
 
-  const payload = { ...data };
-  delete payload.email;
-
-  try {
-    const response = await axios.post(API.USER.UPDATE_PROFILE, payload);
-
-    if (response.status === 200)
-      setAPIMessage({
-        notify: true,
-        type: "success",
-        message: response.data.message,
-      });
-  } catch (error) {
-    errorHandler(error, setAPIMessage);
-  }
-};
+      const response = await axios.post(API.USER.UPDATE_PROFILE, payload);
+      if (response.status === 200)
+        return setAPIMessage({
+          notify: true,
+          type: "success",
+          message: response.data.message,
+        });
+    },
+    setIsLoading,
+    setAPIMessage,
+  });
 
 export default updateProfile;

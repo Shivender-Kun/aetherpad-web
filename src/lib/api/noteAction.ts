@@ -1,6 +1,6 @@
 import errorHandler from "../errorHandler";
 import { StoreContextType } from "@/types";
-import getCSRFToken from "./getCSRFToken";
+import getCSRFToken from "../getCSRFToken";
 import { API } from "@/constants";
 import axios from "axios";
 
@@ -23,43 +23,44 @@ type NOTE_ACTION_PROPS = {
     bgColor?: string;
     isPinned?: boolean;
   };
-  showToast: (props: StoreContextType["apiMessage"] | null) => void;
+  setAPIMessage: (props: StoreContextType["apiMessage"] | null) => void;
 };
 
 const noteAction = async ({
   id,
   action,
-  showToast,
+  setAPIMessage,
   data = {},
 }: NOTE_ACTION_PROPS) => {
-  let endpoint;
-  let response;
-  const csrfToken = getCSRFToken();
-  const headers = {
-    "Content-Type": "application/json",
-    "X-CSRF-Token": csrfToken || "",
-  };
+  errorHandler({
+    apiCall: async () => {
+      let endpoint;
+      let response;
+      const csrfToken = getCSRFToken();
+      const headers = {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken || "",
+      };
 
-  if (action === "ADD") endpoint = API.NOTES.ADD;
-  else endpoint = API.NOTES[action](id!);
+      if (action === "ADD") endpoint = API.NOTES.ADD;
+      else endpoint = API.NOTES[action](id!);
 
-  try {
-    if (action === "ADD")
-      response = await axios.post(endpoint, data, { headers });
-    else if (action === "DELETE_PERMANENTLY")
-      response = await axios.delete(endpoint, { headers });
-    else response = await axios.patch(endpoint, data, { headers });
+      if (action === "ADD")
+        response = await axios.post(endpoint, data, { headers });
+      else if (action === "DELETE_PERMANENTLY")
+        response = await axios.delete(endpoint, { headers });
+      else response = await axios.patch(endpoint, data, { headers });
 
-    if (response.status !== 200) throw Error(response.data.message);
+      if (response.status !== 200) throw Error(response.data.message);
 
-    showToast({
-      notify: true,
-      type: "success",
-      message: response.data.message,
-    });
-  } catch (error) {
-    errorHandler(error, showToast);
-  }
+      setAPIMessage({
+        notify: true,
+        type: "success",
+        message: response.data.message,
+      });
+    },
+    setAPIMessage,
+  });
 };
 
 export default noteAction;

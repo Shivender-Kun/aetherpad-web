@@ -6,55 +6,59 @@ import { RefObject } from "react";
 import axios from "axios";
 
 type UserRegisterProps = {
-  setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
-  setIsLoading: (isLoading: boolean) => void;
   data: { email: string; password: string };
+  setIsLoading: (isLoading: boolean) => void;
   imageRef: RefObject<HTMLInputElement | null>;
+  setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
 };
 
 const userRegister = async ({
-  setAPIMessage,
-  setIsLoading,
   data,
   imageRef,
-}: UserRegisterProps) => {
-  setAPIMessage(null);
-  setIsLoading(true);
-  if (imageRef.current?.files) {
-    const profilePicture = imageRef.current.files[0];
-    try {
-      const profilePictureURL = await uploadImage(
-        profilePicture,
-        data.email + "profile-picture",
-        "profile-picture"
-      );
-      const requestData = {
-        ...data,
-        profilePicture: profilePictureURL,
-        confirmPassword: undefined,
-      };
+  setIsLoading,
+  setAPIMessage,
+}: UserRegisterProps) =>
+  await errorHandler({
+    apiCall: async () => {
+      if (imageRef.current?.files) {
+        const profilePicture = imageRef.current.files[0];
+        try {
+          const profilePictureURL = await uploadImage(
+            profilePicture,
+            data.email + "profile-picture",
+            "profile-picture"
+          );
+          const requestData = {
+            ...data,
+            profilePicture: profilePictureURL,
+            confirmPassword: undefined,
+          };
+          delete requestData.confirmPassword;
 
-      delete requestData.confirmPassword;
+          const response = await axios.post(API.USER.REGISTER, requestData);
 
-      const response = await axios.post(API.USER.REGISTER, requestData);
+          if (response.status === 201) {
+            setAPIMessage({
+              notify: true,
+              type: "success",
+              message: response.data.message,
+            });
 
-      if (response.status === 201) {
-        setAPIMessage({
-          notify: true,
-          type: "success",
-          message: response.data.message,
-        });
-
-        window.location.href = "/login";
-      } else {
-        deleteImage(data.email + "profile-picture", "profile-picture");
+            window.location.href = "/login";
+          } else {
+            await deleteImage(
+              data.email + "profile-picture",
+              "profile-picture"
+            );
+          }
+        } catch (error) {
+          await deleteImage(profilePicture.name, "profile-picture");
+          throw error;
+        }
       }
-    } catch (error) {
-      errorHandler(error, setAPIMessage);
-      deleteImage(profilePicture.name, "profile-picture");
-    }
-  }
-  setIsLoading(false);
-};
+    },
+    setIsLoading,
+    setAPIMessage,
+  });
 
 export default userRegister;
