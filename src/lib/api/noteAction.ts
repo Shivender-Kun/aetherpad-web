@@ -1,17 +1,10 @@
+import errorHandler from "../errorHandler";
 import { StoreContextType } from "@/types";
+import getCSRFToken from "./getCSRFToken";
 import { API } from "@/constants";
 import axios from "axios";
-import getCSRFToken from "./getCSRFToken";
 
-axios.defaults.xsrfHeaderName = "X-CSRF-Token";
-axios.defaults.xsrfCookieName = "csrf_token";
-
-const noteAction = async ({
-  id,
-  action,
-  showToast,
-  data = {},
-}: {
+type NOTE_ACTION_PROPS = {
   id?: string;
   action:
     | "ADD"
@@ -31,7 +24,14 @@ const noteAction = async ({
     isPinned?: boolean;
   };
   showToast: (props: StoreContextType["apiMessage"] | null) => void;
-}) => {
+};
+
+const noteAction = async ({
+  id,
+  action,
+  showToast,
+  data = {},
+}: NOTE_ACTION_PROPS) => {
   let endpoint;
   let response;
   const csrfToken = getCSRFToken();
@@ -57,11 +57,8 @@ const noteAction = async ({
       type: "success",
       message: response.data.message,
     });
-  } catch (error: unknown) {
-    let message = "An error occurred";
-    if (error instanceof Error) message = error.message;
-    showToast({ type: "error", message, notify: true });
-    console.error(`Error updating ${action}:`, message);
+  } catch (error) {
+    errorHandler(error, showToast);
   }
 };
 

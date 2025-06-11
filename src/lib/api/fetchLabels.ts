@@ -1,5 +1,6 @@
-import { authHandler } from "./authHandler";
 import { API, DEFAULT_PAGINATION_LIMIT } from "@/constants";
+import { authHandler } from "./authHandler";
+import errorHandler from "../errorHandler";
 import axios from "axios";
 
 const fetchLabels = async ({
@@ -23,8 +24,7 @@ const fetchLabels = async ({
 
     return response.data.data;
   } catch (error) {
-    if (error instanceof Error) console.error(error.message);
-    else console.error(error);
+    errorHandler(error);
   }
 };
 

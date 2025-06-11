@@ -1,4 +1,5 @@
 import { authHandler } from "./authHandler";
+import errorHandler from "../errorHandler";
 import { API } from "@/constants";
 import axios from "axios";
 
@@ -15,8 +16,7 @@ const fetchNotes = async ({ queries = "" }: { queries?: string }) => {
 
     return response.data.data;
   } catch (error) {
-    if (error instanceof Error) console.error(error.message);
-    else console.error(error);
+    errorHandler(error);
   }
 };
 

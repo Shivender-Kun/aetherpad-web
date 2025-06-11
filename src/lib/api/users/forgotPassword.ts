@@ -1,3 +1,4 @@
+import errorHandler from "@/lib/errorHandler";
 import { API } from "@/constants";
 import axios from "axios";
 
@@ -7,8 +8,7 @@ const forgotPassword = async (email: string) => {
 
     if (response.status === 200) return true; // Indicate success
   } catch (error) {
-    console.error("Error", error);
-    throw error; // Re-throw the error for further handling
+    errorHandler(error);
   }
   return false; // Indicate failure
 };

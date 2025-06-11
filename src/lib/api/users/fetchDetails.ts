@@ -1,3 +1,4 @@
+import errorHandler from "@/lib/errorHandler";
 import { authHandler } from "../authHandler";
 import { API } from "@/constants";
 import axios from "axios";
@@ -12,8 +13,7 @@ const fetchDetails = async () => {
 
     return response.data.user;
   } catch (error) {
-    if (error instanceof Error) console.error(error.message);
-    else console.error(error);
+    errorHandler(error);
   }
 };
 

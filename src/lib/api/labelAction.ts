@@ -1,4 +1,5 @@
 import { StoreContextType } from "@/types";
+import errorHandler from "../errorHandler";
 import getCSRFToken from "./getCSRFToken";
 import { API } from "@/constants";
 import axios from "axios";
@@ -40,11 +41,8 @@ const labelAction = async ({
       type: "success",
       message: response.data.message,
     });
-  } catch (error: unknown) {
-    let message = "An error occurred";
-    if (error instanceof Error) message = error.message;
-    showToast({ type: "error", message, notify: true });
-    console.error(`Error updating ${action}:`, message);
+  } catch (error) {
+    errorHandler(error, showToast);
   }
 };
 
