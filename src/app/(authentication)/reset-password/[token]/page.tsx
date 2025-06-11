@@ -101,7 +101,7 @@ const ResetPassword = () => {
                       id={field.name}
                       placeholder="*******"
                       type={hiddenFields[field.name] ? "password" : "text"}
-                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
+                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(229,229,229)] dark:autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
                       {...field}
                     />
                     {renderShowPassword(field.name)}
@@ -129,7 +129,7 @@ const ResetPassword = () => {
                       id={field.name}
                       placeholder="*******"
                       type={hiddenFields[field.name] ? "password" : "text"}
-                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
+                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(229,229,229)] dark:autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
                       {...field}
                     />
                     {renderShowPassword(field.name)}
