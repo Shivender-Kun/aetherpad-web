@@ -25,7 +25,7 @@ const DeletedNote = ({
       id: note._id,
       action,
       data,
-      showToast: setAPIMessage,
+      setAPIMessage,
     });
   };
 

@@ -24,7 +24,7 @@ const LabelsList = () => {
     labelAction({
       id: labelId,
       action: "DELETE",
-      showToast: setAPIMessage,
+      setAPIMessage,
     });
 
   const updateLabel = (labelId: string, data: { name: string }) =>
@@ -32,7 +32,7 @@ const LabelsList = () => {
       id: labelId,
       action: "UPDATE",
       data,
-      showToast: setAPIMessage,
+      setAPIMessage,
     });
 
   const fetchLablesList = useCallback(async () => {

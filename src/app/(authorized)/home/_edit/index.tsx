@@ -15,25 +15,25 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { updateNoteSchema } from "@/validations/notes.validation";
-import { MultiSelect } from "@/components/ui/multi-select";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import noteAction from "@/lib/api/noteAction";
-import { useForm } from "react-hook-form";
-import { useStore } from "@/store";
-import { INote } from "@/types";
-import z from "zod";
-import { useEffect, useState } from "react";
-import { PALETTE_OPTIONS } from "@/constants";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { updateNoteSchema } from "@/validations/notes.validation";
+import { MultiSelect } from "@/components/ui/multi-select";
 import { Palette, Pin, PinOff, Tags } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import noteAction from "@/lib/api/noteAction";
+import { PALETTE_OPTIONS } from "@/constants";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useStore } from "@/store";
+import { INote } from "@/types";
+import z from "zod";
 
 const EditNote = ({
   selectedNote,
@@ -166,7 +166,7 @@ const EditNote = ({
       id: selectedNote._id,
       action: "UPDATE",
       data: { ...data, ...noteAttributes },
-      showToast: setAPIMessage,
+      setAPIMessage,
     });
 
     closeDialog();

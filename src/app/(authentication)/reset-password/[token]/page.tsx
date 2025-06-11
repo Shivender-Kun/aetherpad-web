@@ -17,7 +17,8 @@ import { Input } from "@/components/ui/input";
 import { useParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useStore } from "@/store";
 import Link from "next/link";
 import z from "zod";
 
@@ -27,6 +28,7 @@ const ResetPassword = () => {
     confirmPassword: true,
   });
   const [showResetSuccessDialog, setShowResetSuccessDialog] = useState(false);
+  const { setIsLoading, setAPIMessage, apiMessage, isLoading } = useStore();
   const params = useParams();
   const resetToken = params.token;
 
@@ -40,13 +42,20 @@ const ResetPassword = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof resetPasswordSchema>) => {
-    const isSuccess = await resetPassword(
-      data.newPassword,
-      resetToken as string
-    );
-
-    if (isSuccess) setShowResetSuccessDialog(true);
+    await resetPassword({
+      newPassword: data.newPassword,
+      token: resetToken as string,
+      setIsLoading,
+      setAPIMessage,
+    });
   };
+
+  useEffect(() => {
+    if (apiMessage?.type === "success") {
+      setShowResetSuccessDialog(true);
+      form.reset();
+    }
+  }, [apiMessage]);
 
   const renderShowPassword = (fieldName: "newPassword" | "confirmPassword") => {
     const fieldHidden = hiddenFields[fieldName];
@@ -139,7 +148,7 @@ const ResetPassword = () => {
               </FormItem>
             )}
           />
-          <Button>Reset</Button>
+          <Button disabled={isLoading}>Reset</Button>
         </form>
 
         <div className="flex flex-col gap-2">

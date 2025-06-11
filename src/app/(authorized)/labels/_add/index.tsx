@@ -37,7 +37,7 @@ const AddLabel = () => {
   });
 
   const onSubmit = (data: z.infer<typeof createLabelSchema>) => {
-    labelAction({ action: "ADD", data, showToast: setAPIMessage });
+    labelAction({ action: "ADD", data, setAPIMessage });
     setDialogOpen(false);
     form.reset();
   };

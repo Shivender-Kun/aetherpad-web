@@ -22,8 +22,8 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { EditIcon } from "lucide-react";
 import { ILabel } from "@/types";
-import z from "zod";
 import { useState } from "react";
+import z from "zod";
 
 const formSchema = z.object({
   name: z

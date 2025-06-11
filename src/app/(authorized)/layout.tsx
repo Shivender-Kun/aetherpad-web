@@ -1,4 +1,4 @@
-import isUserAuthenticated from "@/lib/api/isUserAuthenticated";
+import isUserAuthenticated from "@/lib/isUserAuthenticated";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import fetchDetails from "@/lib/api/users/fetchDetails";
 import { ILabel, IUser, PaginatedData } from "@/types";

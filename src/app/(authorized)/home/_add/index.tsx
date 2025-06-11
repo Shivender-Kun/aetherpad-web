@@ -146,7 +146,7 @@ const AddNote = () => {
     noteAction({
       action: "ADD",
       data: { ...data, ...noteAttributes },
-      showToast: setAPIMessage,
+      setAPIMessage,
     });
     setDialogOpen(false);
     form.reset();

@@ -14,13 +14,15 @@ import forgotPassword from "@/lib/api/users/forgotPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useStore } from "@/store";
 import Link from "next/link";
 import { z } from "zod";
 
 const ForgotPasswordForm = () => {
   const [emailSentDialog, setEmailSentDialog] = useState(false);
+  const { setIsLoading, setAPIMessage, apiMessage, isLoading } = useStore();
 
   const form = useForm<z.infer<typeof forgotPasswordSchema>>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -28,13 +30,15 @@ const ForgotPasswordForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
-    const success = await forgotPassword(data.email);
+    await forgotPassword({ email: data.email, setIsLoading, setAPIMessage });
+  };
 
-    if (success) {
+  useEffect(() => {
+    if (apiMessage?.type === "success") {
       setEmailSentDialog(true);
       form.reset();
     }
-  };
+  }, [apiMessage]);
 
   return (
     <div className="flex flex-col gap-8 justify-center items-center p-6 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md max-w-md mx-auto md:min-w-md">
@@ -67,7 +71,7 @@ const ForgotPasswordForm = () => {
             )}
           />
 
-          <Button>Forgot Password</Button>
+          <Button disabled={isLoading}>Forgot Password</Button>
         </form>
 
         <div className="flex flex-col gap-2">
