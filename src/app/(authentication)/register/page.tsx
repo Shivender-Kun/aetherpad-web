@@ -110,9 +110,6 @@ const RegisterForm = () => {
                 <FormLabel
                   htmlFor="profilePicture"
                   className="relative cursor-pointer flex flex-col items-center gap-2"
-                  onClick={() => {
-                    if (imageInputRef.current) imageInputRef.current.click();
-                  }}
                 >
                   <Avatar className="w-20 h-20 mx-auto">
                     {imageUrl && <AvatarImage src={imageUrl} />}
