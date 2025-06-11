@@ -4,6 +4,8 @@ export interface IUser {
   coverPicture: string;
   profilePicture: string;
   createdAt: Date;
+  isPrivate?: boolean;
+  dob?: Date;
 }
 
 export interface INote {
