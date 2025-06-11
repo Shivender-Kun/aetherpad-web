@@ -76,16 +76,21 @@ export const resizeImageRatio = async (file: File, { type = file.type }) => {
 
 export const compressImage = async (
   file: File,
-  { quality = 0.85, type = file.type }
+  { quality = 0.85, type = file.type },
+  resize = true
 ) => {
-  const resizedImage = await resizeImageRatio(file, { type });
+  let resizedImage;
 
-  if (resizedImage.size / 1024 < 512) {
-    // If the image is already less than 512KB, return the resized image
-    return resizedImage;
+  if (resize) {
+    resizedImage = await resizeImageRatio(file, { type });
+
+    if (resizedImage.size / 1024 < 512) {
+      // If the image is already less than 512KB, return the resized image
+      return resizedImage;
+    }
   }
   // Get as image data
-  const imageBitmap = await createImageBitmap(resizedImage);
+  const imageBitmap = await createImageBitmap(resizedImage || file);
 
   // Draw to canvas
   const canvas = document.createElement("canvas");
