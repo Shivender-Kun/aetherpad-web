@@ -1,4 +1,5 @@
 import uploadImage, { deleteImage } from "@/services/firebaseStorage";
+import errorHandler from "@/lib/errorHandler";
 import { StoreContextType } from "@/types";
 import { API } from "@/constants";
 import { RefObject } from "react";
@@ -48,12 +49,9 @@ const userRegister = async ({
       } else {
         deleteImage(data.email + "profile-picture", "profile-picture");
       }
-    } catch (error: unknown) {
-      let message = "An error occurred";
-      if (error instanceof Error) message = error.message;
-      setAPIMessage({ type: "error", message, notify: true });
+    } catch (error) {
+      errorHandler(error, setAPIMessage);
       deleteImage(profilePicture.name, "profile-picture");
-      console.error("Error registering user:", message);
     }
   }
   setIsLoading(false);

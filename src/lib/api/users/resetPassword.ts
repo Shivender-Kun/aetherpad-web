@@ -1,5 +1,6 @@
+import errorHandler from "@/lib/errorHandler";
 import { API } from "@/constants";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 const resetPassword = async (newPassword: string, token: string) => {
   try {
@@ -10,8 +11,7 @@ const resetPassword = async (newPassword: string, token: string) => {
 
     if (response.status === 200) return true;
   } catch (error) {
-    if (error instanceof AxiosError)
-      console.error(error.response?.data.message);
+    errorHandler(error);
   }
 };
 

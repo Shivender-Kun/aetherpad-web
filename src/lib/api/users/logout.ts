@@ -1,3 +1,4 @@
+import errorHandler from "@/lib/errorHandler";
 import { API } from "@/constants";
 import axios from "axios";
 
@@ -8,8 +9,7 @@ const logoutUser = async () => {
     if (response.status !== 200) throw Error(response.data.message);
     window.location.href = "/login";
   } catch (error) {
-    if (error instanceof Error) console.error(error.message);
-    else console.error(error);
+    errorHandler(error);
   }
 };
 

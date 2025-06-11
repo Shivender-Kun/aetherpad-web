@@ -1,24 +1,27 @@
+import { IUser, StoreContextType } from "@/types";
 import errorHandler from "@/lib/errorHandler";
-import { StoreContextType } from "@/types";
 import { API } from "@/constants";
 import axios from "axios";
 
-type UserLoginProps = {
+type UserUpdateProps = {
   setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
   setIsLoading: (isLoading: boolean) => void;
-  data: { email: string; password: string };
+  data: Partial<IUser>;
 };
 
-const userLogin = async ({
+const updateProfile = async ({
+  data,
   setAPIMessage,
   setIsLoading,
-  data,
-}: UserLoginProps) => {
+}: UserUpdateProps) => {
   setAPIMessage(null);
   setIsLoading(true);
 
+  const payload = { ...data };
+  delete payload.email;
+
   try {
-    const response = await axios.post(API.USER.LOGIN, data);
+    const response = await axios.post(API.USER.UPDATE_PROFILE, payload);
 
     if (response.status === 200)
       setAPIMessage({
@@ -29,8 +32,6 @@ const userLogin = async ({
   } catch (error) {
     errorHandler(error, setAPIMessage);
   }
-
-  setIsLoading(false);
 };
 
-export default userLogin;
+export default updateProfile;
