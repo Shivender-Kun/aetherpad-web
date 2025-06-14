@@ -1,8 +1,8 @@
 import uploadImage, { deleteImage } from "@/services/firebaseStorage";
 import errorHandler from "@/lib/errorHandler";
 import { StoreContextType } from "@/types";
-import { API } from "@/constants";
 import { RefObject } from "react";
+import { API } from "@/constants";
 import axios from "axios";
 
 type UserRegisterProps = {
@@ -52,7 +52,7 @@ const userRegister = async ({
             );
           }
         } catch (error) {
-          await deleteImage(profilePicture.name, "profile-picture");
+          await deleteImage(data.email + "profile-picture", "profile-picture");
           throw error;
         }
       }
