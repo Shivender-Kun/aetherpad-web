@@ -17,29 +17,29 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "default",
   },
-  // twitter: {
-  //   card: "summary_large_image",
-  //   title: "Personal Notes",
-  //   description: "Personal notes app for private users.",
-  //   images: [
-  //     {
-  //       url: "/apple-icon.png",
-  //       alt: "Personal Notes",
-  //     },
-  //   ],
-  // },
-  // openGraph: {
-  //   title: "Personal Notes",
-  //   description: "Personal notes app for private users.",
-  //   url: "https://personal-notes.vercel.app/",
-  //   siteName: "Personal Notes",
-  //   images: [
-  //     {
-  //       url: "/apple-icon.png",
-  //       alt: "Personal Notes",
-  //     },
-  //   ],
-  // },
+  twitter: {
+    card: "summary_large_image",
+    title: "Personal Notes",
+    description: "Personal notes app for private users.",
+    images: [
+      {
+        url: "/apple-icon.png",
+        alt: "Personal Notes",
+      },
+    ],
+  },
+  openGraph: {
+    title: "Personal Notes",
+    description: "Personal notes app for private users.",
+    url: "https://notes.shivender.pro/",
+    siteName: "Personal Notes",
+    images: [
+      {
+        url: "/apple-icon.png",
+        alt: "Personal Notes",
+      },
+    ],
+  },
 };
 
 const poppins = Poppins({
