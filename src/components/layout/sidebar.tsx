@@ -27,13 +27,14 @@ import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
 import ConfirmLogoutDialog from "../dialog/confirmLogout";
 import { usePathname } from "next/navigation";
 import { USER_ROUTES } from "@/constants";
+import { useStore } from "@/store";
 import { cn } from "@/lib/utils";
-import { IUser } from "@/types";
 import Link from "next/link";
 
-const AppSidebar = ({ user }: { user?: IUser }) => {
+const AppSidebar = () => {
   const [confirmLogoutDialog, setConfirmLogoutDialog] = useState(false);
   const pathname = usePathname();
+  const { user } = useStore();
 
   const renderMenuOption = (option: {
     name: string;

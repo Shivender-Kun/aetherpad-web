@@ -1,10 +1,14 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { NotebookPen, User2 } from "lucide-react";
 import { SidebarTrigger } from "../ui/sidebar";
-import { IUser } from "@/types";
+import { useStore } from "@/store";
 import Link from "next/link";
 
-const Header = ({ user }: { user: IUser }) => {
+const Header = () => {
+  const { user } = useStore();
+
   return (
     <header className="border-y flex justify-between items-center p-4 gap-4">
       <div className="md:hidden">
