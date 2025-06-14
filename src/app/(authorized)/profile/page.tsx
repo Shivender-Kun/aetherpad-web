@@ -1,12 +1,31 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useCallback, useEffect } from "react";
+import errorHandler from "@/lib/errorHandler";
 import { Mail, User2 } from "lucide-react";
+import DeleteAccount from "./_delete";
 import { useStore } from "@/store";
+import EditProfile from "./_edit";
+import { API } from "@/constants";
 import Image from "next/image";
+import axios from "axios";
 
 const Profile = () => {
-  const { user } = useStore();
+  const { user, apiMessage, setUser } = useStore();
+
+  const fetchUserDetails = useCallback(async () => {
+    await errorHandler({
+      apiCall: async () => {
+        const response = await axios.get(API.USER.DETAILS);
+        if (response.status === 200) setUser(response.data.user);
+      },
+    });
+  }, [setUser]);
+
+  useEffect(() => {
+    if (apiMessage?.type === "success") fetchUserDetails();
+  }, [apiMessage]);
 
   return (
     <main className="flex flex-col gap-4 h-full">
@@ -27,11 +46,9 @@ const Profile = () => {
             width={720}
             height={120}
           />
-          {/* <div className="absolute z-10 top-0 left-0 w-full h-full bg-slate-300/40 dark:bg-gray-800/60">
-            <div className="absolute bottom-4 right-4 p-2 bg-slate-300 dark:bg-gray-900/70 rounded-md ">
-              <Edit />
-            </div>
-          </div> */}
+          <div className="absolute z-10 top-0 left-0 w-full h-full bg-slate-300/40 dark:bg-gray-800/60">
+            {user && <EditProfile user={user} />}
+          </div>
 
           <div className="p-2 absolute z-10 bottom-0 flex flex-col gap-2 items-center">
             <Avatar className="w-32 h-32 border border-gray-100 border-x-2 border-y-2">
@@ -46,23 +63,29 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="p-4 text-sm flex flex-wrap gap-4 justify-between items-center ">
-          <div className="flex gap-4 items-center ">
-            <Mail />
-            <span>{user?.email}</span>
+        <div className="p-4 text-sm flex flex-wrap gap-4 justify-between flex-1">
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-4 items-center ">
+              <Mail />
+              <span>{user?.email}</span>
+            </div>
           </div>
 
-          <div>
-            Date Joined:{" "}
-            <span className="text-gray-500">
-              {user?.createdAt
-                ? new Date(user.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })
-                : "N/A"}
-            </span>
+          <div className="flex flex-col gap-4 justify-between max-sm:items-center max-sm:w-full max-sm:flex-row max-sm:h-fit max-sm:self-end">
+            <div>
+              Date Joined:{" "}
+              <span className="text-gray-500">
+                {user?.createdAt
+                  ? new Date(user.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : "N/A"}
+              </span>
+            </div>
+
+            <DeleteAccount />
           </div>
         </div>
       </div>
