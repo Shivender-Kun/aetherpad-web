@@ -19,14 +19,14 @@ const errorHandler = async ({
   try {
     return await apiCall();
   } catch (error) {
-    let message = "";
-    if (error instanceof AxiosError) message = error.response?.data.message;
+    let message = "Something went wrong";
+    if (error instanceof AxiosError)
+      message = error.response?.data.message || error.message;
     else if (error instanceof Error) message = error.message;
     if (setAPIMessage) setAPIMessage({ type: "error", message, notify: true });
-    console.error(message);
+  } finally {
+    if (setIsLoading) setIsLoading(false);
   }
-
-  if (setIsLoading) setIsLoading(false);
 };
 
 export default errorHandler;
