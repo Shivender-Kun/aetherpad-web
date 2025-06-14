@@ -31,14 +31,22 @@ const DeleteNote = ({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete note: {note.title}</AlertDialogTitle>
+          <AlertDialogTitle>Delete Note: {note.title}</AlertDialogTitle>
           <AlertDialogDescription>
             Are you sure you want to delete this note?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={deleteNote}>Delete</AlertDialogAction>
+          <AlertDialogAction asChild>
+            <Button
+              variant="destructive"
+              className="text-white"
+              onClick={deleteNote}
+            >
+              Delete
+            </Button>
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

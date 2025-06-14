@@ -38,8 +38,14 @@ const DeleteLabel = ({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => deleteLabel(label._id)}>
-            Delete
+          <AlertDialogAction asChild>
+            <Button
+              variant="destructive"
+              className="text-white"
+              onClick={() => deleteLabel(label._id)}
+            >
+              Delete
+            </Button>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
