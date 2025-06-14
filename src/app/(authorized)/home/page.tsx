@@ -8,8 +8,6 @@ const Home = async () => {
   const queries = `page=1&limit=${DEFAULT_PAGINATION_LIMIT}`;
   const notes = await fetchNotes({ queries });
 
-  console.log(notes);
-
   return (
     <main className="flex flex-col gap-4 h-full">
       <div className="flex gap-4 justify-between px-4 h-9">
