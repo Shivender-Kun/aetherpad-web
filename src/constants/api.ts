@@ -13,6 +13,7 @@ const API = {
     LOGIN: `${BASE_URL}/users/login`,
     REGISTER: `${BASE_URL}/users/register`,
     DETAILS: `${BASE_URL}/users/details`,
+    DELETE: `${BASE_URL}/users/delete`,
     LOGOUT: `${BASE_URL}/users/logout`,
     UPDATE_PROFILE: `${BASE_URL}/users/update`,
     FORGOT_PASSWORD: `${BASE_URL}/users/forgot-password`,
