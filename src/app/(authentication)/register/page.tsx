@@ -217,7 +217,9 @@ const RegisterForm = () => {
             )}
           />
 
-          <Button>{isLoading ? "Signing up" : "Signup"}</Button>
+          <Button disabled={isLoading}>
+            {isLoading ? "Signing up" : "Signup"}
+          </Button>
         </form>
       </Form>
 

@@ -22,7 +22,7 @@ import Link from "next/link";
 import { z } from "zod";
 
 const LoginForm = () => {
-  const { setIsLoading, setAPIMessage, apiMessage } = useStore();
+  const { setIsLoading, setAPIMessage, apiMessage, isLoading } = useStore();
   const [hidePassword, setHidePassword] = useState(true);
   const router = useRouter();
 
@@ -118,7 +118,7 @@ const LoginForm = () => {
             )}
           />
 
-          <Button>Login</Button>
+          <Button disabled={isLoading}>Login</Button>
 
           <Link href="forgot-password" className="text-right">
             Forgot Password?
