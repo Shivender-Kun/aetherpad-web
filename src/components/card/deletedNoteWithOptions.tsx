@@ -1,12 +1,13 @@
 "use client";
 
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
-import { ArchiveRestore, Trash2 } from "lucide-react";
+import { ArchiveRestore } from "lucide-react";
 import { INote, StoreContextType } from "@/types";
 import noteAction from "@/lib/api/noteAction";
 import NoteCard from "@/components/card/note";
 import { NOTE_ACTIONS } from "@/constants";
 import { useState } from "react";
+import PermanentDeleteNote from "@/app/(authorized)/trash/_delete";
 
 const DeletedNote = ({
   note,
@@ -45,18 +46,13 @@ const DeletedNote = ({
           </PopoverTrigger>
         </Popover>
 
-        <Popover>
-          <PopoverTrigger
-            title={"Delete Permanently"}
-            className="rounded-full w-7 h-7 cursor-pointer "
-            onClick={(e) => {
-              e.stopPropagation();
-              handleCardAction(NOTE_ACTIONS[8]);
-            }}
-          >
-            <Trash2 />
-          </PopoverTrigger>
-        </Popover>
+        <PermanentDeleteNote
+          note={note}
+          deleteNote={(e) => {
+            e.stopPropagation();
+            handleCardAction(NOTE_ACTIONS[8]);
+          }}
+        />
       </div>
     </div>
   );
