@@ -34,10 +34,10 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   return (
     <SidebarProvider defaultOpen={sidebarState}>
-      <Sidebar user={user} />
       <StoreContextProvider user={user} labels={labels}>
+        <Sidebar />
         <div className="flex flex-col h-screen w-full">
-          <Header user={user} />
+          <Header />
           <div className="pt-4 pb-8 flex-1 overflow-auto">{children}</div>
         </div>
       </StoreContextProvider>
