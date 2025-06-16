@@ -25,7 +25,10 @@ const errorHandler = async ({
     else if (error instanceof Error) message = error.message;
     if (setAPIMessage) setAPIMessage({ type: "error", message, notify: true });
   } finally {
-    if (setIsLoading) setIsLoading(false);
+    if (setIsLoading)
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
   }
 };
 

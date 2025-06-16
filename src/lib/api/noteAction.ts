@@ -23,15 +23,17 @@ type NOTE_ACTION_PROPS = {
     bgColor?: string;
     isPinned?: boolean;
   };
-  setAPIMessage: (props: StoreContextType["apiMessage"] | null) => void;
+  setIsLoading: (isLoading: boolean) => void;
+  setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
 };
 
 const noteAction = async ({
   id,
   action,
-  setAPIMessage,
   data = {},
-}: NOTE_ACTION_PROPS) => {
+  setIsLoading,
+  setAPIMessage,
+}: NOTE_ACTION_PROPS) =>
   errorHandler({
     apiCall: async () => {
       let endpoint;
@@ -58,9 +60,11 @@ const noteAction = async ({
         type: "success",
         message: response.data.message,
       });
+
+      return response;
     },
+    setIsLoading,
     setAPIMessage,
   });
-};
 
 export default noteAction;
