@@ -87,7 +87,6 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: "maskable",
       },
     ],
-
     screenshots: [
       {
         form_factor: "wide",
