@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: "Personal notes app for private users.",
     images: [
       {
-        url: "/apple-icon.png",
+        url: "https://notes.shivender.pro/apple-icon.png",
         alt: "Personal Notes",
       },
     ],
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     siteName: "Personal Notes",
     images: [
       {
-        url: "/apple-icon.png",
+        url: "https://notes.shivender.pro/apple-icon.png",
         alt: "Personal Notes",
       },
     ],
