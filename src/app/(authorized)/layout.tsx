@@ -1,3 +1,4 @@
+import ConnectionStatus from "@/components/banner/connectionStatus";
 import isUserAuthenticated from "@/lib/isUserAuthenticated";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import fetchDetails from "@/lib/api/users/fetchDetails";
@@ -6,9 +7,9 @@ import Sidebar from "@/components/layout/sidebar";
 import fetchLabels from "@/lib/api/fetchLabels";
 import Header from "@/components/layout/header";
 import StoreContextProvider from "@/store";
+import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { ReactNode } from "react";
-import { redirect } from "next/navigation";
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const sidebarStateOnLoad = async () => {
@@ -33,14 +34,17 @@ export default async function Layout({ children }: { children: ReactNode }) {
   ]);
 
   return (
-    <SidebarProvider defaultOpen={sidebarState}>
-      <StoreContextProvider user={user} labels={labels}>
-        <Sidebar />
-        <div className="flex flex-col h-screen w-full">
-          <Header />
-          <div className="pt-4 pb-8 flex-1 overflow-auto">{children}</div>
-        </div>
-      </StoreContextProvider>
-    </SidebarProvider>
+    <>
+      <SidebarProvider defaultOpen={sidebarState}>
+        <StoreContextProvider user={user} labels={labels}>
+          <Sidebar />
+          <div className="flex flex-col h-screen w-full">
+            <Header />
+            <div className="pt-4 pb-8 flex-1 overflow-auto">{children}</div>
+          </div>
+        </StoreContextProvider>
+      </SidebarProvider>
+      <ConnectionStatus />
+    </>
   );
 }
