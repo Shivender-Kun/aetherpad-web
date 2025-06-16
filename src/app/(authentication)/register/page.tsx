@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { registerUserSchema } from "@/validations/user.validation";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import userRegister from "@/lib/api/users/register";
@@ -56,7 +57,7 @@ const RegisterForm = () => {
   };
 
   const onSubmit = async (data: z.infer<typeof registerUserSchema>) => {
-    userRegister({
+    await userRegister({
       data,
       setAPIMessage,
       setIsLoading,
@@ -218,7 +219,7 @@ const RegisterForm = () => {
           />
 
           <Button disabled={isLoading}>
-            {isLoading ? "Signing up" : "Signup"}
+            {isLoading ? <LoadingSpinner /> : "Signup"}
           </Button>
         </form>
       </Form>

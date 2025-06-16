@@ -10,14 +10,15 @@ import {
 } from "@/components/ui/form";
 import ResetPasswordSuccessDialog from "@/components/dialog/resetPasswordSuccess";
 import { resetPasswordSchema } from "@/validations/user.validation";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import resetPassword from "@/lib/api/users/resetPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
 import { useStore } from "@/store";
 import Link from "next/link";
 import z from "zod";
@@ -27,7 +28,7 @@ const ResetPassword = () => {
     newPassword: true,
     confirmPassword: true,
   });
-  const [showResetSuccessDialog, setShowResetSuccessDialog] = useState(false);
+  const [showResetSuccessDialog, setShowResetSuccessDialog] = useState(true);
   const { setIsLoading, setAPIMessage, apiMessage, isLoading } = useStore();
   const params = useParams();
   const resetToken = params.token;
@@ -148,7 +149,9 @@ const ResetPassword = () => {
               </FormItem>
             )}
           />
-          <Button disabled={isLoading}>Reset</Button>
+          <Button disabled={isLoading}>
+            {isLoading ? <LoadingSpinner /> : "Reset"}
+          </Button>
         </form>
 
         <div className="flex flex-col gap-2">

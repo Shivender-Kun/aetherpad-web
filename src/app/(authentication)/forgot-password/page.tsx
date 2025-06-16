@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import ResetEmailSentDialog from "@/components/dialog/resetEmailSent";
 import { forgotPasswordSchema } from "@/validations/user.validation";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import forgotPassword from "@/lib/api/users/forgotPassword";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -71,7 +72,9 @@ const ForgotPasswordForm = () => {
             )}
           />
 
-          <Button disabled={isLoading}>Forgot Password</Button>
+          <Button disabled={isLoading}>
+            {isLoading ? <LoadingSpinner /> : "Forgot Password"}
+          </Button>
         </form>
 
         <div className="flex flex-col gap-2">

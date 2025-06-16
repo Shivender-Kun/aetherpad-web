@@ -8,6 +8,7 @@ import {
   Form,
   FormMessage,
 } from "@/components/ui/form";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { loginSchema } from "@/validations/user.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -118,7 +119,9 @@ const LoginForm = () => {
             )}
           />
 
-          <Button disabled={isLoading}>Login</Button>
+          <Button disabled={isLoading}>
+            {isLoading ? <LoadingSpinner /> : "Login"}
+          </Button>
 
           <Link href="forgot-password" className="text-right">
             Forgot Password?
