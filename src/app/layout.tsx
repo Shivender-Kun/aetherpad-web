@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
   },
   twitter: {
     card: "summary_large_image",
@@ -46,7 +46,7 @@ const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-poppins",
   display: "swap",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export default function RootLayout({
