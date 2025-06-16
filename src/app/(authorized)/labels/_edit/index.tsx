@@ -16,6 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +25,6 @@ import { useForm } from "react-hook-form";
 import { EditIcon } from "lucide-react";
 import { ILabel } from "@/types";
 import z from "zod";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 const formSchema = z.object({
   name: z
@@ -40,6 +40,7 @@ const EditLabel = ({
 }: {
   label: ILabel;
   isLoading: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateLabel: (labelId: string, data: { name: string }) => Promise<any>;
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);

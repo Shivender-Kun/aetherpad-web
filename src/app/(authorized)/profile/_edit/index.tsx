@@ -82,8 +82,10 @@ const EditProfile = ({ user }: { user: IUser }) => {
   };
 
   const onSubmit = async (data: z.infer<typeof updateUserSchema>) => {
+    const payload = { ...data, profilePicture: "" };
+
     await updateProfile({
-      data,
+      data: payload,
       coverPictureRef,
       profilePictureRef,
       setAPIMessage,
