@@ -19,9 +19,33 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     icons: [
       {
+        src: "/icons/maskable_icon_x48.png",
+        sizes: "48x48",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
+        src: "/icons/maskable_icon_x72.png",
+        sizes: "72x72",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
+        src: "/icons/maskable_icon_x96.png",
+        sizes: "96x96",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
         src: "/icons/icon_128.png",
         sizes: "128x128",
         type: "image/png",
+      },
+      {
+        src: "/icons/maskable_icon_x128.png",
+        sizes: "128x128",
+        type: "image/png",
+        purpose: "maskable",
       },
       {
         src: "/icons/icon_144.png",
@@ -29,9 +53,32 @@ export default function manifest(): MetadataRoute.Manifest {
         type: "image/png",
       },
       {
+        src: "/icons/maskable_icon_x144.png",
+        sizes: "144x144",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
         src: "/icons/icon_192.png",
         sizes: "192x192",
         type: "image/png",
+      },
+      {
+        src: "/icons/maskable_icon_x192.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
+        src: "/icons/icon_384.png",
+        sizes: "384x384",
+        type: "image/png",
+      },
+      {
+        src: "/icons/maskable_icon_x384.png",
+        sizes: "384x384",
+        type: "image/png",
+        purpose: "maskable",
       },
       {
         src: "/icons/icon_512.png",
@@ -45,44 +92,8 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: "maskable",
       },
       {
-        src: "/icons/maskable_icon_x384.png",
-        sizes: "384x384",
-        type: "image/png",
-        purpose: "maskable",
-      },
-      {
-        src: "/icons/maskable_icon_x192.png",
-        sizes: "192x192",
-        type: "image/png",
-        purpose: "maskable",
-      },
-      {
-        src: "/icons/maskable_icon_x128.png",
-        sizes: "128x128",
-        type: "image/png",
-        purpose: "maskable",
-      },
-      {
-        src: "/icons/maskable_icon_x96.png",
-        sizes: "96x96",
-        type: "image/png",
-        purpose: "maskable",
-      },
-      {
-        src: "/icons/maskable_icon_x72.png",
-        sizes: "72x72",
-        type: "image/png",
-        purpose: "maskable",
-      },
-      {
-        src: "/icons/maskable_icon_x48.png",
-        sizes: "48x48",
-        type: "image/png",
-        purpose: "maskable",
-      },
-      {
         src: "/icons/maskable_icon.png",
-        sizes: "928x928",
+        sizes: "1024x1024",
         type: "image/png",
         purpose: "maskable",
       },
