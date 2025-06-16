@@ -1,9 +1,14 @@
 // import PushNotificationManager from "@/components/PushNotificationManager";
+import isUserAuthenticated from "@/lib/isUserAuthenticated";
 import { Button } from "@/components/ui/button";
 import { NotebookPenIcon } from "lucide-react";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
-export default function Page() {
+export default async function Page() {
+  const userData = await isUserAuthenticated();
+  if (userData) redirect("/home");
+
   return (
     <>
       <main className="h-screen grid place-items-center">
