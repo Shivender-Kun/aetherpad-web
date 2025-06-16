@@ -1,3 +1,4 @@
+import FloatingHomeButton from "@/components/floatingHomeBtn";
 import Link from "next/link";
 
 const TermsOfUse = () => {
@@ -82,6 +83,7 @@ const TermsOfUse = () => {
           support@shivender.pro
         </Link>
       </p>
+      <FloatingHomeButton />
     </div>
   );
 };

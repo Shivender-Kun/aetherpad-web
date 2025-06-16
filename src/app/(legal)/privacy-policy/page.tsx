@@ -1,3 +1,4 @@
+import FloatingHomeButton from "@/components/floatingHomeBtn";
 import Link from "next/link";
 
 const PrivacyPolicy = () => {
@@ -78,6 +79,7 @@ const PrivacyPolicy = () => {
           support@shivender.pro
         </Link>
       </p>
+      <FloatingHomeButton />
     </div>
   );
 };
