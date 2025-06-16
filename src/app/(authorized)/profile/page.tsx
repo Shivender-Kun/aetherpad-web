@@ -51,7 +51,7 @@ const Profile = () => {
           </div>
 
           <div className="p-2 absolute z-10 bottom-0 flex flex-col gap-2 items-center">
-            <Avatar className="w-32 h-32 border border-gray-100 border-x-2 border-y-2">
+            <Avatar className="w-32 h-32  max-sm:w-24 max-sm:h-24 border border-gray-100 border-x-2 border-y-2">
               <AvatarImage src={user?.profilePicture} />
               <AvatarFallback>
                 <User2 />
