@@ -41,6 +41,8 @@ const API = {
     DELETE: (id: string) => `${BASE_URL}/labels/${id}`,
     GET_LIST: `${BASE_URL}/labels`,
   },
+
+  ONLINE_STATUS: `${BASE_URL}/heartbeat`,
 } as const;
 
 export default API;
