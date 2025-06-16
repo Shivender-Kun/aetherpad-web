@@ -2,7 +2,6 @@ import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -29,7 +28,6 @@ const ResetPasswordSuccessDialog = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Close</AlertDialogCancel>
           <AlertDialogAction onClick={() => router.replace("/login")}>
             Login
           </AlertDialogAction>

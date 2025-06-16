@@ -1,7 +1,6 @@
 import { useRouter } from "next/navigation";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -30,10 +29,9 @@ const ResetEmailSentDialog = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Close</AlertDialogCancel>
-          <AlertDialogAction onClick={() => router.replace("/login")}>
-            Login
-          </AlertDialogAction>
+          <AlertDialogCancel onClick={() => router.replace("/login")}>
+            Close
+          </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
