@@ -14,10 +14,12 @@ const Header = () => {
       <div className="md:hidden">
         <SidebarTrigger />
       </div>
-      <div className="flex justify-center items-center gap-4">
-        <NotebookPen />
-        <h1 className="text-2xl font-bold text-center">Personal Notes</h1>
-      </div>
+      <Link href="/home">
+        <div className="flex justify-center items-center gap-4">
+          <NotebookPen />
+          <h1 className="text-2xl font-bold text-center">Personal Notes</h1>
+        </div>
+      </Link>
 
       <div>
         <Link className="w-full" href="/profile">
@@ -28,9 +30,7 @@ const Header = () => {
                 <User2 />
               </AvatarFallback>
             </Avatar>
-            <span className="max-sm:hidden">
-              {user?.username?.toLocaleUpperCase()}
-            </span>
+            <span className="max-sm:hidden">{user?.username}</span>
           </div>
         </Link>
       </div>
