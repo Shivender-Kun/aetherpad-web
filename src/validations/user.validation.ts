@@ -28,8 +28,11 @@ const loginSchema = z.object({
 
 const updateUserSchema = z.object({
   email: z.string(),
-  username: z.string(),
-  profilePicture: z.string(),
+  username: z
+    .string()
+    .min(1, "Username is required")
+    .max(32, "Username can be 32 characters"),
+  profilePicture: z.union([z.instanceof(File), z.string().url()]),
 });
 
 const changePasswordSchema = z.object({
