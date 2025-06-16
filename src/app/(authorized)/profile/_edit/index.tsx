@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { updateUserSchema } from "@/validations/user.validation";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import updateProfile from "@/lib/api/users/updateProfile";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit, ImageUp, User } from "lucide-react";
@@ -42,14 +43,14 @@ const EditProfile = ({ user }: { user: IUser }) => {
   const profilePictureRef = useRef<HTMLInputElement>(null);
   const coverPictureRef = useRef<HTMLInputElement>(null);
 
-  const { setAPIMessage, setIsLoading } = useStore();
+  const { setAPIMessage, setIsLoading, isLoading } = useStore();
 
   const form = useForm<z.infer<typeof updateUserSchema>>({
     resolver: zodResolver(updateUserSchema),
     defaultValues: {
       email: user.email,
-      profilePicture: "",
       username: user.username || "",
+      profilePicture: user.profilePicture || undefined,
     },
   });
 
@@ -108,7 +109,7 @@ const EditProfile = ({ user }: { user: IUser }) => {
             <Image
               src={coverImageUrl}
               alt="Cover Image"
-              width={500}
+              width={458}
               height={120}
             />
             <div className="absolute top-0 left-0 w-full h-full bg-slate-300/40 dark:bg-gray-800/60 flex items-end justify-end p-1 z-10">
@@ -164,7 +165,6 @@ const EditProfile = ({ user }: { user: IUser }) => {
                           e: React.ChangeEvent<HTMLInputElement>
                         ) => handleImageSelection(e, "profile")}
                         className="w-[0px] h-[0px] absolute"
-                        {...field}
                         ref={profilePictureRef}
                       />
                     </FormControl>
@@ -204,7 +204,9 @@ const EditProfile = ({ user }: { user: IUser }) => {
               />
 
               <DialogFooter>
-                <Button>Update</Button>
+                <Button disabled={isLoading}>
+                  {isLoading ? <LoadingSpinner /> : "Update"}
+                </Button>
               </DialogFooter>
             </form>
           </Form>

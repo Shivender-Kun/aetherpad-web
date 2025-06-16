@@ -21,6 +21,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { updateNoteSchema } from "@/validations/notes.validation";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { Palette, Pin, PinOff, Tags } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,17 +37,17 @@ import { INote } from "@/types";
 import z from "zod";
 
 const EditNote = ({
-  selectedNote,
-  closeDialog,
   open,
+  closeDialog,
   onOpenChange,
+  selectedNote,
 }: {
+  open: boolean;
   selectedNote: INote;
   closeDialog: () => void;
-  open: boolean;
   onOpenChange: (open: boolean) => void;
 }) => {
-  const { labels, setAPIMessage } = useStore();
+  const { labels, setAPIMessage, setIsLoading, isLoading } = useStore();
   const [noteAttributes, setNoteAttributes] = useState(() => ({
     bgColor: selectedNote.bgColor || "",
     isPinned: selectedNote.isPinned || false,
@@ -80,8 +81,9 @@ const EditNote = ({
   const HeaderOptions = (
     <Popover>
       <PopoverTrigger
-        className="absolute top-4 right-4 rounded-full w-7 h-7 cursor-pointer"
         title="Pin"
+        tabIndex={-1}
+        className="absolute top-4 right-4 rounded-full w-7 h-7 cursor-pointer"
         onClick={(e) => {
           e.stopPropagation();
           setNoteAttributes((prev) => ({ ...prev, isPinned: !prev.isPinned }));
@@ -95,6 +97,7 @@ const EditNote = ({
   const renderPaletteOption = (
     <Popover>
       <PopoverTrigger
+        tabIndex={-1}
         title="Card Color"
         className="rounded-full w-7 h-7 cursor-pointer "
       >
@@ -130,6 +133,7 @@ const EditNote = ({
   const renderLabelsOption = (
     <Popover>
       <PopoverTrigger
+        tabIndex={-1}
         title="Labels"
         className="rounded-full w-7 h-7 cursor-pointer "
       >
@@ -162,10 +166,11 @@ const EditNote = ({
   );
 
   const onSubmit = async (data: z.infer<typeof updateNoteSchema>) => {
-    noteAction({
+    await noteAction({
       id: selectedNote._id,
       action: "UPDATE",
       data: { ...data, ...noteAttributes },
+      setIsLoading,
       setAPIMessage,
     });
 
@@ -232,7 +237,9 @@ const EditNote = ({
                   {renderLabelsOption}
                 </div>
               </div>
-              <Button>Save</Button>
+              <Button disabled={isLoading}>
+                {isLoading ? <LoadingSpinner /> : "Save"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

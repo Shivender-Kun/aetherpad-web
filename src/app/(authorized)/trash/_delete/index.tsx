@@ -11,19 +11,26 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { INote } from "@/types";
-import { Button } from "@/components/ui/button";
 
 const PermanentDeleteNote = ({
   note,
+  isLoading,
   deleteNote,
+  open,
+  onOpenChange,
 }: {
   note: INote;
-  deleteNote: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  isLoading: boolean;
+  deleteNote: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }) => {
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogTrigger asChild>
         <div
           title={"Delete Permanently"}
@@ -45,9 +52,13 @@ const PermanentDeleteNote = ({
             <Button
               variant="destructive"
               className="text-white"
-              onClick={deleteNote}
+              onClick={(e) => {
+                e.preventDefault();
+                deleteNote();
+              }}
+              disabled={isLoading}
             >
-              Delete
+              {isLoading ? <LoadingSpinner /> : "Delete"}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -14,33 +14,31 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { INote, StoreContextType } from "@/types";
 import { NOTE_ACTIONS, PALETTE_OPTIONS } from "@/constants";
-import noteAction from "@/lib/api/noteAction";
-import NoteCard from "@/components/card/note";
-
-import { useState } from "react";
 import DeleteNote from "@/app/(authorized)/home/_delete";
 import EditNote from "@/app/(authorized)/home/_edit";
+import noteAction from "@/lib/api/noteAction";
+import NoteCard from "@/components/card/note";
+import { useStore } from "@/store";
+import { useState } from "react";
+import { INote } from "@/types";
 
-const Note = ({
-  note,
-  setAPIMessage,
-}: {
-  note: INote;
-  setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
-}) => {
-  const [hoverActive, setHoverActive] = useState(false);
+const Note = ({ note }: { note: INote }) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [hoverActive, setHoverActive] = useState(false);
 
-  const handleCardAction = (
+  const { setAPIMessage, isLoading, setIsLoading } = useStore();
+
+  const handleCardAction = async (
     action: "ARCHIVE" | "UNARCHIVE" | "PIN" | "UNPIN" | "DELETE" | "UPDATE",
     data?: { [key: string]: string }
   ) => {
-    noteAction({
-      id: note._id,
-      action,
+    await noteAction({
       data,
+      action,
+      id: note._id,
+      setIsLoading,
       setAPIMessage,
     });
   };
@@ -83,8 +81,8 @@ const Note = ({
   const HeaderOptions = (
     <Popover>
       <PopoverTrigger
-        className="absolute top-4 right-4 rounded-full w-7 h-7 cursor-pointer"
         title="Pin"
+        className="absolute top-4 right-4 rounded-full w-7 h-7 cursor-pointer flex items-center justify-center"
         onClick={(e) => {
           e.stopPropagation();
           handleCardAction(NOTE_ACTIONS[note.isPinned ? 6 : 5]);
@@ -105,7 +103,7 @@ const Note = ({
             <Popover key={idx}>
               <PopoverTrigger
                 title={button.title}
-                className="rounded-full w-7 h-7 cursor-pointer "
+                className="rounded-full w-7 h-7 cursor-pointer flex items-center justify-center"
               >
                 <ButtonIcon />
               </PopoverTrigger>
@@ -125,7 +123,7 @@ const Note = ({
         <Popover>
           <PopoverTrigger
             title={note.isArchived ? "Unarchive" : "Archive"}
-            className="rounded-full w-7 h-7 cursor-pointer "
+            className="rounded-full w-7 h-7 cursor-pointer flex items-center justify-center"
             onClick={(e) => {
               e.stopPropagation();
               handleCardAction(NOTE_ACTIONS[note.isArchived ? 4 : 3]);
@@ -140,14 +138,17 @@ const Note = ({
         <PopoverTrigger
           title="Menu"
           onClick={(e) => e.stopPropagation()}
-          className="rounded-full w-7 h-7 cursor-pointer"
+          className="rounded-full w-7 h-7 cursor-pointer flex items-center justify-center"
         >
           <EllipsisVertical />
         </PopoverTrigger>
         <PopoverContent className="w-fit" onClick={(e) => e.stopPropagation()}>
           <DeleteNote
             note={note}
+            isLoading={isLoading}
             deleteNote={() => handleCardAction(NOTE_ACTIONS[2])}
+            open={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
           />
         </PopoverContent>
       </Popover>

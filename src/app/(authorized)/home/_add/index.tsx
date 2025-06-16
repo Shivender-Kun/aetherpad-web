@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/popover";
 import { createNoteSchema } from "@/validations/notes.validation";
 import { Palette, Pin, PinOff, Plus, Tags } from "lucide-react";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { MultiSelect } from "@/components/ui/multi-select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
@@ -36,15 +37,17 @@ import { useState } from "react";
 import z from "zod";
 
 const AddNote = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
   const [noteAttributes, setNoteAttributes] = useState({
     bgColor: "",
     isPinned: false,
   });
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const {
-    labels: { list: labelList },
+    isLoading,
+    setIsLoading,
     setAPIMessage,
+    labels: { list: labelList },
   } = useStore();
 
   // Convert labelList to the format required by MultiSelect
@@ -67,6 +70,7 @@ const AddNote = () => {
           e.stopPropagation();
           setNoteAttributes((prev) => ({ ...prev, isPinned: !prev.isPinned }));
         }}
+        tabIndex={-1}
       >
         {noteAttributes.isPinned ? <PinOff /> : <Pin />}
       </PopoverTrigger>
@@ -76,6 +80,7 @@ const AddNote = () => {
   const renderPaletteOption = (
     <Popover>
       <PopoverTrigger
+        tabIndex={-1}
         title="Card Color"
         className="rounded-full w-7 h-7 cursor-pointer "
       >
@@ -111,6 +116,7 @@ const AddNote = () => {
   const renderLabelsOption = (
     <Popover>
       <PopoverTrigger
+        tabIndex={-1}
         title="Labels"
         className="rounded-full w-7 h-7 cursor-pointer "
       >
@@ -143,14 +149,18 @@ const AddNote = () => {
   );
 
   const onSubmit = async (data: z.infer<typeof createNoteSchema>) => {
-    noteAction({
+    const response = await noteAction({
       action: "ADD",
       data: { ...data, ...noteAttributes },
+      setIsLoading,
       setAPIMessage,
     });
-    setDialogOpen(false);
-    form.reset();
-    setNoteAttributes({ bgColor: "", isPinned: false });
+
+    if (response.status === 200) {
+      setNoteAttributes({ bgColor: "", isPinned: false });
+      setDialogOpen(false);
+      form.reset();
+    }
   };
 
   return (
@@ -214,7 +224,9 @@ const AddNote = () => {
                   {renderLabelsOption}
                 </div>
               </div>
-              <Button>Save</Button>
+              <Button disabled={isLoading}>
+                {isLoading ? <LoadingSpinner /> : "Save"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

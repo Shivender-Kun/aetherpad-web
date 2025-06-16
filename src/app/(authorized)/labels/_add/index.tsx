@@ -17,10 +17,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { createLabelSchema } from "@/validations/labels.validation";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import labelAction from "@/lib/api/labelAction";
+import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { Plus } from "lucide-react";
 import { useStore } from "@/store";
@@ -28,16 +29,16 @@ import { useState } from "react";
 import z from "zod";
 
 const AddLabel = () => {
+  const { setAPIMessage, setIsLoading, isLoading } = useStore();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { setAPIMessage } = useStore();
 
   const form = useForm<z.infer<typeof createLabelSchema>>({
     resolver: zodResolver(createLabelSchema),
     defaultValues: { name: "" },
   });
 
-  const onSubmit = (data: z.infer<typeof createLabelSchema>) => {
-    labelAction({ action: "ADD", data, setAPIMessage });
+  const onSubmit = async (data: z.infer<typeof createLabelSchema>) => {
+    await labelAction({ action: "ADD", data, setIsLoading, setAPIMessage });
     setDialogOpen(false);
     form.reset();
   };
@@ -64,7 +65,7 @@ const AddLabel = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="name">Label Name</FormLabel>
+                  <FormLabel htmlFor="name">Name</FormLabel>
                   <FormControl>
                     <Input id="name" {...field} />
                   </FormControl>
@@ -73,7 +74,9 @@ const AddLabel = () => {
               )}
             />
             <DialogFooter>
-              <Button>Add</Button>
+              <Button disabled={isLoading}>
+                {isLoading ? <LoadingSpinner /> : "Add"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

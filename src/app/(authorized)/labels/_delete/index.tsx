@@ -11,15 +11,18 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { ILabel } from "@/types";
 
 const DeleteLabel = ({
   label,
+  isLoading,
   deleteLabel,
 }: {
   label: ILabel;
+  isLoading: boolean;
   deleteLabel: (labelId: string) => Promise<void>;
 }) => {
   return (
@@ -42,9 +45,13 @@ const DeleteLabel = ({
             <Button
               variant="destructive"
               className="text-white"
-              onClick={() => deleteLabel(label._id)}
+              onClick={(e) => {
+                e.preventDefault();
+                deleteLabel(label._id);
+              }}
+              disabled={isLoading}
             >
-              Delete
+              {isLoading ? <LoadingSpinner /> : "Delete"}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

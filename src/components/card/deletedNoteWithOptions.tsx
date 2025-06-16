@@ -1,31 +1,29 @@
 "use client";
 
+import PermanentDeleteNote from "@/app/(authorized)/trash/_delete";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { ArchiveRestore } from "lucide-react";
-import { INote, StoreContextType } from "@/types";
 import noteAction from "@/lib/api/noteAction";
 import NoteCard from "@/components/card/note";
 import { NOTE_ACTIONS } from "@/constants";
+import { useStore } from "@/store";
 import { useState } from "react";
-import PermanentDeleteNote from "@/app/(authorized)/trash/_delete";
+import { INote } from "@/types";
 
-const DeletedNote = ({
-  note,
-  setAPIMessage,
-}: {
-  note: INote;
-  setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
-}) => {
+const DeletedNote = ({ note }: { note: INote }) => {
   const [hoverActive, setHoverActive] = useState(false);
+  const [deleteDialogShow, setDeleteDialogShow] = useState(false);
+  const { isLoading, setAPIMessage, setIsLoading } = useStore();
 
-  const handleCardAction = (
+  const handleCardAction = async (
     action: "DELETE_PERMANENTLY" | "RESTORE",
     data?: { [key: string]: string }
   ) => {
-    noteAction({
+    await noteAction({
       id: note._id,
       action,
       data,
+      setIsLoading,
       setAPIMessage,
     });
   };
@@ -36,11 +34,8 @@ const DeletedNote = ({
         <Popover>
           <PopoverTrigger
             title="Restore"
-            className="rounded-full w-7 h-7 cursor-pointer "
-            onClick={(e) => {
-              e.stopPropagation();
-              handleCardAction(NOTE_ACTIONS[7]);
-            }}
+            className="rounded-full w-7 h-7 cursor-pointer flex items-center justify-center"
+            onClick={() => handleCardAction(NOTE_ACTIONS[7])}
           >
             <ArchiveRestore />
           </PopoverTrigger>
@@ -48,10 +43,10 @@ const DeletedNote = ({
 
         <PermanentDeleteNote
           note={note}
-          deleteNote={(e) => {
-            e.stopPropagation();
-            handleCardAction(NOTE_ACTIONS[8]);
-          }}
+          deleteNote={() => handleCardAction(NOTE_ACTIONS[8])}
+          isLoading={isLoading}
+          open={deleteDialogShow}
+          onOpenChange={setDeleteDialogShow}
         />
       </div>
     </div>
