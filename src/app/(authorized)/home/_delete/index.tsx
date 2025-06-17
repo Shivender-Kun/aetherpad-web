@@ -14,16 +14,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { INote } from "@/types";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 const DeleteNote = ({
   note,
+  isLoading,
   deleteNote,
+  open,
+  onOpenChange,
 }: {
   note: INote;
+  isLoading: boolean;
   deleteNote: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }) => {
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogTrigger asChild>
         <Button>
           Delete <Trash2 />
@@ -31,14 +38,26 @@ const DeleteNote = ({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete note: {note.title}</AlertDialogTitle>
+          <AlertDialogTitle>Delete Note: {note.title}</AlertDialogTitle>
           <AlertDialogDescription>
             Are you sure you want to delete this note?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={deleteNote}>Delete</AlertDialogAction>
+          <AlertDialogAction asChild>
+            <Button
+              variant="destructive"
+              className="text-white"
+              onClick={(e) => {
+                e.preventDefault();
+                deleteNote();
+              }}
+              disabled={isLoading}
+            >
+              {isLoading ? <LoadingSpinner /> : "Delete"}
+            </Button>
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -3,6 +3,9 @@ export interface IUser {
   username: string;
   coverPicture: string;
   profilePicture: string;
+  createdAt: Date;
+  isPrivate?: boolean;
+  dob?: Date;
 }
 
 export interface INote {
@@ -10,7 +13,7 @@ export interface INote {
   title: string;
   content: string;
   bgColor: string;
-  labels: string[];
+  labels: ILabel[];
   isPinned: boolean;
   isArchived: boolean;
   isDeleted: boolean;
@@ -38,8 +41,8 @@ export interface StoreContextType {
   setNotes: (data: PaginatedData<INote>) => void;
   archivedNotes: PaginatedData<INote>;
   setArchivedNotes: (data: PaginatedData<INote>) => void;
-  pinnedNotes: PaginatedData<INote>;
-  setPinnedNotes: (data: PaginatedData<INote>) => void;
+  pinnedNotes: INote[];
+  setPinnedNotes: (data: INote[]) => void;
   deletedNotes: PaginatedData<INote>;
   setDeletedNotes: (data: PaginatedData<INote>) => void;
   labels: PaginatedData<ILabel>;

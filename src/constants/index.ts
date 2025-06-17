@@ -1,10 +1,13 @@
-import axios from "axios";
 import { Archive, NotepadText, Tags, Trash2 } from "lucide-react";
+import axios from "axios";
 
-export { default as API } from "./api";
 export { default as ENUM } from "./enum";
+export { default as API } from "./api";
 
 axios.defaults.withCredentials = true;
+
+export const NODE_ENV = process.env.NODE_ENV;
+export const DEBUG = process.env.NEXT_PUBLIC_DEBUG;
 
 export const FIREBASE = {
   API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -23,6 +26,7 @@ export const APP = {
 };
 
 export const DEFAULT_PAGINATION_LIMIT = 10;
+export const LABEL_ACTIONS = ["ADD", "UPDATE", "DELETE"] as const;
 
 export const USER_ROUTES = [
   { name: "Notes", path: "/home", icon: NotepadText },
@@ -45,7 +49,6 @@ export const PALETTE_OPTIONS = [
   "chalk",
 ] as const;
 
-export const LABEL_ACTIONS = ["ADD", "UPDATE", "DELETE"] as const;
 export const NOTE_ACTIONS = [
   "ADD",
   "UPDATE",

@@ -1,8 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-
 import {
   FormField,
   FormItem,
@@ -13,18 +10,25 @@ import {
 } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { registerUserSchema } from "@/validations/user.validation";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
 import userRegister from "@/lib/api/users/register";
+import { Eye, EyeOff, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { compressImage } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { User } from "lucide-react";
 import { useStore } from "@/store";
+import Link from "next/link";
 import { z } from "zod";
 
-export const RegisterForm = () => {
+const RegisterForm = () => {
+  const [hiddenFields, setHiddenFields] = useState({
+    password: true,
+    confirmPassword: true,
+  });
   const { isLoading, setIsLoading, setAPIMessage, apiMessage } = useStore();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
@@ -39,8 +43,21 @@ export const RegisterForm = () => {
     },
   });
 
+  const renderShowPassword = (fieldName: "password" | "confirmPassword") => {
+    const fieldHidden = hiddenFields[fieldName];
+
+    const handleClick = () =>
+      setHiddenFields((prev) => ({ ...prev, [fieldName]: !prev[fieldName] }));
+
+    return (
+      <div className="p-1" onClick={handleClick}>
+        {fieldHidden ? <Eye /> : <EyeOff />}
+      </div>
+    );
+  };
+
   const onSubmit = async (data: z.infer<typeof registerUserSchema>) => {
-    userRegister({
+    await userRegister({
       data,
       setAPIMessage,
       setIsLoading,
@@ -50,7 +67,7 @@ export const RegisterForm = () => {
 
   useEffect(() => {
     if (apiMessage?.type === "success") router.replace("/login");
-  }, [apiMessage]);
+  }, [apiMessage, router]);
 
   const handleImageSelection = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -94,9 +111,6 @@ export const RegisterForm = () => {
                 <FormLabel
                   htmlFor="profilePicture"
                   className="relative cursor-pointer flex flex-col items-center gap-2"
-                  onClick={() => {
-                    if (imageInputRef.current) imageInputRef.current.click();
-                  }}
                 >
                   <Avatar className="w-20 h-20 mx-auto">
                     {imageUrl && <AvatarImage src={imageUrl} />}
@@ -109,10 +123,11 @@ export const RegisterForm = () => {
                 <FormControl>
                   <input
                     type="file"
+                    id={field.name}
                     accept="image/*"
-                    {...field}
                     onChangeCapture={handleImageSelection}
                     className="w-[0px] h-[0px] absolute"
+                    {...field}
                     ref={imageInputRef}
                   />
                 </FormControl>
@@ -133,11 +148,14 @@ export const RegisterForm = () => {
                   Email
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="example@abc.com"
-                    {...field}
-                  ></Input>
+                  <div className="flex gap-2 items-center border-2 rounded-md bg-input dark:bg-input/30">
+                    <Input
+                      id={field.name}
+                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(229,229,229)] dark:autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
+                      placeholder="example@abc.com"
+                      {...field}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -156,11 +174,16 @@ export const RegisterForm = () => {
                   Password
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="********"
-                    {...field}
-                  ></Input>
+                  <div className="flex gap-2 items-center border-2 rounded-md bg-input dark:bg-input/30">
+                    <Input
+                      id={field.name}
+                      placeholder="*******"
+                      type={hiddenFields[field.name] ? "password" : "text"}
+                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(229,229,229)] dark:autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
+                      {...field}
+                    />
+                    {renderShowPassword(field.name)}
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -174,33 +197,46 @@ export const RegisterForm = () => {
               <FormItem>
                 <FormLabel
                   htmlFor="confirmPassword"
-                  className="flex flex-col gap-4  items-start"
+                  className="flex flex-col gap-4 items-start"
                 >
                   Confirm Password
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="********"
-                    {...field}
-                  ></Input>
+                  <div className="flex gap-2 items-center border-2 rounded-md bg-input dark:bg-input/30">
+                    <Input
+                      id={field.name}
+                      placeholder="*******"
+                      type={hiddenFields[field.name] ? "password" : "text"}
+                      className="border-0 focus-visible:ring-ring/0 active:border-0 bg-transparent dark:bg-transparent autofill:shadow-[inset_0_0_0px_1000px_rgb(229,229,229)] dark:autofill:shadow-[inset_0_0_0px_1000px_rgb(40,50,66)]"
+                      {...field}
+                    />
+                    {renderShowPassword(field.name)}
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button>{isLoading ? "Signing up" : "Signup"}</Button>
+          <Button disabled={isLoading}>
+            {isLoading ? <LoadingSpinner /> : "Signup"}
+          </Button>
         </form>
       </Form>
 
       <p className="text-center text-sm text-gray-500">
         {"By signing in, you agree to our "}
-        <Link href="/terms" className="text-blue-600 hover:text-blue-500">
+        <Link
+          href="/terms-&-conditions"
+          className="text-blue-600 hover:text-blue-500"
+        >
           Terms of Service
         </Link>
         {" and "}
-        <Link href="/privacy" className="text-blue-600 hover:text-blue-500">
+        <Link
+          href="/privacy-policy"
+          className="text-blue-600 hover:text-blue-500"
+        >
           Privacy Policy
         </Link>
       </p>

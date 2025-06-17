@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -9,69 +11,107 @@ import {
 import labelAction from "@/lib/api/labelAction";
 import DeleteLabel from "../_delete";
 import { useStore } from "@/store";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { API } from "@/constants";
 import { ILabel } from "@/types";
 import EditLabel from "../_edit";
 import axios from "axios";
+import errorHandler from "@/lib/errorHandler";
+import AddLabel from "../_add";
 
 const LabelsList = () => {
-  const { labels, apiMessage, setLabels, setAPIMessage } = useStore();
+  const {
+    labels,
+    apiMessage,
+    setLabels,
+    setAPIMessage,
+    setIsLoading,
+    isLoading,
+  } = useStore();
 
-  const deleteLabel = (labelId: string) =>
-    labelAction({
+  const deleteLabel = async (labelId: string) =>
+    await labelAction({
       id: labelId,
       action: "DELETE",
-      showToast: setAPIMessage,
+      setIsLoading,
+      setAPIMessage,
     });
 
-  const updateLabel = (labelId: string, data: { name: string }) =>
-    labelAction({
+  const updateLabel = async (labelId: string, data: { name: string }) =>
+    await labelAction({
       id: labelId,
       action: "UPDATE",
       data,
-      showToast: setAPIMessage,
+      setIsLoading,
+      setAPIMessage,
     });
 
-  const fetchLablesList = async () => {
-    try {
-      const response = await axios.get(API.LABELS.GET_LIST);
-      if (response.status !== 200) throw Error(response.data.message);
-
-      setLabels(response.data.data);
-    } catch (error) {
-      if (error instanceof Error) console.error(error.message);
-      else console.error(error);
-    }
-  };
+  const fetchLablesList = useCallback(async () => {
+    errorHandler({
+      apiCall: async () => {
+        const response = await axios.get(API.LABELS.GET_LIST);
+        if (response.status !== 200) throw Error(response.data.message);
+        setLabels(response.data.data);
+      },
+    });
+  }, [setLabels]);
 
   useEffect(() => {
     if (apiMessage?.type === "success") fetchLablesList();
-  }, [apiMessage]);
+  }, [apiMessage, fetchLablesList]);
 
   const renderLabelRow = (label: ILabel, idx: number) => (
     <TableRow className="p-4 border rounded-md max-w-80" key={label._id}>
       <TableCell className="p-2">{idx + 1}</TableCell>
       <TableCell className="p-2">{label.name}</TableCell>
-      <TableCell className="flex gap-8">
-        <EditLabel label={label} updateLabel={updateLabel} />
-        <DeleteLabel label={label} deleteLabel={deleteLabel} />
+      <TableCell className="flex gap-8 justify-end">
+        <EditLabel
+          label={label}
+          updateLabel={updateLabel}
+          isLoading={isLoading}
+        />
+        <DeleteLabel
+          label={label}
+          deleteLabel={deleteLabel}
+          isLoading={isLoading}
+        />
       </TableCell>
     </TableRow>
   );
 
-  const allLabels = () => labels.list?.map(renderLabelRow);
+  const renderAllLabels = () => labels.list?.map(renderLabelRow);
+
+  const renderNoLabels = (
+    <TableRow className="p-4 border rounded-md max-w-80">
+      <TableCell className="p-2 text-lg" colSpan={3}>
+        <div className="flex flex-col gap-4 justify-center items-center">
+          <p className="text-center">
+            Bring order to your thoughts.
+            <br />
+            Your custom labels will appear here.
+          </p>
+          <div className="flex gap-4 items-center">
+            Add new label
+            <AddLabel />
+          </div>
+        </div>
+      </TableCell>
+    </TableRow>
+  );
 
   return (
     <Table>
       <TableHeader>
-        <TableRow>
+        <TableRow className="text-lg">
           <TableHead className="w-20">Sr. no</TableHead>
           <TableHead>Label</TableHead>
-          <TableHead className="w-54">Actions</TableHead>
+          <TableHead className="w-54 max-sm:w-30 text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>{allLabels()}</TableBody>
+      <TableBody>
+        {!!labels.list.length && renderAllLabels()}
+        {!labels.list.length && renderNoLabels}
+      </TableBody>
     </Table>
   );
 };

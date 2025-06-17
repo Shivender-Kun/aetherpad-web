@@ -1,3 +1,4 @@
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { DEFAULT_PAGINATION_LIMIT } from "@/constants";
 import fetchNotes from "@/lib/api/fetchNotes";
 import NoteCards from "./_cards";
@@ -13,7 +14,13 @@ const Home = async () => {
       <div className="flex gap-4 justify-between px-4 h-9">
         <h2 className="text-xl">Notes</h2> <AddNote />
       </div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="h-full flex items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        }
+      >
         <NoteCards notes={notes} />
       </Suspense>
     </main>

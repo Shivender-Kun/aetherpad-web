@@ -13,15 +13,19 @@ const API = {
     LOGIN: `${BASE_URL}/users/login`,
     REGISTER: `${BASE_URL}/users/register`,
     DETAILS: `${BASE_URL}/users/details`,
+    DELETE: `${BASE_URL}/users/delete`,
     LOGOUT: `${BASE_URL}/users/logout`,
     UPDATE_PROFILE: `${BASE_URL}/users/update`,
+    FORGOT_PASSWORD: `${BASE_URL}/users/forgot-password`,
+    RESET_PASSWORD: `${BASE_URL}/users/reset-password`,
   },
 
   // NOTE API ENDPOINTS
   NOTES: {
     ADD: `${BASE_URL}/notes`,
     UPDATE: (id: string) => `${BASE_URL}/notes/${id}`,
-    DELETE: (id: string) => `${BASE_URL}/notes/${id}`,
+    DELETE_PERMANENTLY: (id: string) => `${BASE_URL}/notes/${id}`,
+    DELETE: (id: string) => `${BASE_URL}/notes/${id}/delete`,
     ARCHIVE: (id: string) => `${BASE_URL}/notes/${id}/archive`,
     UNARCHIVE: (id: string) => `${BASE_URL}/notes/${id}/unarchive`,
     PIN: (id: string) => `${BASE_URL}/notes/${id}/pin`,
@@ -37,6 +41,8 @@ const API = {
     DELETE: (id: string) => `${BASE_URL}/labels/${id}`,
     GET_LIST: `${BASE_URL}/labels`,
   },
+
+  ONLINE_STATUS: `${BASE_URL}/heartbeat`,
 } as const;
 
 export default API;

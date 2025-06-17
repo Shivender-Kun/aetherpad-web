@@ -8,11 +8,16 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "firebasestorage.googleapis.com",
+        pathname: "/v0/b/personal-notes-47a71.firebasestorage.app/o/**",
       },
     ],
+  },
+  experimental: {
+    optimizePackageImports: ["my-lib"],
   },
 
   async headers() {

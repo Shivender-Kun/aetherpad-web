@@ -1,5 +1,6 @@
 "use client";
 
+import { DEBUG } from "@/constants";
 import { ILabel, IUser, PaginatedData, StoreContextType } from "@/types";
 import { useContext, useState, ReactNode } from "react";
 import { createContext, memo, useEffect } from "react";
@@ -41,7 +42,7 @@ const StoreContextProvider = ({
     setArchivedNotes: (archivedNotes) => {
       setState((prev) => ({ ...prev, archivedNotes }));
     },
-    pinnedNotes: initialPaginatedData,
+    pinnedNotes: [],
     setPinnedNotes: (pinnedNotes) => {
       setState((prev) => ({ ...prev, pinnedNotes }));
     },
@@ -60,7 +61,7 @@ const StoreContextProvider = ({
   });
 
   useEffect(() => {
-    console.info("Current Store State: ", state);
+    if (DEBUG) console.info("Current Store State: ", state);
   }, [state]);
 
   useEffect(() => {
@@ -73,7 +74,7 @@ const StoreContextProvider = ({
 
       setTimeout(() => state.setAPIMessage(null), 2000);
     }
-  }, [state.apiMessage]);
+  }, [state.apiMessage, state.setAPIMessage]);
 
   return (
     <StoreContext.Provider value={state}>{children}</StoreContext.Provider>

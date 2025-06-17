@@ -15,38 +15,38 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
   },
-  // twitter: {
-  //   card: "summary_large_image",
-  //   title: "Personal Notes",
-  //   description: "Personal notes app for private users.",
-  //   images: [
-  //     {
-  //       url: "/apple-icon.png",
-  //       alt: "Personal Notes",
-  //     },
-  //   ],
-  // },
-  // openGraph: {
-  //   title: "Personal Notes",
-  //   description: "Personal notes app for private users.",
-  //   url: "https://personal-notes.vercel.app/",
-  //   siteName: "Personal Notes",
-  //   images: [
-  //     {
-  //       url: "/apple-icon.png",
-  //       alt: "Personal Notes",
-  //     },
-  //   ],
-  // },
+  twitter: {
+    card: "summary_large_image",
+    title: "Personal Notes",
+    description: "Personal notes app for private users.",
+    images: [
+      {
+        url: "https://notes.shivender.pro/apple-icon.png",
+        alt: "Personal Notes",
+      },
+    ],
+  },
+  openGraph: {
+    title: "Personal Notes",
+    description: "Personal notes app for private users.",
+    url: "https://notes.shivender.pro/",
+    siteName: "Personal Notes",
+    images: [
+      {
+        url: "https://notes.shivender.pro/apple-icon.png",
+        alt: "Personal Notes",
+      },
+    ],
+  },
 };
 
 const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-poppins",
   display: "swap",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export default function RootLayout({
@@ -71,4 +71,15 @@ export default function RootLayout({
       </body>
     </html>
   );
+}
+
+// ! Cookies Policy Handler
+{
+  /* <Script src="https://web.cmp.usercentrics.eu/modules/autoblocker.js"></Script>
+<Script
+  id="usercentrics-cmp"
+  src="https://web.cmp.usercentrics.eu/ui/loader.js"
+  data-settings-id="7rGMwDzT_b8aLf"
+  async
+></Script> */
 }

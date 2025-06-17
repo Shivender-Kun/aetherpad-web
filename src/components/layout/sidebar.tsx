@@ -5,34 +5,36 @@ import {
   SidebarTrigger,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
   Sidebar,
   SidebarFooter,
+  SidebarGroupLabel,
 } from "../ui/sidebar";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+  GlobeLock,
+  Heart,
+  LogOut,
+  LucideProps,
+  ReceiptText,
+  User2,
+} from "lucide-react";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
-import { ChevronUp, LucideProps, User2 } from "lucide-react";
-import logoutUser from "@/lib/api/users/logout";
+import { InlineThemeModeToggle } from "../Theme/theme-mode-toggle";
+import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
+import ConfirmLogoutDialog from "../dialog/confirmLogout";
 import { usePathname } from "next/navigation";
 import { USER_ROUTES } from "@/constants";
+import { useStore } from "@/store";
 import { cn } from "@/lib/utils";
-import { IUser } from "@/types";
 import Link from "next/link";
 
-const AppSidebar = ({ user }: { user?: IUser }) => {
+const AppSidebar = () => {
+  const [confirmLogoutDialog, setConfirmLogoutDialog] = useState(false);
   const pathname = usePathname();
-
-  const username = user?.username || "Guest";
+  const { user } = useStore();
 
   const renderMenuOption = (option: {
     name: string;
@@ -68,45 +70,88 @@ const AppSidebar = ({ user }: { user?: IUser }) => {
       <SidebarHeader className="flex items-end">
         <SidebarTrigger />
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
-          {/* <SidebarGroupLabel>Personal Notes</SidebarGroupLabel> */}
+          <SidebarGroupLabel>Personal Notes</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>{renderAllRoutes}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Settings</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <Link className="w-full" href="/profile">
+                  <SidebarMenuButton>
+                    <Avatar className="w-4 h-4">
+                      <AvatarImage src={user?.profilePicture} />
+                      <AvatarFallback>
+                        <User2 />
+                      </AvatarFallback>
+                    </Avatar>
+                    Profile
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <InlineThemeModeToggle />
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Legal</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <Link
+                  href="/privacy-policy"
+                  className="w-full flex items-center gap-2"
+                >
+                  <SidebarMenuButton>
+                    <GlobeLock /> Privacy Policy
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <Link
+                  href="/terms-&-conditions"
+                  className="w-full flex items-center gap-2"
+                >
+                  <SidebarMenuButton>
+                    <ReceiptText />
+                    Terms of Use
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
+
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <Avatar className="w-4 h-4">
-                    <AvatarImage src={user?.profilePicture} />
-                    <AvatarFallback>
-                      <User2 />
-                    </AvatarFallback>
-                  </Avatar>
+            <SidebarMenuButton onClick={() => setConfirmLogoutDialog(true)}>
+              <LogOut /> Logout
+            </SidebarMenuButton>
+            <ConfirmLogoutDialog
+              open={confirmLogoutDialog}
+              onOpenChange={setConfirmLogoutDialog}
+            />
+          </SidebarMenuItem>
 
-                  {username.toLocaleUpperCase()}
-                  <ChevronUp className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
-              >
-                <DropdownMenuItem>
-                  <Link className="w-full" href="/profile">
-                    Profile
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={logoutUser}>
-                  <span>Sign out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <SidebarMenuItem>
+            <Link href="mailto:shivenderkumar761@gmail.com" target="_blank">
+              <SidebarMenuButton className="underline">
+                <Heart className="mr-2" fill="red" color="red" />
+                Made by Shiv
+              </SidebarMenuButton>
+            </Link>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

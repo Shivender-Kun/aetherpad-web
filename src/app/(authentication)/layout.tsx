@@ -1,6 +1,6 @@
 import { ThemeModeToggle } from "@/components/Theme/theme-mode-toggle";
-import isUserAuthenticated from "@/lib/api/isUserAuthenticated";
-import AppLogoBig from "@/components/AppLogoBig";
+import isUserAuthenticated from "@/lib/isUserAuthenticated";
+import AppLogoBig from "@/components/app/bigLogo";
 import { redirect } from "next/navigation";
 import StoreContextProvider from "@/store";
 

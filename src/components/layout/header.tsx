@@ -1,16 +1,39 @@
-import React from "react";
-import { ThemeModeToggle } from "../Theme/theme-mode-toggle";
-import { NotebookPen } from "lucide-react";
+"use client";
+
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { NotebookPen, User2 } from "lucide-react";
+import { SidebarTrigger } from "../ui/sidebar";
+import { useStore } from "@/store";
+import Link from "next/link";
 
 const Header = () => {
+  const { user } = useStore();
+
   return (
     <header className="border-y flex justify-between items-center p-4 gap-4">
-      <div className="flex justify-center items-center gap-4">
-        <NotebookPen />
-        <h1 className="text-2xl font-bold text-center">Personal Notes</h1>
+      <div className="md:hidden">
+        <SidebarTrigger />
       </div>
+      <Link href="/home">
+        <div className="flex justify-center items-center gap-4">
+          <NotebookPen />
+          <h1 className="text-2xl font-bold text-center">Personal Notes</h1>
+        </div>
+      </Link>
 
-      <ThemeModeToggle />
+      <div>
+        <Link className="w-full" href="/profile">
+          <div className="flex items-center gap-2">
+            <Avatar className="w-8 h-8">
+              <AvatarImage src={user?.profilePicture} />
+              <AvatarFallback>
+                <User2 />
+              </AvatarFallback>
+            </Avatar>
+            <span className="max-sm:hidden">{user?.username}</span>
+          </div>
+        </Link>
+      </div>
     </header>
   );
 };

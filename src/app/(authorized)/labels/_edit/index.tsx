@@ -16,14 +16,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { EditIcon } from "lucide-react";
 import { ILabel } from "@/types";
 import z from "zod";
-import { useState } from "react";
 
 const formSchema = z.object({
   name: z
@@ -34,10 +35,13 @@ const formSchema = z.object({
 
 const EditLabel = ({
   label,
+  isLoading,
   updateLabel,
 }: {
   label: ILabel;
-  updateLabel: (labelId: string, data: { name: string }) => Promise<void>;
+  isLoading: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateLabel: (labelId: string, data: { name: string }) => Promise<any>;
 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -46,10 +50,17 @@ const EditLabel = ({
     defaultValues: { name: label.name },
   });
 
+  useEffect(() => {
+    if (label) form.reset({ name: label.name });
+  }, [label, form]);
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    updateLabel(label._id, data);
-    setDialogOpen(false);
-    form.reset();
+    const response = await updateLabel(label._id, data);
+
+    if (response.status === 200) {
+      setDialogOpen(false);
+      form.reset();
+    }
   };
 
   return (
@@ -74,7 +85,7 @@ const EditLabel = ({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="name">Label Name</FormLabel>
+                  <FormLabel htmlFor="name">Name</FormLabel>
                   <FormControl>
                     <Input id="name" {...field} />
                   </FormControl>
@@ -83,7 +94,9 @@ const EditLabel = ({
               )}
             />
             <DialogFooter>
-              <Button>Save</Button>
+              <Button disabled={isLoading}>
+                {isLoading ? <LoadingSpinner /> : "Save"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

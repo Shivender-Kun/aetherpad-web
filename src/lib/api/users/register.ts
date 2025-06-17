@@ -1,62 +1,64 @@
 import uploadImage, { deleteImage } from "@/services/firebaseStorage";
+import errorHandler from "@/lib/errorHandler";
 import { StoreContextType } from "@/types";
-import { API } from "@/constants";
 import { RefObject } from "react";
+import { API } from "@/constants";
 import axios from "axios";
 
 type UserRegisterProps = {
-  setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
-  setIsLoading: (isLoading: boolean) => void;
   data: { email: string; password: string };
+  setIsLoading: (isLoading: boolean) => void;
   imageRef: RefObject<HTMLInputElement | null>;
+  setAPIMessage: (apiMessage: StoreContextType["apiMessage"] | null) => void;
 };
 
 const userRegister = async ({
-  setAPIMessage,
-  setIsLoading,
   data,
   imageRef,
-}: UserRegisterProps) => {
-  setAPIMessage(null);
-  setIsLoading(true);
-  if (imageRef.current?.files) {
-    const profilePicture = imageRef.current.files[0];
-    try {
-      const profilePictureURL = await uploadImage(
-        profilePicture,
-        data.email + "profile-picture",
-        "profile-picture"
-      );
-      const requestData = {
-        ...data,
-        profilePicture: profilePictureURL,
-        confirmPassword: undefined,
-      };
+  setIsLoading,
+  setAPIMessage,
+}: UserRegisterProps) =>
+  await errorHandler({
+    apiCall: async () => {
+      if (imageRef.current?.files) {
+        const profilePicture = imageRef.current.files[0];
+        try {
+          const profilePictureURL = await uploadImage(
+            profilePicture,
+            data.email + "profile-picture",
+            "profile-picture"
+          );
+          const requestData = {
+            ...data,
+            profilePicture: profilePictureURL,
+            confirmPassword: undefined,
+          };
+          delete requestData.confirmPassword;
 
-      delete requestData.confirmPassword;
+          const response = await axios.post(API.USER.REGISTER, requestData);
 
-      const response = await axios.post(API.USER.REGISTER, requestData);
+          if (response.status === 201) {
+            setAPIMessage({
+              notify: true,
+              type: "success",
+              message: response.data.message,
+            });
 
-      if (response.status === 201) {
-        setAPIMessage({
-          notify: true,
-          type: "success",
-          message: response.data.message,
-        });
-
-        window.location.href = "/login";
-      } else {
-        deleteImage(data.email + "profile-picture", "profile-picture");
+            window.location.href = "/login";
+          } else {
+            await deleteImage(
+              data.email + "profile-picture",
+              "profile-picture"
+            );
+          }
+        } catch (error) {
+          await deleteImage(data.email + "profile-picture", "profile-picture");
+          throw error;
+        }
       }
-    } catch (error: unknown) {
-      let message = "An error occurred";
-      if (error instanceof Error) message = error.message;
-      setAPIMessage({ type: "error", message, notify: true });
-      deleteImage(profilePicture.name, "profile-picture");
-      console.error("Error registering user:", message);
-    }
-  }
-  setIsLoading(false);
-};
+    },
+    setIsLoading,
+    setAPIMessage,
+  });
 
 export default userRegister;
