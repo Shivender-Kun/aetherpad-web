@@ -4,42 +4,116 @@ import { Poppins } from "next/font/google";
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 
+// Define your app's core info in constants for consistency
+const APP_NAME = "Personal Notes";
+const APP_TAGLINE_HERO = "Your Ideas, Perfectly Captured.";
+const APP_DESCRIPTION_SEO =
+  "Discover Personal Notes, the intuitive app for capturing, organizing, and securing your thoughts. Enjoy a clean interface, custom labels, dark mode, PWA support, and more. Start boosting your productivity today!";
+const APP_URL = "https://notes.shivender.pro/"; // Your deployed URL
+
 export const metadata: Metadata = {
-  title: "Personal Notes",
-  description: "Personal notes app for private users.",
+  // Primary SEO & Browser Tab Info
+  title: `${APP_NAME} - ${APP_TAGLINE_HERO}`, // Combines name and main benefit
+  description: APP_DESCRIPTION_SEO, // Detailed, keyword-rich description
+  applicationName: APP_NAME, // Used by some browsers/OS for install prompts
+
+  // Icons for various platforms and resolutions
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-icon.png",
+    icon: [
+      // Use a high-res maskable icon for the primary PWA icon
+      {
+        url: "/icons/maskable_icon_x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      { url: "/favicon.ico", type: "image/x-icon" }, // Favicon for older browsers/contexts
+    ],
+    // For shortcut, use a commonly supported size that you have
+    shortcut: "/icons/icon_192.png",
+    // Apple Touch Icon should ideally be 180x180, using your closest available high-res
+    apple: "/icons/icon_144.png", // Using 144x144 as it's the closest high-res non-maskable icon provided
+    other: [
+      // Apple Web App specific icons (if needed, otherwise manifest covers PWA)
+      {
+        rel: "apple-touch-icon-precomposed",
+        url: "/icons/icon_144.png",
+        sizes: "144x144",
+      },
+      // Mask icon for Safari pinned tabs
+      { rel: "mask-icon", url: "/icons/maskable_icon.png", color: "#4f46e5" }, // Using the 1024x1024 maskable icon for mask-icon
+    ],
   },
-  manifest: "/site.webmanifest",
+  // Link to your PWA manifest file
+  manifest: "/manifest.webmanifest", // Correct path as served by Next.js from `app/manifest.ts`
+
+  // PWA specific settings for Apple devices
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "black-translucent", // Or 'default', 'black'
+    title: APP_NAME, // Name to appear on the home screen
+    // startupImage: [], // Keep empty unless you have specific iOS splash screen images
   },
+
+  // Twitter Card Meta Tags (for sharing on Twitter)
   twitter: {
-    card: "summary_large_image",
-    title: "Personal Notes",
-    description: "Personal notes app for private users.",
-    images: [
-      {
-        url: "https://notes.shivender.pro/apple-icon.png",
-        alt: "Personal Notes",
-      },
-    ],
+    card: "summary_large_image", // Best for showing an image with title/description
+    title: `${APP_NAME} - ${APP_TAGLINE_HERO}`,
+    description: APP_DESCRIPTION_SEO,
+    // creator: "@yourtwitterhandle", // Your Twitter handle (replace if applicable)
+    images: {
+      // For social sharing images, it's best to use a dedicated wide screenshot.
+      // Your desktop screenshots are 1920x1080 (wide), which works well here.
+      url: `${APP_URL}screenshots/desktop/dark_add_note.webp`, // Using one of your desktop screenshots
+      alt: `${APP_NAME} app screenshot`,
+      width: 1920,
+      height: 1080,
+    },
   },
+
+  // Open Graph Meta Tags (for sharing on Facebook, LinkedIn, WhatsApp, etc.)
   openGraph: {
-    title: "Personal Notes",
-    description: "Personal notes app for private users.",
-    url: "https://notes.shivender.pro/",
-    siteName: "Personal Notes",
-    images: [
-      {
-        url: "https://notes.shivender.pro/apple-icon.png",
-        alt: "Personal Notes",
-      },
-    ],
+    title: `${APP_NAME} - ${APP_TAGLINE_HERO}`,
+    description: APP_DESCRIPTION_SEO,
+    url: APP_URL, // Canonical URL for the page
+    siteName: APP_NAME,
+    images: {
+      // Using a desktop screenshot for the Open Graph image
+      url: `${APP_URL}screenshots/desktop/dark_add_note.webp`,
+      alt: `${APP_NAME} app screenshot`,
+      width: 1920, // Match your screenshot's width
+      height: 1080, // Match your screenshot's height
+      type: "image/webp", // Correct type for your .webp images
+    },
+    type: "website", // Or 'article', 'profile', etc.
+    locale: "en_US", // Or your primary locale
   },
+
+  // Viewport setting (often handled by Next.js default but good to be explicit)
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false, // Prevents zooming on mobile, often desired for PWAs
+  },
+
+  // Keywords for search engines
+  keywords: [
+    "notes app",
+    "personal notes",
+    "secure notes",
+    "note-taking",
+    "productivity app",
+    "private notes",
+    "PWA notes",
+  ],
+
+  // Author and Publisher
+  authors: [{ name: "Shivender-Kun", url: "https://shivender.pro" }],
+  creator: "Shivender-Kun",
+  publisher: "Shivender-Kun",
+
+  // Other meta tags
+  themeColor: "#4f46e5", // Matches the theme_color in manifest
 };
 
 const poppins = Poppins({
