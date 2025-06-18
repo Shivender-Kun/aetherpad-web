@@ -1,5 +1,7 @@
 import z from "zod";
 
+const isSSR = typeof window === "undefined";
+
 const registerUserSchema = z
   .object({
     email: z.string().email(),
@@ -12,9 +14,13 @@ const registerUserSchema = z
         "Username must contain only letters and numbers"
       ),
     confirmPassword: z.string(),
-    profilePicture: z
-      .any()
-      .refine((file) => file.length > 0, "Please select a profile picture"),
+    profilePicture: z.any().refine(
+      (file) => {
+        if (isSSR) return true; // skip SSR check
+        return file && file.length > 0;
+      },
+      { message: "Please select a profile picture" }
+    ),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

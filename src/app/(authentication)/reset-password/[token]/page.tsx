@@ -28,7 +28,7 @@ const ResetPassword = () => {
     newPassword: true,
     confirmPassword: true,
   });
-  const [showResetSuccessDialog, setShowResetSuccessDialog] = useState(true);
+  const [showResetSuccessDialog, setShowResetSuccessDialog] = useState(false);
   const { setIsLoading, setAPIMessage, apiMessage, isLoading } = useStore();
   const params = useParams();
   const resetToken = params.token;
