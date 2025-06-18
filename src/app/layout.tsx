@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@/components/Theme/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Poppins } from "next/font/google";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "@/styles/globals.css";
 
 // Define your app's core info in constants for consistency
@@ -88,14 +88,6 @@ export const metadata: Metadata = {
     locale: "en_US", // Or your primary locale
   },
 
-  // Viewport setting (often handled by Next.js default but good to be explicit)
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false, // Prevents zooming on mobile, often desired for PWAs
-  },
-
   // Keywords for search engines
   keywords: [
     "notes app",
@@ -111,9 +103,16 @@ export const metadata: Metadata = {
   authors: [{ name: "Shivender-Kun", url: "https://shivender.pro" }],
   creator: "Shivender-Kun",
   publisher: "Shivender-Kun",
+};
 
-  // Other meta tags
-  themeColor: "#4f46e5", // Matches the theme_color in manifest
+// --- VIEWPORT EXPORT ---
+// Move viewport and themeColor to this separate export
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#4f46e5", // Your primary brand color
 };
 
 const poppins = Poppins({
