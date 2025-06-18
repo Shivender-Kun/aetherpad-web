@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { updateUserSchema } from "@/validations/user.validation";
+import { getUpdateUserSchema } from "@/validations/user.validation";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import updateProfile from "@/lib/api/users/updateProfile";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,6 +31,8 @@ import { useStore } from "@/store";
 import { IUser } from "@/types";
 import Image from "next/image";
 import { z } from "zod";
+
+const updateUserSchema = getUpdateUserSchema();
 
 const EditProfile = ({ user }: { user: IUser }) => {
   const [profileImageUrl, setProfileImageUrl] = useState(
