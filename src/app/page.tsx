@@ -3,12 +3,12 @@
 import { Button } from "@/components/ui/button"; // Assuming this is your Shadcn UI button
 import {
   NotebookPenIcon,
-  LockIcon,
-  TagIcon,
+  // LockIcon,
+  // TagIcon,
   SunMoonIcon,
-  SmartphoneIcon,
+  // SmartphoneIcon,
   SparklesIcon,
-  SearchIcon,
+  // SearchIcon,
   ArchiveIcon,
   Trash2Icon,
 } from "lucide-react";
