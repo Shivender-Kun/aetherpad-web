@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { registerUserSchema } from "@/validations/user.validation";
+import { getRegisterUserSchema } from "@/validations/user.validation";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
@@ -23,6 +23,8 @@ import { useForm } from "react-hook-form";
 import { useStore } from "@/store";
 import Link from "next/link";
 import { z } from "zod";
+
+const registerUserSchema = getRegisterUserSchema();
 
 const RegisterForm = () => {
   const [hiddenFields, setHiddenFields] = useState({
