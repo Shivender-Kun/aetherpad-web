@@ -41,7 +41,7 @@ const TermsOfUse = () => {
       <h2 className="text-xl font-semibold mt-6 mb-2">5. Privacy</h2>
       <p className="mb-4">
         Your data is handled in accordance with our{" "}
-        <a href="/privacy-policy" className="text-blue-600 underline">
+        <a href="/privacy" className="text-blue-600 underline">
           Privacy Policy
         </a>
         .

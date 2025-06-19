@@ -199,13 +199,13 @@ export default async function HomePage() {
           </p>
           <div className="flex gap-4">
             <Link
-              href="/privacy-policy"
+              href="/privacy"
               className="hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
             >
               Privacy Policy
             </Link>
             <Link
-              href="/terms-&-conditions"
+              href="/terms"
               className="hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
             >
               Terms of Service

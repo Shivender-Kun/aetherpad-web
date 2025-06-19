@@ -109,7 +109,7 @@ const AppSidebar = () => {
             <SidebarMenu>
               <SidebarMenuItem>
                 <Link
-                  href="/privacy-policy"
+                  href="/privacy"
                   className="w-full flex items-center gap-2"
                 >
                   <SidebarMenuButton>
@@ -118,10 +118,7 @@ const AppSidebar = () => {
                 </Link>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <Link
-                  href="/terms-&-conditions"
-                  className="w-full flex items-center gap-2"
-                >
+                <Link href="/terms" className="w-full flex items-center gap-2">
                   <SidebarMenuButton>
                     <ReceiptText />
                     Terms of Use
