@@ -9,4 +9,4 @@ Disallow: /reset-password/
 Disallow: /forgot-password/
 
 
-Sitemap: https://notes.shivender.pro/sitemap.xml
+Sitemap: https://aetherpad.shivender.pro/sitemap.xml
