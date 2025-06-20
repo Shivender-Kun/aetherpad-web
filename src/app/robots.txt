@@ -5,6 +5,8 @@ Disallow: /archived/
 Disallow: /trash/
 Disallow: /labels/
 Disallow: /profile/
+Disallow: /reset-password/
+Disallow: /forgot-password/
 
 
 Sitemap: https://notes.shivender.pro/sitemap.xml

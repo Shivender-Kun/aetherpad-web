@@ -1,21 +1,16 @@
 import { ThemeProvider } from "@/components/Theme/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { Poppins } from "next/font/google";
 import type { Metadata, Viewport } from "next";
+import { Poppins } from "next/font/google";
+import { APP } from "@/constants";
 import "@/styles/globals.css";
 
 // Define your app's core info in constants for consistency
-const APP_NAME = "Personal Notes";
-const APP_TAGLINE_HERO = "Your Ideas, Perfectly Captured.";
-const APP_DESCRIPTION_SEO =
-  "Discover Personal Notes, the intuitive app for capturing, organizing, and securing your thoughts. Enjoy a clean interface, custom labels, dark mode, PWA support, and more. Start boosting your productivity today!";
-const APP_URL = "https://notes.shivender.pro/"; // Your deployed URL
-
 export const metadata: Metadata = {
   // Primary SEO & Browser Tab Info
-  title: `${APP_NAME} - ${APP_TAGLINE_HERO}`, // Combines name and main benefit
-  description: APP_DESCRIPTION_SEO, // Detailed, keyword-rich description
-  applicationName: APP_NAME, // Used by some browsers/OS for install prompts
+  title: `${APP.NAME} - ${APP.TAGLINE_HERO}`, // Combines name and main benefit
+  description: APP.DESCRIPTION_SEO, // Detailed, keyword-rich description
+  applicationName: APP.NAME, // Used by some browsers/OS for install prompts
 
   // Icons for various platforms and resolutions
   icons: {
@@ -50,21 +45,21 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent", // Or 'default', 'black'
-    title: APP_NAME, // Name to appear on the home screen
+    title: APP.NAME, // Name to appear on the home screen
     // startupImage: [], // Keep empty unless you have specific iOS splash screen images
   },
 
   // Twitter Card Meta Tags (for sharing on Twitter)
   twitter: {
     card: "summary_large_image", // Best for showing an image with title/description
-    title: `${APP_NAME} - ${APP_TAGLINE_HERO}`,
-    description: APP_DESCRIPTION_SEO,
+    title: `${APP.NAME} - ${APP.TAGLINE_HERO}`,
+    description: APP.DESCRIPTION_SEO,
     // creator: "@yourtwitterhandle", // Your Twitter handle (replace if applicable)
     images: {
       // For social sharing images, it's best to use a dedicated wide screenshot.
       // Your desktop screenshots are 1920x1080 (wide), which works well here.
-      url: `${APP_URL}screenshots/desktop/dark_add_note.webp`, // Using one of your desktop screenshots
-      alt: `${APP_NAME} app screenshot`,
+      url: `${APP.URL}screenshots/desktop/dark_add_note.webp`, // Using one of your desktop screenshots
+      alt: `${APP.NAME} app screenshot`,
       width: 1920,
       height: 1080,
     },
@@ -72,14 +67,14 @@ export const metadata: Metadata = {
 
   // Open Graph Meta Tags (for sharing on Facebook, LinkedIn, WhatsApp, etc.)
   openGraph: {
-    title: `${APP_NAME} - ${APP_TAGLINE_HERO}`,
-    description: APP_DESCRIPTION_SEO,
-    url: APP_URL, // Canonical URL for the page
-    siteName: APP_NAME,
+    title: `${APP.NAME} - ${APP.TAGLINE_HERO}`,
+    description: APP.DESCRIPTION_SEO,
+    url: APP.URL, // Canonical URL for the page
+    siteName: APP.NAME,
     images: {
       // Using a desktop screenshot for the Open Graph image
-      url: `${APP_URL}screenshots/desktop/dark_add_note.webp`,
-      alt: `${APP_NAME} app screenshot`,
+      url: `${APP.URL}screenshots/desktop/dark_add_note.webp`,
+      alt: `${APP.NAME} app screenshot`,
       width: 1920, // Match your screenshot's width
       height: 1080, // Match your screenshot's height
       type: "image/webp", // Correct type for your .webp images
@@ -91,7 +86,7 @@ export const metadata: Metadata = {
   // Keywords for search engines
   keywords: [
     "notes app",
-    "personal notes",
+    "AetherPad",
     "secure notes",
     "note-taking",
     "productivity app",

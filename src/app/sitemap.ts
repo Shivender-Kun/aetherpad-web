@@ -21,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: "https://notes.shivender.pro/privacy-policy",
+      url: "https://notes.shivender.pro/privacy",
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.5,

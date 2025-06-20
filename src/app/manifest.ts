@@ -2,11 +2,10 @@ import { MetadataRoute } from "next";
 
 const manifest = (): MetadataRoute.Manifest => {
   return {
-    name: "Personal Notes - Your Ideas, Perfectly Captured.",
-    short_name: "Personal Notes",
+    name: "AetherPad - Your Ideas, Perfectly Captured.",
+    short_name: "AetherPad",
     description:
-      "Effortless, secure, and beautifully organized note-taking for everyone. Capture, organize, and secure your thoughts with Personal Notes.",
-
+      "Effortless, secure, and beautifully organized note-taking for everyone. Capture, organize, and secure your thoughts with AetherPad.",
     display: "standalone",
     display_override: [
       "window-controls-overlay",
@@ -14,7 +13,7 @@ const manifest = (): MetadataRoute.Manifest => {
       "fullscreen",
       "minimal-ui",
     ],
-    theme_color: "#4f46e5", // Tailwind indigo-600
+    theme_color: "#0f172a", // Tailwind slate-900
     background_color: "#ffffff", // White background
     id: "/",
     start_url: "/",
@@ -87,7 +86,6 @@ const manifest = (): MetadataRoute.Manifest => {
       { src: "/icons/icon_384.png", sizes: "384x384", type: "image/png" },
       { src: "/icons/icon_512.png", sizes: "512x512", type: "image/png" },
     ],
-
     screenshots: [
       {
         form_factor: "wide",

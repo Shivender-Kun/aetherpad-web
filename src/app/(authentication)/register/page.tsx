@@ -93,7 +93,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 justify-center items-center p-6 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md w-full h-fit max-w-md mx-auto">
+    <div className="flex flex-col gap-4 justify-center items-center p-6 rounded-2xl bg-black/50 backdrop-blur-md border border-gray-700 shadow-xl w-full h-fit max-w-md mx-auto">
       <h2 className="text-xl font-medium">Signup</h2>
 
       <Form {...form}>
@@ -228,17 +228,11 @@ const RegisterForm = () => {
 
       <p className="text-center text-sm text-gray-500">
         {"By signing in, you agree to our "}
-        <Link
-          href="/terms-&-conditions"
-          className="text-blue-600 hover:text-blue-500"
-        >
+        <Link href="/terms" className="text-blue-600 hover:text-blue-500">
           Terms of Service
         </Link>
         {" and "}
-        <Link
-          href="/privacy-policy"
-          className="text-blue-600 hover:text-blue-500"
-        >
+        <Link href="/privacy" className="text-blue-600 hover:text-blue-500">
           Privacy Policy
         </Link>
       </p>

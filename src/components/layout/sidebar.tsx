@@ -14,6 +14,7 @@ import {
   SidebarGroupLabel,
 } from "../ui/sidebar";
 import {
+  BookOpen,
   GlobeLock,
   Heart,
   LogOut,
@@ -73,7 +74,7 @@ const AppSidebar = () => {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Personal Notes</SidebarGroupLabel>
+          <SidebarGroupLabel>AetherPad</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>{renderAllRoutes}</SidebarMenu>
           </SidebarGroupContent>
@@ -108,8 +109,16 @@ const AppSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
+                <Link href="/about" className="w-full flex items-center gap-2">
+                  <SidebarMenuButton>
+                    <BookOpen />
+                    About Us
+                  </SidebarMenuButton>
+                </Link>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
                 <Link
-                  href="/privacy-policy"
+                  href="/privacy"
                   className="w-full flex items-center gap-2"
                 >
                   <SidebarMenuButton>
@@ -118,10 +127,7 @@ const AppSidebar = () => {
                 </Link>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <Link
-                  href="/terms-&-conditions"
-                  className="w-full flex items-center gap-2"
-                >
+                <Link href="/terms" className="w-full flex items-center gap-2">
                   <SidebarMenuButton>
                     <ReceiptText />
                     Terms of Use
