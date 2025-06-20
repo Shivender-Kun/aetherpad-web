@@ -17,7 +17,7 @@ const Header = () => {
       <Link href="/home">
         <div className="flex justify-center items-center gap-4">
           <NotebookPen />
-          <h1 className="text-2xl font-bold text-center">Personal Notes</h1>
+          <h1 className="text-2xl font-bold text-center">AetherPad</h1>
         </div>
       </Link>
 

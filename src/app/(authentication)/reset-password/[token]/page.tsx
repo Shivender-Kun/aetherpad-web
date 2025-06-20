@@ -72,7 +72,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="flex flex-col gap-8 justify-center items-center p-6 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md max-w-md mx-auto md:min-w-md">
+    <div className="flex flex-col gap-4 justify-center items-center p-6 rounded-2xl bg-white/70 dark:bg-black/50 backdrop-blur-md border border-gray-300 dark:border-gray-700 shadow-xl w-full h-fit max-w-md mx-auto">
       <h2 className="text-xl font-medium">Reset Password</h2>
       <Form {...form}>
         <form

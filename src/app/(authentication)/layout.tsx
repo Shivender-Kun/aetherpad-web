@@ -14,8 +14,8 @@ export default async function AuthLayout({
 
   return (
     <StoreContextProvider>
-      <main className="grid place-items-center p-4 min-w-96 h-full overflow-auto">
-        <div className="flex flex-col gap-6 items-center">
+      <main className="min-h-screen w-full bg-gradient-to-b from-black via-gray-900 to-black text-white grid place-items-center p-4 overflow-auto">
+        <div className="flex flex-col gap-6 items-center w-full max-w-md">
           <AppLogoBig />
           {children}
         </div>

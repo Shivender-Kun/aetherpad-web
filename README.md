@@ -1,13 +1,13 @@
-# Personal Notes
+# AetherPad
 
-Personal Notes is a privacy-focused, full-stack note-taking application built with [Next.js](https://nextjs.org/), TypeScript, and Tailwind CSS. It features user authentication, note and label management, a responsive sidebar, and a modern UI.
+AetherPad is a privacy-focused, full-stack note-taking application built with [Next.js](https://nextjs.org/), TypeScript, and Tailwind CSS. It features user authentication, note and label management, a responsive sidebar, and a modern UI.
 
 ---
 
 ## Features
 
 - **User Authentication:** Secure login and session management.
-- **Notes Management:** Create, edit, and delete personal notes.
+- **Notes Management:** Create, edit, and delete AetherPad.
 - **Labels:** Organize notes with custom labels. Add, edit, and delete labels.
 - **Responsive Sidebar:** Collapsible sidebar with keyboard shortcuts and theming.
 - **Modern UI:** Built with Radix UI, Tailwind CSS, and custom components.
