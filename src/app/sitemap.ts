@@ -3,31 +3,31 @@ import type { MetadataRoute } from "next";
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://notes.shivender.pro",
+      url: "https://aetherpad.shivender.pro",
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 1,
     },
     {
-      url: "https://notes.shivender.pro/signup",
+      url: "https://aetherpad.shivender.pro/signup",
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
-      url: "https://notes.shivender.pro/login",
+      url: "https://aetherpad.shivender.pro/login",
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: "https://notes.shivender.pro/privacy",
+      url: "https://aetherpad.shivender.pro/privacy",
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.5,
     },
     {
-      url: "https://notes.shivender.pro/terms-&amp;-conditions",
+      url: "https://aetherpad.shivender.pro/terms",
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.5,
