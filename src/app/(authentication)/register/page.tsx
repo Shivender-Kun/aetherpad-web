@@ -93,7 +93,12 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 justify-center items-center p-6 rounded-2xl bg-black/50 backdrop-blur-md border border-gray-700 shadow-xl w-full h-fit max-w-md mx-auto">
+    <div
+      className="flex flex-col gap-4 justify-center items-center p-6 rounded-2xl 
+    bg-white/60 dark:bg-black/50 backdrop-blur-md border 
+    border-gray-300 dark:border-gray-700 shadow-xl 
+    w-full h-fit max-w-md mx-auto"
+    >
       <h2 className="text-xl font-medium">Signup</h2>
 
       <Form {...form}>
