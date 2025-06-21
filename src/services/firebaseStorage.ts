@@ -5,13 +5,14 @@ import {
   deleteObject,
 } from "firebase/storage";
 import { storage } from "./firebaseConfig";
+import { NODE_ENV } from "@/constants";
 
 export const uploadImage = async (
   file: File,
   fileName: string,
   prefix: "profile-picture" | "cover-picture"
 ) => {
-  const imageRef = ref(storage, `${prefix}/${fileName}`);
+  const imageRef = ref(storage, `${NODE_ENV}/${prefix}/${fileName}`);
 
   try {
     await uploadBytes(imageRef, file);
@@ -29,7 +30,7 @@ export const deleteImage = async (
   fileName: string,
   prefix: "profile-picture" | "cover-picture"
 ) => {
-  const imageRef = ref(storage, `${prefix}/${fileName}`);
+  const imageRef = ref(storage, `${NODE_ENV}/${prefix}/${fileName}`);
 
   try {
     await deleteObject(imageRef);

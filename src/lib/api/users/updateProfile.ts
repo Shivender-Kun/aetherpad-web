@@ -1,10 +1,10 @@
+import uploadImage, { deleteImage } from "@/services/firebaseStorage";
 import { IUser, StoreContextType } from "@/types";
 import errorHandler from "@/lib/errorHandler";
+import getCSRFToken from "@/lib/getCSRFToken";
+import { RefObject } from "react";
 import { API } from "@/constants";
 import axios from "axios";
-import uploadImage, { deleteImage } from "@/services/firebaseStorage";
-import { RefObject } from "react";
-import getCSRFToken from "@/lib/getCSRFToken";
 
 type UserUpdateProps = {
   data: Partial<IUser>;
@@ -42,7 +42,7 @@ const updateProfile = async ({
           if (profilePicture) {
             const profilePictureURL = await uploadImage(
               profilePicture,
-              data.email + "profile-picture",
+              data.email!,
               "profile-picture"
             );
             requestData.profilePicture = profilePictureURL;
@@ -55,7 +55,7 @@ const updateProfile = async ({
           if (coverPicture) {
             const coverPictureURL = await uploadImage(
               coverPicture,
-              data.email + "cover-picture",
+              data.email!,
               "cover-picture"
             );
             requestData.coverPicture = coverPictureURL;
@@ -76,21 +76,18 @@ const updateProfile = async ({
           });
         } else {
           if (profilePicture) {
-            await deleteImage(
-              data.email + "profile-picture",
-              "profile-picture"
-            );
+            await deleteImage(data.email!, "profile-picture");
           }
           if (coverPicture) {
-            await deleteImage(data.email + "cover-picture", "cover-picture");
+            await deleteImage(data.email!, "cover-picture");
           }
         }
       } catch (error) {
         if (profilePicture) {
-          await deleteImage(data.email + "profile-picture", "profile-picture");
+          await deleteImage(data.email!, "profile-picture");
         }
         if (coverPicture) {
-          await deleteImage(data.email + "cover-picture", "cover-picture");
+          await deleteImage(data.email!, "cover-picture");
         }
         throw error;
       }
