@@ -25,7 +25,7 @@ const userRegister = async ({
         try {
           const profilePictureURL = await uploadImage(
             profilePicture,
-            data.email + "profile-picture",
+            data.email,
             "profile-picture"
           );
           const requestData = {
@@ -46,13 +46,10 @@ const userRegister = async ({
 
             window.location.href = "/login";
           } else {
-            await deleteImage(
-              data.email + "profile-picture",
-              "profile-picture"
-            );
+            await deleteImage(data.email, "profile-picture");
           }
         } catch (error) {
-          await deleteImage(data.email + "profile-picture", "profile-picture");
+          await deleteImage(data.email, "profile-picture");
           throw error;
         }
       }
