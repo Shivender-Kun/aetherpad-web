@@ -81,7 +81,7 @@ const manifest = (): MetadataRoute.Manifest => {
       },
       // Monochrome icon for Android themed icons
       {
-        src: "/icons/icon_192.svg",
+        src: "/icons/icon_192_monochrome.svg",
         sizes: "192x192",
         type: "image/svg",
         purpose: "monochrome",
