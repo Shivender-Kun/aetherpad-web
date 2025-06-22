@@ -80,7 +80,12 @@ const manifest = (): MetadataRoute.Manifest => {
         purpose: "maskable",
       },
       // Monochrome icon for Android themed icons
-      { src: "/icons/icon_192.svg", sizes: "192x192", type: "image/svg" },
+      {
+        src: "/icons/icon_192.svg",
+        sizes: "192x192",
+        type: "image/svg",
+        purpose: "monochrome",
+      },
 
       // Regular Icons (fallback for non-maskable compatible systems)
       { src: "/icons/icon_128.png", sizes: "128x128", type: "image/png" },
