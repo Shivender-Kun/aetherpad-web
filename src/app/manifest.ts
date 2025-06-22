@@ -82,6 +82,7 @@ const manifest = (): MetadataRoute.Manifest => {
       // Regular Icons (fallback for non-maskable compatible systems)
       { src: "/icons/icon_128.png", sizes: "128x128", type: "image/png" },
       { src: "/icons/icon_144.png", sizes: "144x144", type: "image/png" },
+      { src: "/icons/icon_180.png", sizes: "180x180", type: "image/png" },
       { src: "/icons/icon_192.png", sizes: "192x192", type: "image/png" },
       { src: "/icons/icon_384.png", sizes: "384x384", type: "image/png" },
       { src: "/icons/icon_512.png", sizes: "512x512", type: "image/png" },
