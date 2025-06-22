@@ -83,7 +83,7 @@ const manifest = (): MetadataRoute.Manifest => {
       {
         src: "/icons/icon_192_monochrome.svg",
         sizes: "192x192",
-        type: "image/svg",
+        type: "image/svg+xml",
         purpose: "monochrome",
       },
 
