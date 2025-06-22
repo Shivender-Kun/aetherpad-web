@@ -5,7 +5,6 @@ import { Poppins } from "next/font/google";
 import { APP } from "@/constants";
 import "@/styles/globals.css";
 
-// Define your app's core info in constants for consistency
 export const metadata: Metadata = {
   // Primary SEO & Browser Tab Info
   title: `${APP.NAME} - ${APP.TAGLINE_HERO}`, // Combines name and main benefit
@@ -25,14 +24,14 @@ export const metadata: Metadata = {
     ],
     // For shortcut, use a commonly supported size that you have
     shortcut: "/icons/icon_192.png",
-    // Apple Touch Icon should ideally be 180x180, using your closest available high-res
-    apple: "/icons/icon_144.png", // Using 144x144 as it's the closest high-res non-maskable icon provided
+    // Apple Touch Icon should ideally be 180x180
+    apple: "/icons/icon_180.png",
     other: [
       // Apple Web App specific icons (if needed, otherwise manifest covers PWA)
       {
         rel: "apple-touch-icon-precomposed",
-        url: "/icons/icon_144.png",
-        sizes: "144x144",
+        url: "/icons/icon_180.png",
+        sizes: "180x180",
       },
       // Mask icon for Safari pinned tabs
       { rel: "mask-icon", url: "/icons/maskable_icon.png", color: "#4f46e5" }, // Using the 1024x1024 maskable icon for mask-icon
@@ -83,6 +82,8 @@ export const metadata: Metadata = {
     locale: "en_US", // Or your primary locale
   },
 
+  verification: { google: "XP0fIXIKn6GNwkOdOKq-ALLoik_6M9VhZwvEUyUtf1M" },
+
   // Keywords for search engines
   keywords: [
     "notes app",
@@ -95,13 +96,11 @@ export const metadata: Metadata = {
   ],
 
   // Author and Publisher
-  authors: [{ name: "Shivender-Kun", url: "https://shivender.pro" }],
-  creator: "Shivender-Kun",
-  publisher: "Shivender-Kun",
+  authors: [{ name: "Shivender Kumar", url: "https://www.shivender.pro" }],
+  creator: "Shivender Kumar",
+  publisher: "Shivender Kumar",
 };
 
-// --- VIEWPORT EXPORT ---
-// Move viewport and themeColor to this separate export
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -114,7 +113,7 @@ const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-poppins",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export default function RootLayout({
@@ -139,15 +138,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
-
-// ! Cookies Policy Handler
-{
-  /* <Script src="https://web.cmp.usercentrics.eu/modules/autoblocker.js"></Script>
-<Script
-  id="usercentrics-cmp"
-  src="https://web.cmp.usercentrics.eu/ui/loader.js"
-  data-settings-id="7rGMwDzT_b8aLf"
-  async
-></Script> */
 }
