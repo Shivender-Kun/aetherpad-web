@@ -1,5 +1,5 @@
+import { APP } from "@/constants/frontend";
 import type { Metadata } from "next";
-import { APP } from "@/constants";
 import Link from "next/link";
 
 export const metadata: Metadata = {

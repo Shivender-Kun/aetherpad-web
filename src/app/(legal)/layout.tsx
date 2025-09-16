@@ -1,6 +1,6 @@
-import { ThemeModeToggle } from "@/components/Theme/theme-mode-toggle";
-import FloatingHomeButton from "@/components/floatingHomeBtn";
-import Footer from "@/components/layout/footer";
+import FloatingHomeButton from "@/app/(legal)/_components/FloatingHomeButton";
+import Footer from "@/app/_components/layout/Footer";
+import { ThemeModeToggle } from "@/components/theme/theme-mode-toggle";
 import type { ReactNode } from "react";
 
 export default function LegalLayout({ children }: { children: ReactNode }) {

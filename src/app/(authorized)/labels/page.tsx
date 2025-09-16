@@ -1,19 +1,23 @@
-import { Suspense } from "react";
-import LabelsList from "./_list";
-import AddLabel from "./_add";
+import { PageHeader, PageWrapper } from "@/app/(authorized)/_components/page";
+import { MAX_LABELS_PER_USER } from "@/constants/dataLimits";
+import AddLabelDialog from "./_components/dialog/AddLabelDialog";
+import LabelsList from "./_components/LabelsList";
+
+const labelContainerId = "labels-container";
 
 const Labels = () => {
   return (
-    <main className="flex flex-col gap-4 h-full">
-      <div className="flex gap-4 justify-between px-4">
-        <h2 className="text-xl">Labels</h2> <AddLabel />
+    <PageWrapper>
+      <PageHeader title="Labels">
+        <AddLabelDialog />
+      </PageHeader>
+      <p className="px-3 text-sm text-gray-500">
+        Max {MAX_LABELS_PER_USER} labels can be stored
+      </p>
+      <div className="overflow-auto rounded-lg px-2" id={labelContainerId}>
+        <LabelsList parentId={labelContainerId} />
       </div>
-      <div className="px-4 overflow-auto">
-        <Suspense fallback={<h3>Loading...</h3>}>
-          <LabelsList />
-        </Suspense>
-      </div>
-    </main>
+    </PageWrapper>
   );
 };
 

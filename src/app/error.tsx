@@ -10,12 +10,12 @@ const Error = ({
   error: Error & { digest?: string };
 }) => {
   return (
-    <div className="flex flex-col gap-4 items-center justify-center h-full">
-      <h2 className="font-medium text-3xl">Something went wrong!</h2>
+    <div className="flex h-full flex-col items-center justify-center gap-4">
+      <h2 className="text-3xl font-medium">Something went wrong!</h2>
 
       <div className="flex gap-4">
-        <Link href="/login">
-          <Button>Go To Login Page </Button>
+        <Link href="/signin">
+          <Button>Go To Sign in Page </Button>
         </Link>
 
         <Button onClick={reset}>Retry</Button>

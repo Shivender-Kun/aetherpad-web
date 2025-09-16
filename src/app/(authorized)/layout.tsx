@@ -1,50 +1,44 @@
-import ConnectionStatus from "@/components/banner/connectionStatus";
-import isUserAuthenticated from "@/lib/isUserAuthenticated";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import fetchDetails from "@/lib/api/users/fetchDetails";
-import { ILabel, IUser, PaginatedData } from "@/types";
-import Sidebar from "@/components/layout/sidebar";
-import fetchLabels from "@/lib/api/fetchLabels";
-import Header from "@/components/layout/header";
-import StoreContextProvider from "@/store";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { labelsServerApi, userServerApi } from "@/lib/api";
+import { ILabel, IUser, PaginatedData } from "@/lib/types";
+import isSidebarOpen from "@/lib/utils/isSidebarOpen";
+import isUserAuthenticated from "@/lib/utils/isUserAuthenticated";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 import { ReactNode } from "react";
+import ConnectionStatusBanner from "./_components/ConnectionStatusBanner";
+import { LayoutHydrator } from "./_components/LayoutHydrator";
+import Header from "./_components/layout/Header";
+import Sidebar from "./_components/layout/Sidebar";
 
 export default async function Layout({ children }: { children: ReactNode }) {
-  const sidebarStateOnLoad = async () => {
-    const cookieStore = await cookies();
-    const sidebar = cookieStore.get("sidebar_state");
-
-    if (sidebar) return sidebar.value === "true";
-    return false;
-  };
-
   const isUserValid = await isUserAuthenticated();
-  if (!isUserValid) redirect("/login");
+  if (!isUserValid) redirect("/signin");
 
-  const [user, labels, sidebarState]: [
+  const [user, labels, sidebarOpen]: [
     user: IUser,
     labels: PaginatedData<ILabel>,
-    sidebarState: boolean
+    sidebarOpen: boolean,
   ] = await Promise.all([
-    fetchDetails(),
-    fetchLabels({}),
-    sidebarStateOnLoad(),
+    userServerApi.fetch(),
+    labelsServerApi.fetch({}),
+    isSidebarOpen(),
   ]);
 
   return (
     <>
-      <SidebarProvider defaultOpen={sidebarState}>
-        <StoreContextProvider user={user} labels={labels}>
+      <LayoutHydrator {...{ user, labels }} />
+      <SidebarProvider defaultOpen={sidebarOpen}>
+        <div className="flex h-screen w-screen overflow-hidden">
           <Sidebar />
-          <div className="flex flex-col h-screen w-full">
-            <Header />
-            <div className="pt-4 pb-8 flex-1 overflow-auto">{children}</div>
-          </div>
-        </StoreContextProvider>
+          <SidebarInset>
+            <div className="flex flex-1 flex-col overflow-auto">
+              <Header />
+              <div className="w-full flex-1 overflow-auto p-4">{children}</div>
+            </div>
+          </SidebarInset>
+        </div>
       </SidebarProvider>
-      <ConnectionStatus />
+      <ConnectionStatusBanner />
     </>
   );
 }
