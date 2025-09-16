@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { APP } from "@/constants/frontend";
 import type { Metadata } from "next";
-import { APP } from "@/constants";
-import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -40,7 +39,7 @@ const AboutUsPage = () => {
         About {APP.NAME}
       </h1>
 
-      <div className="flex justify-center">
+      {/* <div className="flex justify-center">
         <Image
           src="/images/developer.webp"
           alt={`${APP.DEVELOPER_NAME} - Creator of ${APP.NAME}`}
@@ -48,7 +47,7 @@ const AboutUsPage = () => {
           height={160}
           className="rounded-full border-4 border-indigo-500 shadow-xl"
         />
-      </div>
+      </div> */}
 
       <p className="text-lg sm:text-xl font-medium text-center text-gray-700 dark:text-gray-300 leading-relaxed">
         {`Hello! I'm ${APP.DEVELOPER_NAME}, the sole developer behind ${APP.NAME}.`}
@@ -102,7 +101,7 @@ const AboutUsPage = () => {
       </div>
 
       <div className="text-center">
-        <Link href="/login">
+        <Link href="/signin">
           <Button className="text-base sm:text-lg px-8 py-3 rounded-xl shadow-md border border-indigo-500 hover:bg-indigo-900 hover:text-indigo-200 transition-all duration-300 transform hover:scale-105">
             Start Using {APP.NAME}
           </Button>

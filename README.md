@@ -7,7 +7,7 @@ AetherPad is a privacy-focused, full-stack note-taking application built with [N
 ## Features
 
 - **User Authentication:** Secure login and session management.
-- **Notes Management:** Create, edit, and delete AetherPad.
+- **Notes Management:** Create, edit, archive, and delete notes.
 - **Labels:** Organize notes with custom labels. Add, edit, and delete labels.
 - **Responsive Sidebar:** Collapsible sidebar with keyboard shortcuts and theming.
 - **Modern UI:** Built with Radix UI, Tailwind CSS, and custom components.
@@ -65,60 +65,71 @@ npm start
 ## Project Structure
 
 ```
-personal-notes/
+client-web/
 ├── .env
 ├── public/
+│   ├── icons/
+│   ├── images/
+│   └── screenshots/
 ├── src/
-│   ├── api/           # API utilities (e.g. [src/api/fetchUser.ts](src/api/fetchUser.ts))
-│   ├── app/           # Next.js app directory (routing, layouts, pages)
-│   ├── assets/        # Static assets
-│   ├── components/    # Reusable UI components (e.g. [src/components/ui/sidebar.tsx](src/components/ui/sidebar.tsx))
-│   ├── constants/     # App-wide constants (e.g. [src/constants/index.ts](src/constants/index.ts))
-│   ├── hooks/         # Custom React hooks
-│   ├── lib/           # Utility functions (e.g. [src/lib/utils.ts](src/lib/utils.ts))
-│   ├── services/      # Service layer (API calls, business logic)
-│   └── types/         # TypeScript types ([src/types/index.ts](src/types/index.ts))
-├── tailwind.config.ts # Tailwind CSS configuration
-├── next.config.ts     # Next.js configuration
+│   ├── app/                # Next.js app directory (routing, layouts, pages)
+│   │   ├── (authentication)/  # Auth pages (signin, signup, reset, etc.)
+│   │   ├── (authorized)/      # Protected app pages (notes, labels, profile)
+│   │   ├── (legal)/          # Legal pages (privacy, terms, about)
+│   │   └── _components/      # Landing and layout components
+│   ├── api/               # API route handlers (Next.js API routes)
+│   ├── components/        # Reusable UI components (UI, logo, theme, store)
+│   ├── constants/         # App-wide constants (API, env, routes, etc.)
+│   ├── hooks/             # Custom React hooks
+│   ├── lib/               # Utility functions and API clients
+│   ├── services/          # Service layer (API calls, business logic)
+│   ├── store/             # Global state management (Redux slices, hooks)
+│   ├── styles/            # Global styles (Tailwind CSS)
+│   └── types/             # TypeScript types and enums
+├── tailwind.config.ts     # Tailwind CSS configuration
+├── next.config.ts         # Next.js configuration
 ├── package.json
 └── README.md
 ```
 
 ---
 
-## Key Files
+## Key Files & Folders
 
 - **API Utilities:**
-
-  - [`src/api/fetchUser.ts`](src/api/fetchUser.ts) – Fetches authenticated user details.
-  - [`src/api/fetchList.ts`](src/api/fetchList.ts) – Fetches paginated lists (notes, labels).
-  - [`src/api/deleteDoc.ts`](src/api/deleteDoc.ts) – Deletes notes or labels.
+  - [`src/lib/api/labels/client.ts`](src/lib/api/labels/client.ts) – Client-side label API functions.
+  - [`src/lib/api/notes/client.ts`](src/lib/api/notes/client.ts) – Client-side note API functions.
+  - [`src/lib/api/user/client.ts`](src/lib/api/user/client.ts) – Client-side user API functions.
 
 - **UI Components:**
-
   - [`src/components/ui/sidebar.tsx`](src/components/ui/sidebar.tsx) – Sidebar and related UI.
   - [`src/components/ui/table.tsx`](src/components/ui/table.tsx) – Table components for displaying lists.
   - [`src/components/ui/button.tsx`](src/components/ui/button.tsx) – Button component with variants.
   - [`src/components/ui/input.tsx`](src/components/ui/input.tsx) – Input field component.
 
 - **Constants:**
-
-  - [`src/constants/index.ts`](src/constants/index.ts) – App constants and configuration.
-  - [`src/constants/enum.ts`](src/constants/enum.ts) – Enum definitions for actions.
+  - [`src/constants/api.ts`](src/constants/api.ts) – API endpoint definitions.
+  - [`src/constants/env.ts`](src/constants/env.ts) – Environment variable keys.
+  - [`src/constants/routes.ts`](src/constants/routes.ts) – Route definitions.
 
 - **Types:**
-
   - [`src/types/index.ts`](src/types/index.ts) – TypeScript interfaces for User, Note, Label, etc.
+  - [`src/types/enums.ts`](src/types/enums.ts) – Enum definitions.
 
 - **Store:**
   - [`src/store/index.tsx`](src/store/index.tsx) – React context for global state management.
+  - [`src/store/slices/`](src/store/slices/) – Redux slices for notes, labels, user, etc.
+
+- **Landing & Layout Components:**
+  - [`src/app/_components/landing/`](src/app/_components/landing/) – Landing page sections (Hero, Features, etc.).
+  - [`src/app/_components/layout/Footer.tsx`](src/app/_components/layout/Footer.tsx) – App footer.
 
 ---
 
 ## Customization
 
 - **Theming:**  
-  Edit [`src/app/globals.css`](src/app/globals.css) and [`tailwind.config.ts`](tailwind.config.ts) to adjust colors, spacing, and design tokens.
+  Edit [`src/styles/globals.css`](src/styles/globals.css) and [`tailwind.config.ts`](tailwind.config.ts) to adjust colors, spacing, and design tokens.
 
 - **API Endpoints:**  
   Update API URLs in [`src/constants/api.ts`](src/constants/api.ts) as needed.
@@ -138,7 +149,7 @@ For more, see [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Privacy
 
-See [src/app/(legal)/privacy/page.tsx](<src/app/(legal)/privacy/page.tsx>) for privacy policy details.
+See [`src/app/(legal)/privacy/page.tsx`](<src/app/(legal)/privacy/page.tsx>) for privacy policy details.
 
 ---
 

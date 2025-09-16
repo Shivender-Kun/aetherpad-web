@@ -1,0 +1,21 @@
+export enum LABEL_ACTION {
+  EDIT,
+  DELETE,
+}
+
+export enum NOTE_ACTION {
+  ADD = "ADD",
+  ARCHIVE = "ARCHIVE",
+  BACKGROUND = "BACKGROUND",
+  UNARCHIVE = "UNARCHIVE",
+  PIN = "PIN",
+  UNPIN = "UNPIN",
+  TRASH = "TRASH",
+  DELETE = "DELETE",
+  RESTORE = "RESTORE",
+  UPDATE = "UPDATE",
+}
+
+const ENUM = { LABEL_ACTION, NOTE_ACTION };
+
+export default ENUM;

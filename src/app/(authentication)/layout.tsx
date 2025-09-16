@@ -1,10 +1,9 @@
+import AppLogoBig from "@/components/logo/Big";
 import { ThemeModeToggle } from "@/components/Theme/theme-mode-toggle";
-import isUserAuthenticated from "@/lib/isUserAuthenticated";
-import AppLogoBig from "@/components/app/bigLogo";
+import isUserAuthenticated from "@/lib/utils/isUserAuthenticated";
 import { redirect } from "next/navigation";
-import StoreContextProvider from "@/store";
 
-export default async function AuthLayout({
+export default async function Layout({
   children,
 }: {
   children: React.ReactNode;
@@ -13,16 +12,14 @@ export default async function AuthLayout({
   if (userData) redirect("/home");
 
   return (
-    <StoreContextProvider>
-      <main className="min-h-screen w-full bg-gradient-to-b from-white via-neutral-100 to-white dark:from-black dark:via-gray-900 dark:to-black text-gray-800 dark:text-white grid place-items-center p-4 overflow-auto">
-        <div className="flex flex-col gap-6 items-center w-full max-w-md">
-          <AppLogoBig />
-          {children}
-        </div>
-        <div className="fixed bottom-4 right-4">
-          <ThemeModeToggle />
-        </div>
-      </main>
-    </StoreContextProvider>
+    <main className="grid min-h-screen w-full place-items-center overflow-auto p-4">
+      <div className="flex w-full max-w-md flex-col items-center gap-6">
+        <AppLogoBig />
+        {children}
+      </div>
+      <div className="fixed right-4 bottom-4">
+        <ThemeModeToggle />
+      </div>
+    </main>
   );
 }

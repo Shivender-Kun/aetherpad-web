@@ -1,9 +1,10 @@
+import NotificationProvider from "@/components/NotificationProvider";
 import { ThemeProvider } from "@/components/Theme/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
+import { APP } from "@/constants/frontend";
+import StoreProvider from "@/store/StoreProvider";
+import "@/styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
-import { APP } from "@/constants";
-import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   // Primary SEO & Browser Tab Info
@@ -124,17 +125,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${poppins.className} antialiased bg-background text-foreground`}
+        className={`${poppins.className} bg-background text-foreground antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <StoreProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+          <NotificationProvider />
+        </StoreProvider>
       </body>
     </html>
   );

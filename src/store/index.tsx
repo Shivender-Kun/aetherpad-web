@@ -1,92 +1,51 @@
-"use client";
+import { configureStore } from "@reduxjs/toolkit";
+import logger from "redux-logger";
+import appDetailsReducer from "./slices/appDetails";
+import labelsReducer from "./slices/labels";
+import notesReducer from "./slices/notes";
+import notificationsReducer from "./slices/notifications";
+import userReducer from "./slices/user";
 
-import { DEBUG } from "@/constants";
-import { ILabel, IUser, PaginatedData, StoreContextType } from "@/types";
-import { useContext, useState, ReactNode } from "react";
-import { createContext, memo, useEffect } from "react";
-import { toast } from "sonner";
-
-export const StoreContext = createContext<StoreContextType | null>(null);
-
-const initialPaginatedData = {
-  list: [],
-  page: 1,
-  limit: 50,
-  hasMore: false,
-  total: 0,
-};
-
-const StoreContextProvider = ({
-  user,
-  labels,
-  children,
-}: {
-  user?: IUser;
-  labels?: PaginatedData<ILabel>;
-  children: ReactNode;
-}) => {
-  const [state, setState] = useState<StoreContextType>({
-    apiMessage: null,
-    setAPIMessage: (apiMessage) => {
-      setState((prev) => ({ ...prev, apiMessage }));
+export const makeStore = (preloadedState?: unknown) => {
+  return configureStore({
+    reducer: {
+      appDetails: appDetailsReducer,
+      labels: labelsReducer,
+      notes: notesReducer,
+      notifications: notificationsReducer,
+      user: userReducer,
     },
-    user: user || null,
-    setUser: (user) => {
-      setState((prev) => ({ ...prev, user }));
-    },
-    notes: initialPaginatedData,
-    setNotes: (notes) => {
-      setState((prev) => ({ ...prev, notes }));
-    },
-    archivedNotes: initialPaginatedData,
-    setArchivedNotes: (archivedNotes) => {
-      setState((prev) => ({ ...prev, archivedNotes }));
-    },
-    pinnedNotes: [],
-    setPinnedNotes: (pinnedNotes) => {
-      setState((prev) => ({ ...prev, pinnedNotes }));
-    },
-    deletedNotes: initialPaginatedData,
-    setDeletedNotes: (deletedNotes) => {
-      setState((prev) => ({ ...prev, deletedNotes }));
-    },
-    labels: labels || initialPaginatedData,
-    setLabels: (labels) => {
-      setState((prev) => ({ ...prev, labels }));
-    },
-    isLoading: false,
-    setIsLoading: (isLoading) => {
-      setState((prev) => ({ ...prev, isLoading }));
-    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        // Configure default middleware options if needed
+        serializableCheck: {
+          ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+        },
+      }).concat(
+        // Only add logger in development and on client side
+        process.env.NODE_ENV === "development" && typeof window !== "undefined"
+          ? [logger]
+          : [],
+      ),
+    preloadedState: preloadedState as unknown,
+    devTools: process.env.NODE_ENV !== "production",
   });
-
-  useEffect(() => {
-    if (DEBUG) console.info("Current Store State: ", state);
-  }, [state]);
-
-  useEffect(() => {
-    if (state.apiMessage) {
-      const { type, message, notify } = state.apiMessage;
-      if (notify) {
-        if (type === "success") toast.success(message);
-        else if (type === "error") toast.error(message);
-      }
-
-      setTimeout(() => state.setAPIMessage(null), 2000);
-    }
-  }, [state.apiMessage, state.setAPIMessage]);
-
-  return (
-    <StoreContext.Provider value={state}>{children}</StoreContext.Provider>
-  );
 };
 
-export default memo(StoreContextProvider);
+let store: AppStore | undefined;
 
-export const useStore = () => {
-  const context = useContext(StoreContext);
-  if (!context) {
-    throw new Error("useStore must be used within a StoreProvider");
+const getStore = () => {
+  if (!store) {
+    store = makeStore();
   }
-  return context;
+
+  return store;
 };
+
+export default getStore();
+
+// Infer the type of makeStore
+export type AppStore = ReturnType<typeof makeStore>;
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];
