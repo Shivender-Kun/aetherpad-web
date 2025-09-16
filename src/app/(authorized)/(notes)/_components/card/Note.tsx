@@ -43,13 +43,14 @@ const NoteCard = ({
   return (
     <Card
       {...cardEvents}
-      className={`relative h-fit min-w-80 w-[${availableItemWidth || "320"}] gap-4 py-4 whitespace-break-spaces duration-500`}
+      className={`relative h-fit gap-4 overflow-hidden py-4 whitespace-break-spaces shadow-none duration-500 hover:scale-101`}
       style={{
         backgroundColor: `var(--${
           note.bgColor && note.bgColor !== "default"
             ? `color-${note.bgColor}`
             : "card"
         })`,
+        width: `${availableItemWidth}px`,
       }}
     >
       <CardHeader className="px-4 pt-4 pr-12">

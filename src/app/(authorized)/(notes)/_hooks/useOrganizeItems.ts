@@ -27,16 +27,22 @@ const useOrganizeItems = <T>({
     useState<number>(itemWidth);
 
   const { open: sidebarState } = useSidebar();
+  const [oldSidebarState, setOldSidebarState] = useState(sidebarState);
 
   const getParentWidth = useCallback(() => {
-    setTimeout(() => {
+    const getWidth = () => {
       const parentElement = document.getElementById(parentId);
       if (parentElement) {
         const boundingRect = parentElement.getBoundingClientRect();
-        setParentWidth(boundingRect.width);
+        setParentWidth(boundingRect.width - 10); // 8 is combined padding on the container's x-axis and scrollbar
       }
-    }, 210);
-  }, [parentId]);
+    };
+
+    if (sidebarState !== oldSidebarState) {
+      setTimeout(getWidth, 210);
+      setOldSidebarState(sidebarState);
+    } else getWidth();
+  }, [parentId, sidebarState]);
 
   const calculateColumns = useCallback(() => {
     if (parentWidth === 0) return 1; // Avoid division by zero
@@ -59,7 +65,7 @@ const useOrganizeItems = <T>({
       const usableSpacePerNote = Math.floor(remainingSpace / columns);
       setAvailableItemWidth(usableSpacePerNote + itemWidth);
     },
-    [parentWidth],
+    [parentWidth, itemWidth],
   );
 
   useEffect(() => {
@@ -72,7 +78,7 @@ const useOrganizeItems = <T>({
   }, [getParentWidth, sidebarState]);
 
   useEffect(() => {
-    if (items.length > 0) {
+    if (items.length > 0 && parentWidth) {
       const columns = calculateColumns();
 
       if (columns) {
@@ -86,7 +92,7 @@ const useOrganizeItems = <T>({
         setOrganizedList(newList);
       }
     }
-  }, [items, calculateColumns, sidebarState]);
+  }, [items, calculateColumns, sidebarState, parentWidth]);
 
   return [organizedList, availableItemWidth];
 };

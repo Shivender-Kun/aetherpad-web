@@ -30,10 +30,12 @@ export default async function Layout({ children }: { children: ReactNode }) {
       <SidebarProvider defaultOpen={sidebarOpen}>
         <div className="flex h-screen w-screen overflow-hidden">
           <Sidebar />
-          <SidebarInset>
-            <div className="flex flex-1 flex-col overflow-auto">
+          <SidebarInset className="min-w-0 flex-1">
+            <div className="flex h-full flex-col overflow-auto">
               <Header />
-              <div className="w-full flex-1 overflow-auto p-4">{children}</div>
+              <div className="h-full w-full flex-1 overflow-auto p-4">
+                {children}
+              </div>
             </div>
           </SidebarInset>
         </div>

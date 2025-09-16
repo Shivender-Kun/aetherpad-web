@@ -26,7 +26,7 @@ const DeletedNotes = ({ loadMore }: Props) => {
     <div className="flex-1 overflow-auto">
       <div
         id="notes-container"
-        className="flex h-full w-full flex-col gap-8 pr-2"
+        className="flex h-full w-full flex-col gap-8 overflow-x-hidden p-1"
       >
         {!!deletedNotes.length && (
           <div className="flex flex-1 gap-4 max-[668]:justify-center">

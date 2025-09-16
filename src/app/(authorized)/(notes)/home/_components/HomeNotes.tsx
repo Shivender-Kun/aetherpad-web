@@ -58,7 +58,7 @@ const HomeNotes = ({ loadMore }: Props) => {
     <div className="flex flex-1 flex-col overflow-auto">
       <div
         id="notes-container"
-        className="flex h-full min-h-fit w-full flex-col gap-8 pr-2"
+        className="flex h-full min-h-fit w-full flex-col gap-8 overflow-x-hidden p-1"
       >
         {!!pinned.length && renderNotes("Pinned", pinned)}
         {!!unpinned.length && renderNotes("Unpinned", unpinned)}

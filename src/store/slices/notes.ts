@@ -452,7 +452,19 @@ const notesSlice = createSlice({
         state.archived.status = "loading";
       })
       .addCase(fetchArchived.fulfilled, (state, action) => {
-        state.archived.data = action.payload;
+        const { page, list, hasMore, limit } = action.payload;
+
+        if (page > 1) {
+          state.archived.data = {
+            list: [...state.archived.data.list, ...list],
+            page,
+            limit,
+            hasMore,
+          };
+        } else {
+          state.archived.data = action.payload;
+        }
+
         state.archived.status = "succeeded";
       })
       .addCase(fetchArchived.rejected, (state) => {
@@ -463,7 +475,18 @@ const notesSlice = createSlice({
         state.deleted.status = "loading";
       })
       .addCase(fetchDeleted.fulfilled, (state, action) => {
-        state.deleted.data = action.payload;
+        const { page, list, hasMore, limit } = action.payload;
+
+        if (page > 1) {
+          state.deleted.data = {
+            list: [...state.deleted.data.list, ...list],
+            page,
+            limit,
+            hasMore,
+          };
+        } else {
+          state.deleted.data = action.payload;
+        }
         state.deleted.status = "succeeded";
       })
       .addCase(fetchDeleted.rejected, (state) => {
