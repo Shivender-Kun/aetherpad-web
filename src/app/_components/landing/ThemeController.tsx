@@ -1,4 +1,4 @@
-import { ThemeModeToggle } from "@/components/theme/theme-mode-toggle";
+import { ThemeModeToggle } from "@/components/Theme/theme-mode-toggle";
 
 const ThemeController = () => {
   return (

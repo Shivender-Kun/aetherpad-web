@@ -1,6 +1,6 @@
 "use client";
 
-import { InlineThemeModeToggle } from "@/components/theme/theme-mode-toggle";
+import { InlineThemeModeToggle } from "@/components/Theme/theme-mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,

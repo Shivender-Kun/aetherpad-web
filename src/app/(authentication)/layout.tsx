@@ -1,5 +1,5 @@
 import AppLogoBig from "@/components/logo/Big";
-import { ThemeModeToggle } from "@/components/theme/theme-mode-toggle";
+import { ThemeModeToggle } from "@/components/Theme/theme-mode-toggle";
 import isUserAuthenticated from "@/lib/utils/isUserAuthenticated";
 import { redirect } from "next/navigation";
 

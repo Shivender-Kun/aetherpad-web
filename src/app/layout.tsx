@@ -1,5 +1,5 @@
 import NotificationProvider from "@/components/NotificationProvider";
-import { ThemeProvider } from "@/components/theme/theme-provider";
+import { ThemeProvider } from "@/components/Theme/theme-provider";
 import { APP } from "@/constants/frontend";
 import StoreProvider from "@/store/StoreProvider";
 import "@/styles/globals.css";
