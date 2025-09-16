@@ -53,24 +53,22 @@ const OrganizedNotes = ({ notes, parentId }: Props) => {
     }
   };
 
-  const renderNotes = useMemo(
-    () =>
-      organizedList.map((list, idx) => (
-        <div className="flex flex-1 flex-col gap-4" key={idx}>
-          {list.map((note) => (
-            <InteractiveNote
-              key={note._id}
-              note={note}
-              availableItemWidth={availableItemWidth}
-              handleNoteClick={(type: NOTE_ACTION) =>
-                handleNoteClick(note, type)
-              }
-            />
-          ))}
-        </div>
-      )),
-    [organizedList],
-  );
+  const renderNotes = useMemo(() => {
+    const organizedItems = organizedList.map((list, idx) => (
+      <div className="flex flex-1 flex-col gap-4" key={idx}>
+        {list.map((note) => (
+          <InteractiveNote
+            key={note._id}
+            note={note}
+            availableItemWidth={availableItemWidth}
+            handleNoteClick={(type: NOTE_ACTION) => handleNoteClick(note, type)}
+          />
+        ))}
+      </div>
+    ));
+
+    return organizedItems;
+  }, [organizedList]);
 
   return (
     <>

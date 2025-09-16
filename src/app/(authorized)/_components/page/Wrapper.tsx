@@ -7,11 +7,11 @@ interface PageWrapperProps {
 
 const PageWrapper = ({ children, classNames = "" }: PageWrapperProps) => {
   return (
-    <main
+    <div
       className={`bg-card flex h-full flex-col gap-4 overflow-auto rounded-lg p-4 ${classNames}`}
     >
       {children}
-    </main>
+    </div>
   );
 };
 

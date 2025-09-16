@@ -41,7 +41,6 @@ const PaletteOptions = ({ onClick, className }: Props) => {
       }}
       onKeyDown={(e) => {
         e.preventDefault();
-        console.log(e.key);
       }}
       tabIndex={5}
     >

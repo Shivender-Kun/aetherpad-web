@@ -24,10 +24,10 @@ const ArchivedNotes = ({ loadMore }: Props) => {
     <div className="flex-1 overflow-auto">
       <div
         id="notes-container"
-        className="flex h-full w-full flex-col gap-8 pr-2"
+        className="flex h-full w-full flex-col gap-8 overflow-x-hidden p-1"
       >
         {!!archivedNotes.length && (
-          <div className="flex flex-wrap gap-4 max-[668]:justify-center">
+          <div className="flex h-full gap-4 overflow-x-hidden max-[668]:justify-center">
             <OrganizedNotes parentId="notes-container" notes={archivedNotes} />
           </div>
         )}

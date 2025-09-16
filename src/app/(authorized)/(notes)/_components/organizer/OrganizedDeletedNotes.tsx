@@ -64,6 +64,7 @@ const OrganizedDeletedNotes = ({ notes, parentId }: Props) => {
       )),
     [organizedList],
   );
+
   return (
     <>
       {renderNotes}
