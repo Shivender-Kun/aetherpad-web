@@ -30,7 +30,7 @@ const ResetPasswordForm = () => {
   const searchParams = useSearchParams();
 
   const form = useForm<TResetPasswordFormSchema>({
-    resolver: zodResolver(userSchema.resetPassword),
+    resolver: zodResolver(userSchema.resetPasswordForm),
     defaultValues: {
       newPassword: "",
       confirmPassword: "",

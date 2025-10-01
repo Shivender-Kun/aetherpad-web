@@ -119,10 +119,12 @@ export type TResetPasswordApiSchema = z.infer<typeof resetPasswordApiSchema>;
 export default {
   login: userLoginSchema,
   register: registerUserSchema,
+  registerUserForm: registerUserFormSchema,
   registerTransformed: registerUserSchema,
   update: updateUserFormSchema,
   updateParsed: updateUserSchema,
   resetPassword: resetPasswordSchema,
+  resetPasswordForm: resetPasswordFormSchema,
   resetPasswordApi: resetPasswordApiSchema,
   resetPasswordTransformed: resetPasswordSchema,
   changePassword: changePasswordFormSchema,
