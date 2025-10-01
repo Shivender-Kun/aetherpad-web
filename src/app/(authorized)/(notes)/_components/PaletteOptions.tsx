@@ -53,7 +53,7 @@ const PaletteOptions = ({ onClick, className }: Props) => {
           className={`tooltip-visible border-primary relative h-4 w-4 cursor-pointer rounded-full border`}
           style={{ backgroundColor: `var(--color-${color})` }}
         >
-          <span className="tooltip bg-secondary text-primary animation-in pointer-events-none absolute top-5 -right-4 z-10 rounded-lg border px-2 py-1 text-[10px] opacity-0 duration-500 ease-in-out">
+          <span className="tooltip bg-secondary text-primary pointer-events-none absolute top-5 -right-4 z-10 rounded-lg border px-2 py-1 text-[10px] opacity-0 duration-500 ease-in-out">
             {color}
           </span>
         </div>

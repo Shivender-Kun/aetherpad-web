@@ -201,7 +201,7 @@ export const MultiSelectPopover = (
           {title && (
             <span
               className={cn(
-                "tooltip bg-secondary text-primary animate-in pointer-events-none absolute z-20 rounded-lg border px-2 py-1 text-[10px] opacity-0 duration-500 ease-in-out",
+                "tooltip bg-secondary text-primary pointer-events-none absolute z-20 rounded-lg border px-2 py-1 text-[10px] opacity-0 duration-500 ease-in-out",
                 tooltipClassName,
               )}
             >
