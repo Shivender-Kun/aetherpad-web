@@ -4,6 +4,8 @@ import getRequestContext from "@/lib/utils/server/getRequestContext";
 import { NotesHydrator } from "../_components/NotesHydrator";
 import BinContent from "./BinContent";
 
+export const dynamic = "force-dynamic";
+
 const Bin = async () => {
   const binnedNotes = await notesServerApi.fetchInitalBinnedNotes(
     await getRequestContext(),

@@ -3,6 +3,8 @@ import { MAX_LABELS_PER_USER } from "@/constants/dataLimits";
 import AddLabelDialog from "./_components/dialog/AddLabelDialog";
 import LabelsList from "./_components/LabelsList";
 
+export const dynamic = "force-dynamic";
+
 const labelContainerId = "labels-container";
 
 const Labels = () => {
