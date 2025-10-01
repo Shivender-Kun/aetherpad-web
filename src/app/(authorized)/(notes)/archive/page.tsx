@@ -4,6 +4,8 @@ import getRequestContext from "@/lib/utils/server/getRequestContext";
 import { NotesHydrator } from "../_components/NotesHydrator";
 import ArchivedContent from "./ArchivedContent";
 
+export const dynamic = "force-dynamic";
+
 const Archived = async () => {
   const archivedNotes = await notesServerApi.fetchInitalArchivedNotes(
     await getRequestContext(),
