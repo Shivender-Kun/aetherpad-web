@@ -10,12 +10,18 @@ export enum NOTE_ACTION {
   UNARCHIVE = "UNARCHIVE",
   PIN = "PIN",
   UNPIN = "UNPIN",
-  TRASH = "TRASH",
+  BIN = "BIN",
   DELETE = "DELETE",
   RESTORE = "RESTORE",
   UPDATE = "UPDATE",
 }
 
-const ENUM = { LABEL_ACTION, NOTE_ACTION };
+export enum NOTE_STATUS {
+  ACTIVE = "active",
+  ARCHIVED = "archived",
+  BINNED = "binned",
+}
+
+const ENUM = { LABEL_ACTION, NOTE_ACTION, NOTE_STATUS };
 
 export default ENUM;

@@ -1,17 +1,16 @@
-export { default as labelsSchema } from "./labels";
-export type { TCreateLabelSchema, TUpdateLabelSchema } from "./labels";
-export { default as notesSchema } from "./notes";
-export type { TCreateNoteSchemaInput, TUpdateNoteSchemaInput } from "./notes";
+export { default as labelSchema } from "./label";
+export type { TCreateLabelSchema, TUpdateLabelSchema } from "./label";
+export { default as noteSchema } from "./note";
+export type { TCreateNoteSchema, TUpdateNoteSchema } from "./note";
 export { default as userSchema } from "./user";
 export type {
-  TChangePasswordSchema,
   TForgotPasswordSchema,
+  TRegisterUserFormSchema,
   TRegisterUserSchema,
-  TRegisterUserSchemaTransformed,
   TResetPasswordApiSchema,
+  TResetPasswordFormSchema,
   TResetPasswordSchema,
-  TResetPasswordSchemaTransformed,
+  TUpdateUserFormSchema,
   TUpdateUserSchema,
-  TUpdateUserSchemaParsed,
   TUserLoginSchema,
 } from "./user";

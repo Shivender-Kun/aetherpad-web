@@ -5,7 +5,7 @@ import axios from "axios";
 function setupAxios() {
   const api = axios.create({
     withCredentials: true,
-    timeout: 10000,
+    timeout: 60000,
   });
 
   // Request Interception and Modification

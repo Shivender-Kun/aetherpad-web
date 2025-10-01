@@ -18,9 +18,11 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { USER_ROUTES } from "@/constants/routes";
@@ -33,9 +35,10 @@ import {
   GlobeLock,
   Heart,
   LogOut,
-  NotebookPen,
+  NotebookText,
   ReceiptText,
   Scale,
+  Tags,
   User2,
 } from "lucide-react";
 import Link from "next/link";
@@ -75,34 +78,42 @@ const AppSidebar = () => {
   return (
     <>
       <Sidebar collapsible="offcanvas" variant="inset">
-        {/* <SidebarHeader>
+        <SidebarHeader className="border-b">
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton
-                asChild
-                className="flex h-16 w-full items-center border-b p-4"
-              >
-                <Link href="/">
-                  <NotebookPen />
-                </Link>
+              <SidebarMenuButton asChild className="h-12 w-full p-4">
+                <SidebarTrigger />
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
-        </SidebarHeader> */}
+        </SidebarHeader>
 
         <SidebarContent>
-          {/* AetherPad */}
-          <SidebarGroup>
+          {/* Notes */}
+          <SidebarGroup className="p-4">
             <SidebarGroupLabel>
-              <NotebookPen /> &nbsp; AetherPad
+              <NotebookText /> &nbsp; Notes
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>{renderAllRoutes}</SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
 
+          {/* Labels */}
+          <SidebarGroup className="p-4">
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {renderMenuOption({
+                  name: "Labels",
+                  path: "/labels",
+                  icon: Tags,
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+
           {/* Legal */}
-          <SidebarGroup>
+          <SidebarGroup className="p-4">
             <SidebarGroupLabel>
               <Scale /> &nbsp; Legal
             </SidebarGroupLabel>
@@ -234,6 +245,7 @@ const AppSidebar = () => {
           </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
+
       <ConfirmLogoutDialog
         open={confirmLogoutDialog}
         onOpenChange={setConfirmLogoutDialog}

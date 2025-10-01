@@ -5,6 +5,7 @@ import StoreProvider from "@/store/StoreProvider";
 import "@/styles/globals.css";
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
+import NextAuthSessionProvider from "./providers";
 
 export const metadata: Metadata = {
   // Primary SEO & Browser Tab Info
@@ -134,7 +135,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
           </ThemeProvider>
           <NotificationProvider />
         </StoreProvider>

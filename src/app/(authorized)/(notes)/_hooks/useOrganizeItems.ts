@@ -1,5 +1,5 @@
 import { useSidebar } from "@/components/ui/sidebar";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 /**
  * Custom hook to organize items into columns based on parent container width.
@@ -65,7 +65,7 @@ const useOrganizeItems = <T>({
       const usableSpacePerNote = Math.floor(remainingSpace / columns);
       setAvailableItemWidth(usableSpacePerNote + itemWidth);
     },
-    [parentWidth, itemWidth],
+    [parentWidth, itemWidth, gap],
   );
 
   useEffect(() => {
@@ -92,9 +92,20 @@ const useOrganizeItems = <T>({
         setOrganizedList(newList);
       }
     }
-  }, [items, calculateColumns, sidebarState, parentWidth]);
+  }, [
+    items,
+    parentWidth,
+    sidebarState,
+    calculateColumns,
+    calculateAvailableItemWidth,
+  ]);
 
-  return [organizedList, availableItemWidth];
+  const memoizedList = useMemo(
+    () => organizedList,
+    [organizedList.length, organizedList.map((list) => list.length)],
+  );
+
+  return [memoizedList, availableItemWidth];
 };
 
 export default useOrganizeItems;

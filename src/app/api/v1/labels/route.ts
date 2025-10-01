@@ -1,6 +1,6 @@
 import { API } from "@/constants/server";
 import { withSecureApiHandler } from "@/lib/middlewares/withSecureApiHandler";
-import { labelsSchema, TCreateLabelSchema } from "@/lib/schemas";
+import { labelSchema, TCreateLabelSchema } from "@/lib/schemas";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -22,5 +22,5 @@ export const POST = async (req: NextRequest) =>
       return NextResponse.json(data, { status });
     },
     req,
-    labelsSchema.create,
+    labelSchema.create,
   );

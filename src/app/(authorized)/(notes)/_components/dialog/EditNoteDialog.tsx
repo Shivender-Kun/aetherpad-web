@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/multi-select-popover";
 import { Textarea } from "@/components/ui/textarea";
 import { MAX_LABELS_PER_NOTE } from "@/constants/dataLimits";
-import { notesSchema, TUpdateNoteSchemaInput } from "@/lib/schemas";
+import { noteSchema, TUpdateNoteSchema } from "@/lib/schemas";
 import { INote } from "@/lib/types";
 import { NOTE_ACTION } from "@/lib/types/enums";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -75,8 +75,8 @@ const EditNoteDialog = ({
 
   const labelsOptions = getMultiSelectOptions(labelsList);
 
-  const form = useForm<TUpdateNoteSchemaInput>({
-    resolver: zodResolver(notesSchema.updateInput),
+  const form = useForm<TUpdateNoteSchema>({
+    resolver: zodResolver(noteSchema.update),
     defaultValues: {
       title: selectedNote.title,
       bgColor: selectedNote.bgColor,
@@ -157,7 +157,7 @@ const EditNoteDialog = ({
     onOpenChange(open);
   };
 
-  const onSubmit = async (data: TUpdateNoteSchemaInput) => {
+  const onSubmit = async (data: TUpdateNoteSchema) => {
     const contentIsUpdated = compareNoteContentVersions(selectedNote, data);
     const labelsSelected = selectedLabels.map((label) => ({
       _id: label.value,

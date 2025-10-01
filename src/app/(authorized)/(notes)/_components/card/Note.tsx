@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { INote } from "@/lib/types";
 import { truncateString } from "@/lib/utils";
+import React from "react";
 import { getMultiSelectOptions } from "../../_utils";
 import NoteLabelsBadges from "../NoteLabelsBadges";
 
@@ -43,7 +44,7 @@ const NoteCard = ({
   return (
     <Card
       {...cardEvents}
-      className={`relative h-fit gap-4 overflow-hidden py-4 whitespace-break-spaces shadow-none duration-500 hover:scale-101`}
+      className={`relative h-fit gap-4 py-4 whitespace-break-spaces shadow-none duration-500 hover:scale-101`}
       style={{
         backgroundColor: `var(--${
           note.bgColor && note.bgColor !== "default"
@@ -72,4 +73,4 @@ const NoteCard = ({
   );
 };
 
-export default NoteCard;
+export default React.memo(NoteCard);

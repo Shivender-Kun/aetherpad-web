@@ -1,6 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/store/hooks";
+import React from "react";
 import InfiniteList from "../../_components/InfiniteList";
 import OrganizedNotes from "../../_components/organizer/OrganizedNotes";
 
@@ -26,17 +27,17 @@ const ArchivedNotes = ({ loadMore }: Props) => {
         id="notes-container"
         className="flex h-full w-full flex-col gap-8 overflow-x-hidden p-1"
       >
-        {!!archivedNotes.length && (
+        {archivedNotes.length ? (
           <div className="flex h-full gap-4 overflow-x-hidden max-[668]:justify-center">
             <OrganizedNotes parentId="notes-container" notes={archivedNotes} />
           </div>
+        ) : (
+          renderNoNotes
         )}
-
-        {!archivedNotes.length && renderNoNotes}
         {hasMore && <InfiniteList cb={loadMore} />}
       </div>
     </div>
   );
 };
 
-export default ArchivedNotes;
+export default React.memo(ArchivedNotes);

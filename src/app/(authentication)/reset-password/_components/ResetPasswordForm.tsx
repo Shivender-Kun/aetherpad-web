@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { userApi } from "@/lib/api";
-import { TResetPasswordSchema, userSchema } from "@/lib/schemas";
+import { TResetPasswordFormSchema, userSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -29,7 +29,7 @@ const ResetPasswordForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
 
-  const form = useForm<TResetPasswordSchema>({
+  const form = useForm<TResetPasswordFormSchema>({
     resolver: zodResolver(userSchema.resetPassword),
     defaultValues: {
       newPassword: "",
@@ -38,7 +38,7 @@ const ResetPasswordForm = () => {
     },
   });
 
-  const onSubmit = async (data: TResetPasswordSchema) => {
+  const onSubmit = async (data: TResetPasswordFormSchema) => {
     const parsedData = userSchema.resetPasswordTransformed.parse(data);
     const response = await userApi.resetPassword({
       data: parsedData,

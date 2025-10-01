@@ -2,12 +2,12 @@
 
 import { INote } from "@/lib/types";
 import { NOTE_ACTION } from "@/lib/types/enums";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import useOrganizeItems from "../../_hooks/useOrganizeItems";
 import InteractiveNote from "../card/InteractiveNote";
 import ArchiveNoteDialog from "../dialog/ArchiveNoteDialog";
 import EditNote from "../dialog/EditNoteDialog";
-import MoveNoteToTrash from "../dialog/MoveNoteToTrashDialog";
+import MoveNoteToBin from "../dialog/MoveNoteToBinDialog";
 import UnarchiveNoteDialog from "../dialog/UnarchiveNoteDialog";
 
 type Props = {
@@ -17,7 +17,7 @@ type Props = {
 
 const dialogsInitialState = {
   edit: false,
-  trash: false,
+  bin: false,
   archive: false,
   unarchive: false,
 };
@@ -37,8 +37,8 @@ const OrganizedNotes = ({ notes, parentId }: Props) => {
     setSelectedNote(note);
     if (type === NOTE_ACTION.UPDATE) {
       setDialogOpen({ ...dialogsInitialState, edit: true });
-    } else if (type === NOTE_ACTION.TRASH) {
-      setDialogOpen({ ...dialogsInitialState, trash: true });
+    } else if (type === NOTE_ACTION.BIN) {
+      setDialogOpen({ ...dialogsInitialState, bin: true });
     } else if (type === NOTE_ACTION.ARCHIVE) {
       setDialogOpen({ ...dialogsInitialState, archive: true });
     } else if (type === NOTE_ACTION.UNARCHIVE) {
@@ -54,7 +54,7 @@ const OrganizedNotes = ({ notes, parentId }: Props) => {
   };
 
   const renderNotes = useMemo(() => {
-    const organizedItems = organizedList.map((list, idx) => (
+    return organizedList.map((list, idx) => (
       <div className="flex flex-1 flex-col gap-4" key={idx}>
         {list.map((note) => (
           <InteractiveNote
@@ -66,9 +66,7 @@ const OrganizedNotes = ({ notes, parentId }: Props) => {
         ))}
       </div>
     ));
-
-    return organizedItems;
-  }, [organizedList]);
+  }, [organizedList, availableItemWidth, handleNoteClick]);
 
   return (
     <>
@@ -83,10 +81,10 @@ const OrganizedNotes = ({ notes, parentId }: Props) => {
         />
       )}
 
-      {selectedNote && dialogOpen.trash && (
-        <MoveNoteToTrash
+      {selectedNote && dialogOpen.bin && (
+        <MoveNoteToBin
           note={selectedNote}
-          open={dialogOpen.trash}
+          open={dialogOpen.bin}
           onOpenChange={handleCloseDialog}
         />
       )}
@@ -110,4 +108,4 @@ const OrganizedNotes = ({ notes, parentId }: Props) => {
   );
 };
 
-export default OrganizedNotes;
+export default React.memo(OrganizedNotes);

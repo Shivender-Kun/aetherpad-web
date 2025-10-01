@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { userApi } from "@/lib/api";
-import { TRegisterUserSchema, userSchema } from "@/lib/schemas";
+import { TRegisterUserFormSchema, userSchema } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, User } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -30,7 +30,7 @@ const SignupForm = () => {
   const imageInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
-  const form = useForm<TRegisterUserSchema>({
+  const form = useForm<TRegisterUserFormSchema>({
     resolver: zodResolver(userSchema.register),
     defaultValues: {
       email: "",
@@ -52,7 +52,7 @@ const SignupForm = () => {
     );
   };
 
-  const onSubmit = async (data: TRegisterUserSchema) => {
+  const onSubmit = async (data: TRegisterUserFormSchema) => {
     const response = await userApi.signup({ data, setIsLoading });
     if (response?.status === 201) router.push("/signin");
   };

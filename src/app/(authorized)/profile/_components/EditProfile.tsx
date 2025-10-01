@@ -19,8 +19,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { TUpdateUserSchema, userSchema } from "@/lib/schemas";
-import { IUserDetails } from "@/lib/types";
+import { TUpdateUserFormSchema, userSchema } from "@/lib/schemas";
+import { IUser } from "@/lib/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { updateUser } from "@/store/slices/user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +29,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const EditProfile = ({ user }: { user: IUserDetails }) => {
+const EditProfile = ({ user }: { user: IUser }) => {
   const [profileImageUrl, setProfileImageUrl] = useState(
     () => user.profilePicture || "",
   );
@@ -40,7 +40,7 @@ const EditProfile = ({ user }: { user: IUserDetails }) => {
   const { status } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
-  const form = useForm<TUpdateUserSchema>({
+  const form = useForm<TUpdateUserFormSchema>({
     resolver: zodResolver(userSchema.update),
     defaultValues: {
       username: user.username,
@@ -61,7 +61,7 @@ const EditProfile = ({ user }: { user: IUserDetails }) => {
     }
   };
 
-  const onSubmit = async (data: TUpdateUserSchema) => {
+  const onSubmit = async (data: TUpdateUserFormSchema) => {
     const parsedData = userSchema.updateParsed.parse(data);
 
     try {

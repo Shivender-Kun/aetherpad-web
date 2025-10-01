@@ -2,7 +2,7 @@
 
 import { PageHeader, PageWrapper } from "@/app/(authorized)/_components/page";
 import { useState } from "react";
-import FilteredSearch from "../_components/FilteredSearch";
+import FilteredSearch from "../_components/filter/FilteredSearch";
 import useFetchNotes from "../_hooks/useFetchNotes";
 import ArchivedNotes from "./_components/ArchivedNotes";
 

@@ -1,11 +1,11 @@
 import { API } from "@/constants/server";
 import { withSecureApiHandler } from "@/lib/middlewares/withSecureApiHandler";
-import { notesSchema, TUpdateNoteSchemaInput } from "@/lib/schemas";
+import { noteSchema, TUpdateNoteSchema } from "@/lib/schemas";
 import { NOTE_ACTION } from "@/lib/types/enums";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
-/**  Get notes by slug as noteType - active, archived, deleted */
+/**  Get notes by slug as noteType - active, archived, binned */
 export const GET = async (
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> },
@@ -24,7 +24,7 @@ export const PATCH = async (
   req: NextRequest,
   { params }: { params: Promise<{ slug: string }> },
 ) =>
-  withSecureApiHandler<TUpdateNoteSchemaInput>(
+  withSecureApiHandler<TUpdateNoteSchema>(
     async (headers, payload) => {
       const { slug } = await params;
       const response = await axios.patch(
@@ -36,7 +36,7 @@ export const PATCH = async (
       return NextResponse.json(data, { status });
     },
     req,
-    notesSchema.updateInput,
+    noteSchema.update,
   );
 
 // Delete note permanently by slug as noteId

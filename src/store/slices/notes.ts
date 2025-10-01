@@ -1,14 +1,15 @@
 import { API } from "@/constants/frontend";
 import axiosInstance from "@/lib/api/setupAxios";
-import { TCreateNoteSchemaInput } from "@/lib/schemas";
+import { TCreateNoteSchema, TUpdateNoteSchema } from "@/lib/schemas";
 import {
+  ActionId,
   ILabel,
   INote,
-  INoteUpdate,
-  INoteUpdateLocal,
+  INoteFilterQuery,
+  IPaginationQuery,
   PaginatedData,
 } from "@/lib/types";
-import { NOTE_ACTION } from "@/lib/types/enums";
+import { NOTE_ACTION, NOTE_STATUS } from "@/lib/types/enums";
 import { ErrorPayload } from "@/lib/types/store";
 import errorProcessor from "@/lib/utils/errorProcessor";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -20,8 +21,6 @@ type UpdatableNoteAction = Exclude<
   NOTE_ACTION,
   NOTE_ACTION.ADD | NOTE_ACTION.DELETE
 >;
-
-type ActionId = { actionId: string };
 
 /** State structure for notes data */
 type DataState = {
@@ -51,8 +50,8 @@ type PinnedData = {
 export interface NotesState {
   /** State for archived notes */
   archived: DataState;
-  /** State for deleted notes */
-  deleted: DataState;
+  /** State for binned notes */
+  binned: DataState;
   /** State for pinned notes */
   pinned: PinnedData;
   /** State for unpinned notes */
@@ -68,7 +67,7 @@ export interface NotesState {
   };
 
   updateMap: Record<string, { prev: INote; next: INote }>;
-  deleteMap: Record<string, INote>;
+  binnedMap: Record<string, INote>;
   addMap: Record<string, INote>;
 }
 
@@ -87,7 +86,7 @@ const initialState: NotesState = {
   pinned: { ...initialDataState, data: { list: [] } },
   unpinned: { ...initialDataState },
   archived: { ...initialDataState },
-  deleted: { ...initialDataState },
+  binned: { ...initialDataState },
   actionStatus: {
     add: "idle",
     update: "idle",
@@ -95,20 +94,16 @@ const initialState: NotesState = {
   },
   addMap: {},
   updateMap: {},
-  deleteMap: {},
+  binnedMap: {},
 };
 
-/** Parameters for fetching notes */
-type FetchNotesParams = {
-  /* Optional page number for pagination */
-  page?: number;
-  /* Optional number of items per page */
-  limit?: number;
-  /* Optional search query string */
-  search?: string;
-  /* Optional comma-separated labels for filtering */
-  labels?: string;
-};
+/** Optional parameters for fetching notes
+ * - page: number
+ * - limit: number
+ * - labels: string
+ * - search: string
+ */
+type FetchNotesParams = IPaginationQuery & INoteFilterQuery;
 
 const fetchNotes = <T>(name: string, type: string) =>
   createAsyncThunk<T, undefined | FetchNotesParams>(
@@ -143,13 +138,13 @@ export const fetchArchived = fetchNotes<PaginatedData<INote>>(
   "archived",
 );
 
-/** Fetch deleted notes */
-export const fetchDeleted = fetchNotes<PaginatedData<INote>>(
-  "notes/fetchDeleted",
-  "deleted",
+/** Fetch binned notes */
+export const fetchBinned = fetchNotes<PaginatedData<INote>>(
+  "notes/fetchBinned",
+  "binned",
 );
 
-type AddNotePayload = TCreateNoteSchemaInput & ActionId;
+type AddNotePayload = TCreateNoteSchema & ActionId;
 
 /** Add new note */
 export const addNote = createAsyncThunk<INote & ActionId, AddNotePayload>(
@@ -194,7 +189,7 @@ type NoteActionParams = {
   /** Action on the note */
   action: UpdatableNoteAction;
   /** Optional note data if updating */
-  data?: Partial<INoteUpdate>;
+  data?: Partial<TUpdateNoteSchema>;
 };
 
 type NoteActionRejection = ErrorPayload & {
@@ -222,7 +217,7 @@ const noteAction = (name = "note/update") =>
 
 export const updateNote = noteAction("note/update");
 
-export const moveToTrash = noteAction("note/moveToTrash");
+export const moveToBin = noteAction("note/moveToBin");
 
 /** Removes specific note from the pinned list, takes redux state and note id as params */
 const removeFromPinned = (state: NotesState, id: string) => {
@@ -239,9 +234,9 @@ const removeFromArchived = (state: NotesState, id: string) => {
   return state.archived.data.list.filter((item) => item._id !== id);
 };
 
-/** Removes specific note from the trash list, takes redux state and note id as params */
-const removeFromTrash = (state: NotesState, id: string) => {
-  return state.deleted.data.list.filter((item) => item._id !== id);
+/** Removes specific note from the bin list, takes redux state and note id as params */
+const removeFromBin = (state: NotesState, id: string) => {
+  return state.binned.data.list.filter((item) => item._id !== id);
 };
 
 type OptimisticUpdatePayload = PayloadAction<{
@@ -254,7 +249,7 @@ type OptimisticUpdatePayload = PayloadAction<{
    * - UNARCHIVE
    * - PIN
    * - UNPIN
-   * - TRASH
+   * - BIN
    * - RESTORE
    * - UPDATE
    * - BACKGROUND
@@ -263,7 +258,7 @@ type OptimisticUpdatePayload = PayloadAction<{
   /** Original data of selected note  */
   note: INote;
   /** Updated data of the selected note */
-  data?: Partial<INoteUpdateLocal>;
+  data?: Partial<INote>;
 }>;
 
 type OptimisticDeletePayload = PayloadAction<{
@@ -272,7 +267,7 @@ type OptimisticDeletePayload = PayloadAction<{
 
 type OptimisticAddPayload = PayloadAction<
   {
-    note: TCreateNoteSchemaInput & { _id: string };
+    note: TCreateNoteSchema & { _id: string };
     labels: ILabel[];
   } & ActionId
 >;
@@ -297,10 +292,10 @@ const notesSlice = createSlice({
       state.archived.data = action.payload;
       state.archived.initialized = true;
     },
-    /** Hydrate deleted notes state with provided data */
-    hydrateDeleted(state, action: PayloadAction<PaginatedData<INote>>) {
-      state.deleted.data = action.payload;
-      state.deleted.initialized = true;
+    /** Hydrate binned notes state with provided data */
+    hydrateBinned(state, action: PayloadAction<PaginatedData<INote>>) {
+      state.binned.data = action.payload;
+      state.binned.initialized = true;
     },
     /** Optimistically update note */
     optimisticNoteUpdate(state, action: OptimisticUpdatePayload) {
@@ -328,81 +323,63 @@ const notesSlice = createSlice({
             handleOptimisticNoteUpdate,
           );
         }
-      } else if (noteAction === NOTE_ACTION.PIN) {
+      }
+
+      if (noteAction === NOTE_ACTION.PIN) {
         const next = { ...note, isPinned: true };
-        state.updateMap[actionId] = {
-          prev: note,
-          next,
-        };
+        state.updateMap[actionId] = { prev: note, next };
         state.unpinned.data.list = removeFromUnpinned(state, note._id);
         state.pinned.data.list.unshift(next);
-      } else if (noteAction === NOTE_ACTION.UNPIN) {
+      }
+
+      if (noteAction === NOTE_ACTION.UNPIN) {
         const next = { ...note, isPinned: false };
-        state.updateMap[actionId] = {
-          prev: note,
-          next,
-        };
+        state.updateMap[actionId] = { prev: note, next };
         state.pinned.data.list = removeFromPinned(state, note._id);
         state.unpinned.data.list.unshift(next);
-      } else if (noteAction === NOTE_ACTION.ARCHIVE) {
-        const next = { ...note, isArchived: true };
-        state.updateMap[actionId] = {
-          prev: note,
-          next,
-        };
+      }
+
+      if (noteAction === NOTE_ACTION.ARCHIVE) {
+        const next = { ...note, status: NOTE_STATUS.ARCHIVED };
+        state.updateMap[actionId] = { prev: note, next };
 
         if (note.isPinned) {
           state.pinned.data.list = removeFromPinned(state, note._id);
         } else {
           state.unpinned.data.list = removeFromUnpinned(state, note._id);
         }
-      } else if (noteAction === NOTE_ACTION.UNARCHIVE) {
-        const next = { ...note, isArchived: false };
-        state.updateMap[actionId] = {
-          prev: note,
-          next,
-        };
+      }
 
+      if (noteAction === NOTE_ACTION.UNARCHIVE) {
+        const next = { ...note, status: NOTE_STATUS.ACTIVE };
+        state.updateMap[actionId] = { prev: note, next };
         state.archived.data.list = removeFromArchived(state, note._id);
-      } else if (noteAction === NOTE_ACTION.TRASH) {
-        const next = {
-          ...note,
-          isArchived: false,
-          isPinned: false,
-          isDeleted: true,
-        };
-        state.updateMap[actionId] = {
-          prev: note,
-          next,
-        };
+      }
 
-        if (note.isArchived) {
+      if (noteAction === NOTE_ACTION.BIN) {
+        const next = { ...note, status: NOTE_STATUS.BINNED };
+        state.updateMap[actionId] = { prev: note, next };
+
+        if (note.status === NOTE_STATUS.ARCHIVED) {
           state.archived.data.list = removeFromArchived(state, note._id);
         } else if (note.isPinned) {
           state.pinned.data.list = removeFromPinned(state, note._id);
         } else {
           state.unpinned.data.list = removeFromUnpinned(state, note._id);
         }
-      } else if (noteAction === NOTE_ACTION.RESTORE) {
-        const next = {
-          ...note,
-          isArchived: false,
-          isPinned: false,
-          isDeleted: false,
-        };
-        state.updateMap[actionId] = {
-          prev: note,
-          next,
-        };
+      }
 
-        state.deleted.data.list = removeFromTrash(state, note._id);
+      if (noteAction === NOTE_ACTION.RESTORE) {
+        const next = { ...note, status: NOTE_STATUS.ACTIVE };
+        state.updateMap[actionId] = { prev: note, next };
+        state.binned.data.list = removeFromBin(state, note._id);
       }
     },
     /** Optimistically delete note */
     optimisticNoteDelete(state, action: OptimisticDeletePayload) {
       const { note } = action.payload;
-      state.deleteMap[note._id] = note;
-      state.deleted.data.list = removeFromTrash(state, note._id);
+      state.binnedMap[note._id] = note;
+      state.binned.data.list = removeFromBin(state, note._id);
     },
     /** Optimistically add note */
     optimisticNoteAdd(state, action: OptimisticAddPayload) {
@@ -412,6 +389,7 @@ const notesSlice = createSlice({
         _id: actionId,
         isPinned: false,
         labels,
+        status: NOTE_STATUS.ACTIVE,
       };
       state.addMap[note._id] = payload;
       state.unpinned.data.list.unshift(payload);
@@ -470,27 +448,27 @@ const notesSlice = createSlice({
       .addCase(fetchArchived.rejected, (state) => {
         state.archived.status = "failed";
       })
-      // Deleted List
-      .addCase(fetchDeleted.pending, (state) => {
-        state.deleted.status = "loading";
+      // Binned List
+      .addCase(fetchBinned.pending, (state) => {
+        state.binned.status = "loading";
       })
-      .addCase(fetchDeleted.fulfilled, (state, action) => {
+      .addCase(fetchBinned.fulfilled, (state, action) => {
         const { page, list, hasMore, limit } = action.payload;
 
         if (page > 1) {
-          state.deleted.data = {
-            list: [...state.deleted.data.list, ...list],
+          state.binned.data = {
+            list: [...state.binned.data.list, ...list],
             page,
             limit,
             hasMore,
           };
         } else {
-          state.deleted.data = action.payload;
+          state.binned.data = action.payload;
         }
-        state.deleted.status = "succeeded";
+        state.binned.status = "succeeded";
       })
-      .addCase(fetchDeleted.rejected, (state) => {
-        state.deleted.status = "failed";
+      .addCase(fetchBinned.rejected, (state) => {
+        state.binned.status = "failed";
       })
       // Add
       .addCase(addNote.pending, (state) => {
@@ -562,33 +540,45 @@ const notesSlice = createSlice({
               handleRejectedNoteRollback,
             );
           }
-        } else if (noteAction === NOTE_ACTION.PIN) {
+        }
+
+        if (noteAction === NOTE_ACTION.PIN) {
           state.unpinned.data.list.unshift(savedNoteCopy);
           state.pinned.data.list = removeFromPinned(state, savedNoteCopy._id);
-        } else if (noteAction === NOTE_ACTION.UNPIN) {
+        }
+
+        if (noteAction === NOTE_ACTION.UNPIN) {
           state.pinned.data.list.unshift(savedNoteCopy);
           state.unpinned.data.list = removeFromUnpinned(
             state,
             savedNoteCopy._id,
           );
-        } else if (noteAction === NOTE_ACTION.ARCHIVE) {
+        }
+
+        if (noteAction === NOTE_ACTION.ARCHIVE) {
           if (savedNoteCopy.isPinned) {
             state.pinned.data.list.unshift(savedNoteCopy);
           } else {
             state.unpinned.data.list.unshift(savedNoteCopy);
           }
-        } else if (noteAction === NOTE_ACTION.UNARCHIVE) {
+        }
+
+        if (noteAction === NOTE_ACTION.UNARCHIVE) {
           state.archived.data.list.unshift(savedNoteCopy);
-        } else if (noteAction === NOTE_ACTION.TRASH) {
-          if (savedNoteCopy.isArchived) {
+        }
+
+        if (noteAction === NOTE_ACTION.BIN) {
+          if (savedNoteCopy.status === NOTE_STATUS.ARCHIVED) {
             state.archived.data.list.unshift(savedNoteCopy);
           } else if (savedNoteCopy.isPinned) {
             state.pinned.data.list.unshift(savedNoteCopy);
           } else {
             state.unpinned.data.list.unshift(savedNoteCopy);
           }
-        } else if (noteAction === NOTE_ACTION.RESTORE) {
-          state.deleted.data.list.unshift(savedNoteCopy);
+        }
+
+        if (noteAction === NOTE_ACTION.RESTORE) {
+          state.binned.data.list.unshift(savedNoteCopy);
         }
 
         state.actionStatus.update = "failed";
@@ -607,22 +597,22 @@ const notesSlice = createSlice({
       .addCase(deleteNote.rejected, (state, action) => {
         const { id } = action.payload as ErrorPayload & { id: string };
         state.actionStatus.delete = "failed";
-        state.deleted.data.list.unshift(state.deleteMap[id]);
-        delete state.deleteMap[id];
+        state.binned.data.list.unshift(state.binnedMap[id]);
+        delete state.binnedMap[id];
       })
       .addCase(deleteNote.fulfilled, (state, action) => {
-        state.deleted.data.list = state.deleted.data.list.filter(
+        state.binned.data.list = state.binned.data.list.filter(
           (note) => note._id !== action.payload._id,
         );
         state.actionStatus.delete = "succeeded";
-        delete state.deleteMap[action.payload._id];
+        delete state.binnedMap[action.payload._id];
       });
   },
 });
 
 export const {
   hydrateArchived,
-  hydrateDeleted,
+  hydrateBinned,
   hydratePinned,
   hydrateUnpinned,
   optimisticNoteUpdate,

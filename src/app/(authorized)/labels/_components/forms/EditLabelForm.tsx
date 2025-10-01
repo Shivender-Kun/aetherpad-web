@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { labelsSchema, TUpdateLabelSchema } from "@/lib/schemas";
+import { labelSchema, TUpdateLabelSchema } from "@/lib/schemas";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { optimisticUpdateLabel, updateLabel } from "@/store/slices/labels";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +27,7 @@ const EditLabelForm = ({ label, setDialogOpen }: Props) => {
   const dispatch = useAppDispatch();
 
   const form = useForm<TUpdateLabelSchema>({
-    resolver: zodResolver(labelsSchema.update),
+    resolver: zodResolver(labelSchema.update),
     defaultValues: { name: label.name },
   });
 

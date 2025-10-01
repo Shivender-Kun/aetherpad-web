@@ -41,7 +41,7 @@ const Features = () => {
         <FeatureCard
           icon={<Trash2Icon size={28} className="text-red-500" />}
           title="Recovery Bin"
-          description="Recover deleted notes before they’re gone for good with our safety net."
+          description="Recover binned notes before they’re gone for good with our safety net."
         />
         <FeatureCard
           icon={<SearchIcon size={28} className="text-red-500" />}
