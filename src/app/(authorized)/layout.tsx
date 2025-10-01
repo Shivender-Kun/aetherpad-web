@@ -2,18 +2,12 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { labelsServerApi, userServerApi } from "@/lib/api";
 import { ILabel, IUser, PaginatedData } from "@/lib/types";
 import isSidebarOpen from "@/lib/utils/isSidebarOpen";
-import isUserAuthenticated from "@/lib/utils/isUserAuthenticated";
-import { redirect } from "next/navigation";
 import { ReactNode } from "react";
-import ConnectionStatusBanner from "./_components/ConnectionStatusBanner";
 import { LayoutHydrator } from "./_components/LayoutHydrator";
 import Header from "./_components/layout/Header";
 import Sidebar from "./_components/layout/Sidebar";
 
 export default async function Layout({ children }: { children: ReactNode }) {
-  const isUserValid = await isUserAuthenticated();
-  if (!isUserValid) redirect("/signin");
-
   const [user, labels, sidebarOpen]: [
     user: IUser,
     labels: PaginatedData<ILabel>,
@@ -40,7 +34,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
           </SidebarInset>
         </div>
       </SidebarProvider>
-      <ConnectionStatusBanner />
+      {/* <ConnectionStatusBanner /> */}
     </>
   );
 }

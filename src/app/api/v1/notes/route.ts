@@ -1,6 +1,6 @@
 import { API } from "@/constants/server";
 import { withSecureApiHandler } from "@/lib/middlewares/withSecureApiHandler";
-import { notesSchema, TCreateNoteSchemaInput } from "@/lib/schemas";
+import { noteSchema, TCreateNoteSchema } from "@/lib/schemas";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -14,12 +14,12 @@ export const GET = async (req: NextRequest) =>
   }, req);
 
 export const POST = async (req: NextRequest) =>
-  withSecureApiHandler<TCreateNoteSchemaInput>(
+  withSecureApiHandler<TCreateNoteSchema>(
     async (headers, payload) => {
       const response = await axios.post(API.NOTES.ADD, payload, { headers });
       const { data, status } = response;
       return NextResponse.json(data, { status });
     },
     req,
-    notesSchema.createInput,
+    noteSchema.create,
   );

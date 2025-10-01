@@ -1,13 +1,13 @@
 import { API } from "@/constants/frontend";
 import axiosInstance from "@/lib/api/setupAxios";
-import { TUpdateUserSchemaParsed } from "@/lib/schemas";
-import { IUserDetails } from "@/lib/types";
+import { TUpdateUserSchema } from "@/lib/schemas";
+import { IUser } from "@/lib/types";
 import { ErrorPayload, ResponseState } from "@/lib/types/store";
 import errorProcessor from "@/lib/utils/errorProcessor";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export interface UserState {
-  data: IUserDetails | null;
+  data: IUser | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error?: string;
   initialized: boolean;
@@ -19,11 +19,11 @@ const initialState: UserState = {
   initialized: false,
 };
 
-type T = { data: IUserDetails };
+type T = { data: IUser };
 
 export const updateUser = createAsyncThunk<
   ResponseState<T>,
-  TUpdateUserSchemaParsed,
+  TUpdateUserSchema,
   { rejectValue: ErrorPayload }
 >("user/updateUser", async (payload, { rejectWithValue }) => {
   try {

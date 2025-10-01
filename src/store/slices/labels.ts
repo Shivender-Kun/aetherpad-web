@@ -1,12 +1,22 @@
+import { MAX_LABELS_PER_USER } from "@/constants/dataLimits";
 import { API } from "@/constants/frontend";
 import axiosInstance from "@/lib/api/setupAxios";
 import { TCreateLabelSchema } from "@/lib/schemas";
-import { ILabel, PaginatedData } from "@/lib/types";
+import { ActionId, ILabel, IPaginationQuery, PaginatedData } from "@/lib/types";
 import { ErrorPayload, ResponseState } from "@/lib/types/store";
 import errorProcessor from "@/lib/utils/errorProcessor";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface LabelsState {
+/** Initial State of labels reducer
+ * - data: PaginatedData<ILabel>
+ * - status: "idle" | "loading" | "succeeded" | "failed"
+ * - error?: string
+ * - initialized: boolean
+ * - addMap: Record<string, ILabel>
+ * - updateMap: Record<string, { prev: ILabel; next: ILabel }>
+ * - deleteMap: Record<string, ILabel>
+ */
+interface LabelsState {
   data: PaginatedData<ILabel>;
   status: "idle" | "loading" | "succeeded" | "failed";
   error?: string;
@@ -30,12 +40,13 @@ const initialState: LabelsState = {
   deleteMap: {},
 };
 
-type ActionId = { actionId: string };
-
 export const fetchLabels = createAsyncThunk<
   PaginatedData<ILabel>,
-  undefined | string
->("labels/fetchLabels", async (query = "", { rejectWithValue }) => {
+  undefined | IPaginationQuery
+>("labels/fetchLabels", async (props, { rejectWithValue }) => {
+  const { page = 1, limit = MAX_LABELS_PER_USER } = props || {};
+  const query = `page=${page}&limit=${limit}`;
+
   try {
     const response = await axiosInstance.get(`${API.LABELS.GET_LIST}?${query}`);
     return response.data;
@@ -44,10 +55,13 @@ export const fetchLabels = createAsyncThunk<
   }
 });
 
+type ActionableResponseState = ResponseState<{ data: ILabel } & ActionId>;
+type ActionableRejectValue = ErrorPayload & ActionId;
+
 export const addLabel = createAsyncThunk<
-  ResponseState<{ data: ILabel } & ActionId>,
+  ActionableResponseState,
   TCreateLabelSchema & ActionId,
-  { rejectValue: ErrorPayload & ActionId }
+  { rejectValue: ActionableRejectValue }
 >("labels/addlabel", async (props, { rejectWithValue }) => {
   const { name, actionId } = props;
   try {
@@ -59,9 +73,9 @@ export const addLabel = createAsyncThunk<
 });
 
 export const deleteLabel = createAsyncThunk<
-  ResponseState<{ data: ILabel } & ActionId>,
+  ActionableResponseState,
   { id: string } & ActionId,
-  { rejectValue: ErrorPayload & ActionId }
+  { rejectValue: ActionableRejectValue }
 >("labels/deleteLabel", async (props, { rejectWithValue }) => {
   const { actionId, id } = props;
   try {
@@ -73,9 +87,9 @@ export const deleteLabel = createAsyncThunk<
 });
 
 export const updateLabel = createAsyncThunk<
-  ResponseState<{ data: ILabel } & ActionId>,
+  ActionableResponseState,
   { label: ILabel } & ActionId,
-  { rejectValue: ErrorPayload & ActionId }
+  { rejectValue: ActionableRejectValue }
 >("labels/updateLabel", async (props, { rejectWithValue }) => {
   const {
     actionId,
@@ -91,16 +105,11 @@ export const updateLabel = createAsyncThunk<
   }
 });
 
-type OptimisticAddAction = PayloadAction<{ actionId: string; name: string }>;
-type OptimisticUpdateAction = PayloadAction<{
-  actionId: string;
-  label: ILabel;
-  updatedName: string;
-}>;
-type OptimisticDeleteAction = PayloadAction<{
-  actionId: string;
-  label: ILabel;
-}>;
+type OptimisticAddAction = PayloadAction<{ name: string } & ActionId>;
+type OptimisticUpdateAction = PayloadAction<
+  { label: ILabel; updatedName: string } & ActionId
+>;
+type OptimisticDeleteAction = PayloadAction<{ label: ILabel } & ActionId>;
 
 const labelsSlice = createSlice({
   name: "labels",

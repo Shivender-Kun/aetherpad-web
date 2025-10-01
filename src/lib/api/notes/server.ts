@@ -60,17 +60,17 @@ const fetchInitalArchivedNotes = (
     type: "archived",
   });
 
-const fetchInitalDeletedNotes = (
+const fetchInitalBinnedNotes = (
   cookieHeader: string | null,
   props?: FetchNotesParams,
 ) =>
   fetchNotes<FetchInactiveNotesResponse>(cookieHeader, {
     ...props,
-    type: "deleted",
+    type: "binned",
   });
 
 export default {
   fetchInitalActiveNotes,
   fetchInitalArchivedNotes,
-  fetchInitalDeletedNotes,
+  fetchInitalBinnedNotes,
 };

@@ -1,13 +1,7 @@
-import { JWT_SECRET } from "@/constants/server";
-import jwt from "jsonwebtoken";
-import CookieHandler from "../utils/server/cookieHandler";
+import { auth } from "@/auth";
 
 export async function withAuth() {
-  const cookieStore = new CookieHandler();
-  const token = await cookieStore.get("auth_token");
-  if (!token) throw new Error("Unauthorized", { cause: 401 });
-
-  const validatedAuth = jwt.verify(token, JWT_SECRET!);
-
-  return validatedAuth;
+  const session = await auth();
+  if (!session) throw new Error("Unauthorized", { cause: 401 });
+  return session.user;
 }

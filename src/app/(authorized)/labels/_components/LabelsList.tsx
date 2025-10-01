@@ -155,7 +155,7 @@ const LabelsTable = ({
   const renderEmptyTable = (
     <TableRow className="max-w-80 rounded-md border p-4">
       <TableCell className="p-2 text-lg" colSpan={3}>
-        <div className="flex flex-col items-center justify-center gap-4">
+        <div className="flex flex-col items-center justify-center gap-4 p-6">
           <p className="text-center">
             Bring order to your thoughts.
             <br />

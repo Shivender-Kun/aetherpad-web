@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 type Props = React.AllHTMLAttributes<HTMLButtonElement> & {
   icon: React.ComponentType<{ className?: string }>;
   disabledReason?: string;
+  tooltipClassName?: string;
 };
 
 const ActionButton = ({
@@ -14,6 +15,7 @@ const ActionButton = ({
   icon,
   disabled,
   disabledReason,
+  tooltipClassName = "bottom-11",
 }: Props) => {
   const Icon = icon;
 
@@ -33,7 +35,12 @@ const ActionButton = ({
     >
       <Icon />
 
-      <span className="tooltip bg-secondary text-primary animate-in pointer-events-none absolute top-11 z-20 rounded-lg border px-2 py-1 text-[10px] opacity-0 duration-500 ease-in-out">
+      <span
+        className={cn(
+          "tooltip bg-secondary text-primary animate-in pointer-events-none absolute z-20 rounded-lg border px-2 py-1 text-[10px] opacity-0 duration-500 ease-in-out",
+          tooltipClassName,
+        )}
+      >
         {disabled ? disabledReason : title}
       </span>
     </Button>

@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { labelsSchema, TCreateLabelSchema } from "@/lib/schemas";
+import { labelSchema, TCreateLabelSchema } from "@/lib/schemas";
 import { useAppDispatch } from "@/store/hooks";
 import { addLabel, optimisticAddLabel } from "@/store/slices/labels";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,7 +27,7 @@ const AddLabelForm = ({
   const dispatch = useAppDispatch();
 
   const form = useForm<TCreateLabelSchema>({
-    resolver: zodResolver(labelsSchema.create),
+    resolver: zodResolver(labelSchema.create),
     defaultValues: { name: "" },
   });
 

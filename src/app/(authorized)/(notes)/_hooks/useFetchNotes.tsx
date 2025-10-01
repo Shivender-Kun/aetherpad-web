@@ -1,11 +1,11 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { fetchActive, fetchArchived, fetchDeleted } from "@/store/slices/notes";
+import { fetchActive, fetchArchived, fetchBinned } from "@/store/slices/notes";
 import { useCallback, useEffect } from "react";
 import useDebounce from "./useDebounce";
 
 type Props = {
   filter: { search: string; labels: string };
-  type: "unpinned" | "archived" | "deleted";
+  type: "unpinned" | "archived" | "binned";
 };
 
 const useFetchNotes = ({ filter, type }: Props) => {
@@ -16,13 +16,13 @@ const useFetchNotes = ({ filter, type }: Props) => {
     const payload = { ...filter, page };
 
     if (type === "archived") return dispatch(fetchArchived(payload));
-    else if (type === "deleted") return dispatch(fetchDeleted(payload));
+    else if (type === "binned") return dispatch(fetchBinned(payload));
     else return dispatch(fetchActive(payload));
   };
 
   const loadMore = useCallback(
     () => fetch(notes[type].data.page + 1),
-    [dispatch, notes[type].data.page, filter],
+    [notes[type].data.page],
   );
 
   const filterNotes = useDebounce(async () => fetch(), 1000);

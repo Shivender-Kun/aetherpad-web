@@ -8,7 +8,7 @@ type ACTIONS = Exclude<NOTE_ACTION, "DELETE" | "UPDATE" | "ADD">;
 
 const actions = [
   "background",
-  "trash",
+  "bin",
   "archive",
   "unarchive",
   "pin",

@@ -4,7 +4,7 @@ import { INote, PaginatedData } from "@/lib/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   hydrateArchived,
-  hydrateDeleted,
+  hydrateBinned,
   hydratePinned,
   hydrateUnpinned,
 } from "@/store/slices/notes";
@@ -14,20 +14,20 @@ interface NotesHydratorProps {
   pinned?: INote[];
   unpinned?: PaginatedData<INote>;
   archived?: PaginatedData<INote>;
-  deleted?: PaginatedData<INote>;
+  binned?: PaginatedData<INote>;
 }
 
 export function NotesHydrator({
   pinned,
   unpinned,
   archived,
-  deleted,
+  binned,
 }: NotesHydratorProps) {
   const {
     pinned: { initialized: initializedPinned },
     unpinned: { initialized: initializedUnpinned },
     archived: { initialized: initializedArchived },
-    deleted: { initialized: initializedDeleted },
+    binned: { initialized: initializedBinned },
   } = useAppSelector((state) => state.notes);
 
   const dispatch = useAppDispatch();
@@ -36,17 +36,17 @@ export function NotesHydrator({
     if (pinned && !initializedPinned) dispatch(hydratePinned(pinned));
     if (unpinned && !initializedUnpinned) dispatch(hydrateUnpinned(unpinned));
     if (archived && !initializedArchived) dispatch(hydrateArchived(archived));
-    if (deleted && !initializedDeleted) dispatch(hydrateDeleted(deleted));
+    if (binned && !initializedBinned) dispatch(hydrateBinned(binned));
   }, [
     dispatch,
     pinned,
     unpinned,
     archived,
-    deleted,
+    binned,
     initializedPinned,
     initializedUnpinned,
     initializedArchived,
-    initializedDeleted,
+    initializedBinned,
   ]);
 
   return null;

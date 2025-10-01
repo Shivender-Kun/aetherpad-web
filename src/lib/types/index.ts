@@ -1,25 +1,38 @@
-export interface IUser {
-  email: string;
-  password: string;
-  coverPicture: string;
-  profilePicture: string;
-  username: string;
-  isDeleted: boolean;
-  resetPasswordToken?: string;
-  resetPasswordExpires?: number;
-  createdAt: Date;
-  updatedAt: Date;
+import { NOTE_STATUS } from "./enums";
+
+/** uuidv4 as `actionId` for actions:-
+ * - Add
+ * - Update
+ * - Delete
+ */
+export interface ActionId {
+  actionId: string;
 }
 
-export type IUserDetails = Omit<IUser, "password" | "isDeleted">;
+/** User data received from the API
+ * - email: string
+ * - username: string
+ * - coverPicture: string
+ * - profilePicture: string
+ * - createdAt: Date
+ */
+export interface IUser {
+  email: string;
+  username: string;
+  coverPicture: string;
+  profilePicture: string;
+  createdAt: Date;
+}
 
-export type IUserSignin = Pick<IUser, "email" | "password">;
-export type IUserSignup = Pick<IUser, "email" | "password" | "profilePicture">;
-export type IUserUpdate = Partial<
-  Pick<IUser, "coverPicture" | "profilePicture" | "username">
->;
-
-/** Note data received form APIs */
+/** Note data received from the API
+ * - _id: string
+ * - title: string
+ * - content: string
+ * - bgColor: string
+ * - labels: { _id: string, name: string }
+ * - isPinned: boolean
+ * - status: "active" | "archived" | "binned"
+ */
 export interface INote {
   _id: string;
   title: string;
@@ -27,30 +40,45 @@ export interface INote {
   bgColor: string;
   labels: ILabel[];
   isPinned: boolean;
-  isArchived?: boolean;
-  isDeleted?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  status: NOTE_STATUS;
 }
 
-export type INoteUpdate = Pick<INote, "title" | "content" | "bgColor"> & {
-  labels: string[];
-};
+/** Note filter query payload
+ * - labels: string | undefined
+ * - search: string | undefined
+ */
+export interface INoteFilterQuery {
+  labels?: string;
+  search?: string;
+}
 
-export type INoteUpdateLocal = Pick<
-  INote,
-  "title" | "content" | "bgColor" | "labels"
->;
-
+/** Label data received from the API
+ * - _id: string
+ * - name: string
+ */
 export interface ILabel {
   _id: string;
   name: string;
 }
 
+/** Pagination query payload
+ * - page: number | undefined
+ * - limit: number | undefined
+ */
+export interface IPaginationQuery {
+  page?: number;
+  limit?: number;
+}
+
+/** Paginated note data received from the API
+ * - list: T[], where T can be note or label
+ * - page: number
+ * - limit: number
+ * - hasMore: boolean
+ */
 export interface PaginatedData<T> {
   list: T[];
   page: number;
   limit: number;
-  // total: number;
   hasMore: boolean;
 }

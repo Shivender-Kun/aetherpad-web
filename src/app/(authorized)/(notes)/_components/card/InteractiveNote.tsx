@@ -1,15 +1,15 @@
 "use client";
 
 import { INote } from "@/lib/types";
-import { NOTE_ACTION } from "@/lib/types/enums";
+import { NOTE_ACTION, NOTE_STATUS } from "@/lib/types/enums";
 import { useAppDispatch } from "@/store/hooks";
 import { optimisticNoteUpdate, updateNote } from "@/store/slices/notes";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ArchiveUnarchiveButton from "../buttons/ArchiveUnarchiveButton";
+import TrashButton from "../buttons/BinButton";
 import PaletteButton from "../buttons/PaletteButton";
 import PinUnpinButton from "../buttons/PinUnpinButton";
-import TrashButton from "../buttons/TrashButton";
 import PaletteOptions from "../PaletteOptions";
 import NoteCard from "./Note";
 
@@ -19,7 +19,7 @@ type Props = {
   /** Note external click handler, receives action type. Actions :-
    * - Pin/Unpin
    * - Archive/Unarchive
-   * - Move to trash
+   * - Move to bin
    * - Edit Note
    */
   handleNoteClick: (type: NOTE_ACTION) => void;
@@ -35,7 +35,7 @@ const InteractiveNote = ({
   const [hoverActive, setHoverActive] = useState(false);
   const [showPalette, setShowPalette] = useState(false);
   const dispatch = useAppDispatch();
-  const { isArchived } = note;
+  const { status } = note;
 
   /** Note pin/unpin button click handler */
   const handlePinUnpinClick = (
@@ -65,7 +65,9 @@ const InteractiveNote = ({
   ) => {
     e.stopPropagation();
     handleNoteClick(
-      note.isArchived ? NOTE_ACTION.UNARCHIVE : NOTE_ACTION.ARCHIVE,
+      status === NOTE_STATUS.ARCHIVED
+        ? NOTE_ACTION.UNARCHIVE
+        : NOTE_ACTION.ARCHIVE,
     );
   };
 
@@ -77,12 +79,12 @@ const InteractiveNote = ({
     setShowPalette((prev) => !prev);
   };
 
-  /** Note trash button click handler */
+  /** Note bin button click handler */
   const handleTrashClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.stopPropagation();
-    handleNoteClick(NOTE_ACTION.TRASH);
+    handleNoteClick(NOTE_ACTION.BIN);
   };
 
   /** Note color click handler */
@@ -109,24 +111,27 @@ const InteractiveNote = ({
   };
 
   /** Note floating header options component */
-  const HeaderOptions = isArchived ? null : (
-    <PinUnpinButton isPinned={note.isPinned} onClick={handlePinUnpinClick} />
-  );
+  const HeaderOptions =
+    status === NOTE_STATUS.ARCHIVED ? null : (
+      <PinUnpinButton isPinned={note.isPinned} onClick={handlePinUnpinClick} />
+    );
 
   /** Note footer options component */
   const FooterOptions = (
     <div className="flex w-full flex-col gap-4">
       <div className="flex w-full justify-between gap-4">
         <div className="flex gap-4" onClick={(e) => e.stopPropagation()}>
-          {!isArchived && <PaletteButton onClick={handlePaletteClick} />}
+          {status !== NOTE_STATUS.ARCHIVED && (
+            <PaletteButton onClick={handlePaletteClick} />
+          )}
           <ArchiveUnarchiveButton
-            isArchived={note.isArchived!}
+            isArchived={status === NOTE_STATUS.ARCHIVED}
             onClick={handleArchiveUnarchiveClick}
           />
         </div>
         <TrashButton onClick={handleTrashClick} />
       </div>
-      {!isArchived && showPalette && (
+      {status !== NOTE_STATUS.ARCHIVED && showPalette && (
         <PaletteOptions onClick={handlePaletteColorClick} />
       )}
     </div>
@@ -143,7 +148,8 @@ const InteractiveNote = ({
       setHoverActive(false);
       setShowPalette(false);
     },
-    onClick: () => !isArchived && handleNoteClick(NOTE_ACTION.UPDATE),
+    onClick: () =>
+      status !== NOTE_STATUS.ARCHIVED && handleNoteClick(NOTE_ACTION.UPDATE),
   };
 
   return <NoteCard {...cardArgs} />;

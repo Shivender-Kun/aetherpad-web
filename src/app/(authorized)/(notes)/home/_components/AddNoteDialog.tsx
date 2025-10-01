@@ -25,7 +25,7 @@ import MultiSelectPopover, {
 } from "@/components/ui/multi-select-popover";
 import { Textarea } from "@/components/ui/textarea";
 import { MAX_LABELS_PER_NOTE } from "@/constants/dataLimits";
-import { notesSchema, TCreateNoteSchemaInput } from "@/lib/schemas";
+import { noteSchema, TCreateNoteSchema } from "@/lib/schemas";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { addNote, optimisticNoteAdd } from "@/store/slices/notes";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,8 +54,8 @@ const AddNote = () => {
   /**  Convert labelList to the format required by MultiSelect */
   const labelsOptions = getMultiSelectOptions(labelList);
 
-  const form = useForm<TCreateNoteSchemaInput>({
-    resolver: zodResolver(notesSchema.createInput),
+  const form = useForm<TCreateNoteSchema>({
+    resolver: zodResolver(noteSchema.create),
     defaultValues: { title: "", content: "", labels: [], bgColor: "default" },
   });
 
@@ -131,7 +131,7 @@ const AddNote = () => {
     setDialogOpen(open);
   };
 
-  const onSubmit = async (data: TCreateNoteSchemaInput) => {
+  const onSubmit = async (data: TCreateNoteSchema) => {
     const actionId = uuidv4();
 
     const labels = selectedLabels.map((label) => ({

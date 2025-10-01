@@ -176,9 +176,16 @@ export const MultiSelectPopover = (
     icon: Icon;
     variant?: "default" | "secondary" | "destructive" | "outline" | "ghost";
     className?: string;
+    tooltipClassName?: string;
   },
 ) => {
-  const { icon, className = "", variant = "default", title = "" } = props;
+  const {
+    icon,
+    className = "",
+    variant = "default",
+    title = "",
+    tooltipClassName = "bottom-11",
+  } = props;
   const Icon = icon;
 
   return (
@@ -192,7 +199,12 @@ export const MultiSelectPopover = (
           <Icon />
 
           {title && (
-            <span className="tooltip bg-secondary text-primary animate-in pointer-events-none absolute top-11 z-20 rounded-lg border px-2 py-1 text-[10px] opacity-0 duration-500 ease-in-out">
+            <span
+              className={cn(
+                "tooltip bg-secondary text-primary animate-in pointer-events-none absolute z-20 rounded-lg border px-2 py-1 text-[10px] opacity-0 duration-500 ease-in-out",
+                tooltipClassName,
+              )}
+            >
               {title}
             </span>
           )}

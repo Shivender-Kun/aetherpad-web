@@ -1,17 +1,18 @@
 import { API } from "@/constants/frontend";
 import {
-  TRegisterUserSchema,
-  TResetPasswordSchemaTransformed,
-  TUpdateUserSchemaParsed,
+  TRegisterUserFormSchema,
+  TResetPasswordSchema,
+  TUpdateUserSchema,
   TUserLoginSchema,
 } from "@/lib/schemas";
 import errorHandler from "@/lib/utils/errorHandler";
+import { signIn, signOut } from "next-auth/react";
 import axiosInstance from "../setupAxios";
 
 type LoadingHandler = (value: boolean) => void;
 
 type SIGNUP_PROPS = {
-  data: TRegisterUserSchema;
+  data: TRegisterUserFormSchema;
   setIsLoading: LoadingHandler;
 };
 
@@ -41,15 +42,18 @@ type SIGNIN_PROPS = {
 const signin = ({ data, setIsLoading }: SIGNIN_PROPS) => {
   return errorHandler({
     apiCall: async () => {
-      const response = await axiosInstance.post(API.USER.SIGNIN, data);
-      return response;
+      return await signIn("credentials", {
+        redirectTo: "/home",
+        redirect: false,
+        ...data,
+      });
     },
     setIsLoading,
   });
 };
 
 type UPDATE_PROFILE_PROPS = {
-  data: TUpdateUserSchemaParsed;
+  data: TUpdateUserSchema;
   setIsLoading: LoadingHandler;
 };
 
@@ -91,7 +95,7 @@ const forgotPassword = ({ email, setIsLoading }: FORGOT_PASSWORD_PROPS) => {
 };
 
 type RESET_PASSWORD_PROPS = {
-  data: TResetPasswordSchemaTransformed;
+  data: TResetPasswordSchema;
   setIsLoading: LoadingHandler;
 };
 
@@ -117,8 +121,7 @@ const deleteAccount = () => {
 const logout = () => {
   return errorHandler({
     apiCall: async () => {
-      const response = await axiosInstance.post(API.USER.LOGOUT);
-      if (response.status === 200) window.location.href = "/signin";
+      return await signOut();
     },
   });
 };

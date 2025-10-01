@@ -19,18 +19,18 @@ const API_ENDPOINTS = (BASE_URL = "/api/v1") => ({
 
   // NOTE API ENDPOINTS
   NOTES: {
+    GET_LIST: `${BASE_URL}/notes`,
+    GET: (type: string) => `${BASE_URL}/notes/${type}`,
     ADD: `${BASE_URL}/notes`,
     UPDATE: (id: string) => `${BASE_URL}/notes/${id}`,
     DELETE: (id: string) => `${BASE_URL}/notes/${id}`,
-    TRASH: (id: string) => `${BASE_URL}/notes/${id}/trash`,
+    BIN: (id: string) => `${BASE_URL}/notes/${id}/bin`,
     BACKGROUND: (id: string) => `${BASE_URL}/notes/${id}/background`,
     ARCHIVE: (id: string) => `${BASE_URL}/notes/${id}/archive`,
     UNARCHIVE: (id: string) => `${BASE_URL}/notes/${id}/unarchive`,
     PIN: (id: string) => `${BASE_URL}/notes/${id}/pin`,
     UNPIN: (id: string) => `${BASE_URL}/notes/${id}/unpin`,
     RESTORE: (id: string) => `${BASE_URL}/notes/${id}/restore`,
-    GET_LIST: `${BASE_URL}/notes`,
-    GET: (type: string) => `${BASE_URL}/notes/${type}`,
   },
 
   // LABEL API ENDPOINTS

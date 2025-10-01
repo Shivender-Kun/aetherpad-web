@@ -1,6 +1,6 @@
 import { API } from "@/constants/server";
 import { withSecureApiHandler } from "@/lib/middlewares/withSecureApiHandler";
-import { labelsSchema, TUpdateLabelSchema } from "@/lib/schemas";
+import { labelSchema, TUpdateLabelSchema } from "@/lib/schemas";
 import axios from "axios";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -18,7 +18,7 @@ export const PATCH = async (
       return NextResponse.json(data, { status });
     },
     req,
-    labelsSchema.update,
+    labelSchema.update,
   );
 
 export const DELETE = async (
