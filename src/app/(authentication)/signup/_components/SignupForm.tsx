@@ -31,7 +31,7 @@ const SignupForm = () => {
   const router = useRouter();
 
   const form = useForm<TRegisterUserFormSchema>({
-    resolver: zodResolver(userSchema.register),
+    resolver: zodResolver(userSchema.registerUserForm),
     defaultValues: {
       email: "",
       password: "",
