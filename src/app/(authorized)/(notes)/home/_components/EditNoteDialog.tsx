@@ -1,5 +1,6 @@
 "use client";
 
+import Editor from "@/app/_components/editor";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +16,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -23,7 +23,6 @@ import {
   MultiSelectPopover,
   SelectableOption,
 } from "@/components/ui/multi-select-popover";
-import { Textarea } from "@/components/ui/textarea";
 import { MAX_LABELS_PER_NOTE } from "@/constants/dataLimits";
 import { noteSchema, TUpdateNoteSchema } from "@/lib/schemas";
 import { INote } from "@/lib/types";
@@ -35,13 +34,14 @@ import { Tags } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
+import FullscreenButton from "../../_components/buttons/FullscreenButton";
+import PaletteButton from "../../_components/buttons/PaletteButton";
+import NoteLabelsBadges from "../../_components/NoteLabelsBadges";
+import PaletteOptions from "../../_components/PaletteOptions";
 import {
   compareNoteContentVersions,
   getMultiSelectOptions,
 } from "../../_utils";
-import PaletteButton from "../buttons/PaletteButton";
-import NoteLabelsBadges from "../NoteLabelsBadges";
-import PaletteOptions from "../PaletteOptions";
 
 type Props = {
   /** Dialog visibility state */
@@ -64,6 +64,7 @@ const EditNoteDialog = ({
   const [selectedLabels, setSelectedLabels] = useState<SelectableOption[]>(
     getMultiSelectOptions(selectedNote.labels),
   );
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const [showPalette, setShowPalette] = useState(false);
 
   const labelsList = useAppSelector((state) => state.labels.data.list);
@@ -111,11 +112,12 @@ const EditNoteDialog = ({
               />
 
               <PaletteOptions
-                className={`bg-card border-gray absolute top-12 w-fit max-w-screen min-w-76 justify-between border p-4 max-sm:-left-8 ${showPalette ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
+                className={`${showPalette ? "pointer-events-auto z-50 opacity-100" : "pointer-events-none opacity-0"}`}
                 onClick={(val) => {
                   handlePaletteColorClick(val);
                   field.onChange(val);
                 }}
+                defaultVal={bgColor}
               />
             </div>
           </FormControl>
@@ -133,7 +135,6 @@ const EditNoteDialog = ({
         <FormItem>
           <FormControl>
             <MultiSelectPopover
-              variant="secondary"
               title="Labels"
               placeholder="Select labels..."
               getCurrentSelectedValues={field.onChange}
@@ -143,6 +144,7 @@ const EditNoteDialog = ({
               maxCount={MAX_LABELS_PER_NOTE}
               className="h-10 w-10 rounded-full"
               icon={Tags}
+              bgColor={bgColor}
               {...field}
             />
           </FormControl>
@@ -185,30 +187,30 @@ const EditNoteDialog = ({
   return (
     <Dialog open={open} onOpenChange={handleCloseDialog}>
       <DialogContent
-        className="[&>button]:hidden"
-        style={{
-          backgroundColor: `var(--${
-            bgColor && bgColor !== "default" ? `color-${bgColor}` : "card"
-          })`,
-        }}
+        className={`[&>button]:hidden ${isFullScreen ? "fullscreen flex h-11/12 !max-h-11/12 w-11/12 !max-w-11/12 flex-col overflow-hidden" : ""} `}
+        style={{ backgroundColor: `var(--color-${bgColor}` }}
         onClick={() => setShowPalette(false)}
       >
-        <DialogHeader>
-          <DialogTitle className="pr-5">Edit Note</DialogTitle>
-          <DialogDescription></DialogDescription>
+        <DialogHeader className="flex flex-row items-center justify-between">
+          <DialogTitle>Edit Note</DialogTitle>
+          <DialogDescription>
+            <FullscreenButton
+              isFullScreen={isFullScreen}
+              onClick={() => setIsFullScreen((prev) => !prev)}
+            />
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
+            className="flex flex-1 flex-col gap-4 overflow-hidden"
           >
             <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="title">Title</FormLabel>
                   <FormControl>
                     <Input
                       id="title"
@@ -226,13 +228,12 @@ const EditNoteDialog = ({
               control={form.control}
               name="content"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="content">Content</FormLabel>
+                <FormItem className="flex flex-1 flex-col overflow-auto">
+                  {/* <FormLabel htmlFor="content">Content</FormLabel> */}
                   <FormControl>
-                    <Textarea
-                      id="content"
-                      className="h-64 resize-none"
-                      {...field}
+                    <Editor
+                      initialContent={field.value}
+                      onChange={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -246,8 +247,8 @@ const EditNoteDialog = ({
                 <div className="flex w-full items-center">
                   <div className="flex w-full justify-between gap-4">
                     <div className="relative flex items-center gap-4">
-                      {renderPaletteWithOptions}
                       {renderLabelsOption}
+                      {renderPaletteWithOptions}
                     </div>
                   </div>
                   <Button type="submit" disabled={updateStatus === "loading"}>

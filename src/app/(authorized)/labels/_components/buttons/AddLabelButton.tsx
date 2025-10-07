@@ -19,7 +19,6 @@ const AddLabelButton = ({ onClick }: Props) => {
       title={"Add Label"}
       disabled={list.length === MAX_LABELS_PER_USER}
       disabledReason={`Limit reached`}
-      tooltipClassName="top-11"
     />
   );
 };

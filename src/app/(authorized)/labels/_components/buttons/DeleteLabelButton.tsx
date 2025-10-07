@@ -8,14 +8,7 @@ type Props = {
 
 /** Label delete button component */
 const DeleteLabelButton = ({ onClick }: Props) => {
-  return (
-    <ActionButton
-      onClick={onClick}
-      icon={Trash}
-      title={"Delete Label"}
-      tooltipClassName="top-11"
-    />
-  );
+  return <ActionButton onClick={onClick} icon={Trash} title={"Delete Label"} />;
 };
 
 export default DeleteLabelButton;

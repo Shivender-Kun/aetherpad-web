@@ -110,7 +110,7 @@ const LabelsBadges = ({
   const renderLabelBadge = (label: ILabel) => (
     <li
       key={label._id}
-      className="flex w-full flex-col gap-4 rounded-lg bg-black p-4"
+      className="flex w-full flex-col gap-4 rounded-lg bg-white p-4 dark:bg-black"
       onClick={() => handleSelectLabel(label)}
     >
       <p className="text-center whitespace-break-spaces">{label.name}</p>
@@ -136,8 +136,8 @@ const LabelsTable = ({
 }: LabelsRendererProps) => {
   const renderLabelRow = (label: ILabel, idx: number) => (
     <TableRow
-      className="h-14.25 max-w-80 border-b"
       key={label._id}
+      className="h-14.25 max-w-80 border-b"
       onClick={() => handleSelectLabel(label)}
     >
       <TableCell>{idx + 1}</TableCell>
@@ -172,7 +172,7 @@ const LabelsTable = ({
 
   return (
     <Table className="overflow-hidden rounded-lg">
-      <TableHeader className="bg-black">
+      <TableHeader className="bg-white dark:bg-black">
         <TableRow className="h-13.25 text-lg">
           <TableHead className="w-20">Sr. no</TableHead>
           <TableHead>Label</TableHead>
@@ -180,7 +180,7 @@ const LabelsTable = ({
         </TableRow>
       </TableHeader>
 
-      <TableBody className="bg-black">
+      <TableBody className="bg-white dark:bg-black">
         {!!labels.length && renderAllLabels()}
         {!labels.length && renderEmptyTable}
       </TableBody>

@@ -1,5 +1,6 @@
 "use client";
 
+import Editor from "@/app/_components/editor";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,14 +17,12 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import MultiSelectPopover, {
   SelectableOption,
 } from "@/components/ui/multi-select-popover";
-import { Textarea } from "@/components/ui/textarea";
 import { MAX_LABELS_PER_NOTE } from "@/constants/dataLimits";
 import { noteSchema, TCreateNoteSchema } from "@/lib/schemas";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -34,6 +33,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import AddNoteButton from "../../_components/buttons/AddNoteButton";
+import FullscreenButton from "../../_components/buttons/FullscreenButton";
 import PaletteButton from "../../_components/buttons/PaletteButton";
 import NoteLabelsBadges from "../../_components/NoteLabelsBadges";
 import PaletteOptions from "../../_components/PaletteOptions";
@@ -43,6 +43,7 @@ const AddNote = () => {
   const [selectedLabels, setSelectedLabels] = useState<SelectableOption[]>([]);
   const [showPalette, setShowPalette] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
   const [bgColor, setBgColor] = useState("default");
 
   const { add: addStatus } = useAppSelector(
@@ -85,11 +86,12 @@ const AddNote = () => {
               />
 
               <PaletteOptions
-                className={`bg-card border-gray absolute top-12 w-fit max-w-screen min-w-76 justify-between border p-4 max-sm:-left-8 ${showPalette ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"}`}
+                className={`${showPalette ? "pointer-events-auto z-50 opacity-100" : "pointer-events-none opacity-0"}`}
                 onClick={(val) => {
                   handlePaletteColorClick(val);
                   field.onChange(val);
                 }}
+                defaultVal={bgColor}
               />
             </div>
           </FormControl>
@@ -116,7 +118,7 @@ const AddNote = () => {
               maxCount={MAX_LABELS_PER_NOTE}
               className="h-10 w-10 rounded-full"
               icon={Tags}
-              variant="secondary"
+              bgColor={bgColor}
               {...field}
             />
           </FormControl>
@@ -162,32 +164,37 @@ const AddNote = () => {
       </DialogTrigger>
 
       <DialogContent
-        className="[&>button]:hidden"
-        style={{
-          backgroundColor: `var(--${
-            bgColor !== "default" ? `color-${bgColor}` : "card"
-          })`,
-        }}
+        className={`[&>button]:hidden ${isFullScreen ? "fullscreen flex h-11/12 !max-h-11/12 w-11/12 !max-w-11/12 flex-col overflow-hidden" : ""} `}
+        style={{ backgroundColor: `var(--color-${bgColor}` }}
         onClick={() => setShowPalette(false)}
       >
-        <DialogHeader>
+        <DialogHeader className="flex flex-row items-center justify-between">
           <DialogTitle>Add Note</DialogTitle>
-          <DialogDescription></DialogDescription>
+          <DialogDescription>
+            <FullscreenButton
+              isFullScreen={isFullScreen}
+              onClick={() => setIsFullScreen((prev) => !prev)}
+            />
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-4"
+            className="flex flex-1 flex-col gap-4 overflow-hidden"
           >
             <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="title">Title</FormLabel>
                   <FormControl>
-                    <Input id="title" {...field} autoComplete="off" />
+                    <Input
+                      id="title"
+                      placeholder="Title"
+                      {...field}
+                      autoComplete="off"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -198,10 +205,12 @@ const AddNote = () => {
               control={form.control}
               name="content"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="content">Content</FormLabel>
+                <FormItem className="flex flex-1 flex-col overflow-auto">
                   <FormControl>
-                    <Textarea id="content" {...field} className="h-64" />
+                    <Editor
+                      initialContent={field.value}
+                      onChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -214,8 +223,8 @@ const AddNote = () => {
                 <div className="flex w-full items-center">
                   <div className="flex w-full justify-between gap-4">
                     <div className="flex gap-4">
-                      {renderPaletteWithOptions}
                       {renderLabelsOption}
+                      {renderPaletteWithOptions}
                     </div>
                   </div>
                   <Button disabled={addStatus === "loading"}>

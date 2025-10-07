@@ -1,3 +1,8 @@
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 export const PALETTE_OPTIONS = [
@@ -19,44 +24,52 @@ type Props = {
   onClick: (value: string) => void;
   /** Button classNames for styling */
   className?: string;
+  /** Default selected color */
+  defaultVal?: string;
 };
 
 /** Note color palette options component */
-const PaletteOptions = ({ onClick, className }: Props) => {
+const PaletteOptions = ({
+  onClick,
+  className,
+  defaultVal = "default",
+}: Props) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const parent = e.currentTarget;
+    e.stopPropagation();
+    const target = e.target as HTMLDivElement;
+    const role = target.role;
+    const selectedBgColor = target.dataset.bgColor;
+    if (role === "button" && selectedBgColor) {
+      onClick(selectedBgColor);
+      parent.style.backgroundColor = `var(--color-${selectedBgColor})`;
+    }
+  };
+
   return (
     <div
-      role="button"
       className={cn(
-        `bg-secondary/50 animate-in fade-in flex w-full flex-wrap justify-evenly rounded-lg py-2 duration-300`,
+        `border-input animate-in fade-in absolute -top-14 flex w-full max-w-screen min-w-76 flex-wrap justify-between rounded-lg border p-4 shadow-xl duration-300 max-sm:-left-4`,
         className,
       )}
-      onClick={(e) => {
-        e.stopPropagation();
-        const target = e.target as HTMLDivElement;
-        const role = target.role;
-        const selectedBgColor = target.dataset.bgColor;
-        if (role === "button" && selectedBgColor) {
-          onClick(selectedBgColor);
-        }
-      }}
-      onKeyDown={(e) => {
-        e.preventDefault();
-      }}
+      onClick={handleClick}
+      style={{ backgroundColor: `var(--color-${defaultVal}` }}
+      onKeyDown={(e) => e.preventDefault()}
       tabIndex={5}
     >
       {PALETTE_OPTIONS.map((color) => (
-        <div
-          key={color}
-          aria-label={color}
-          role="button"
-          data-bg-color={color}
-          className={`tooltip-visible border-primary relative h-4 w-4 cursor-pointer rounded-full border`}
-          style={{ backgroundColor: `var(--color-${color})` }}
-        >
-          <span className="tooltip bg-secondary text-primary pointer-events-none absolute top-5 -right-4 z-10 rounded-lg border px-2 py-1 text-[10px] opacity-0 duration-500 ease-in-out">
-            {color}
-          </span>
-        </div>
+        <Tooltip key={color}>
+          <TooltipTrigger asChild>
+            <div
+              aria-label={color}
+              role="button"
+              data-bg-color={color}
+              className="border-primary h-4 w-4 cursor-pointer rounded-full border"
+              style={{ backgroundColor: `var(--color-${color})` }}
+            ></div>
+          </TooltipTrigger>
+          <TooltipContent>{color}</TooltipContent>
+        </Tooltip>
       ))}
     </div>
   );

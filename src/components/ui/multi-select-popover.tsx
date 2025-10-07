@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { CheckIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "./button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip";
 
 type Icon = React.ComponentType<{ className?: string }>;
 
@@ -68,6 +69,11 @@ interface MultiSelectProps extends React.HTMLAttributes<HTMLDivElement> {
    * Optional, defaults to 3.
    */
   maxCount?: number;
+
+  /**
+   * Background color of the popup
+   */
+  bgColor?: string;
 }
 
 export const MultiSelectPopoverContent = ({
@@ -78,6 +84,7 @@ export const MultiSelectPopoverContent = ({
   defaultValue = [],
   placeholder = "",
   maxCount,
+  bgColor = "default",
 }: MultiSelectProps) => {
   const [selectableValues, setSelectableOptions] =
     useState<SelectableOption[]>(options);
@@ -115,8 +122,11 @@ export const MultiSelectPopoverContent = ({
   };
 
   return (
-    <PopoverContent className="w-auto p-0" align="start">
-      <Command>
+    <PopoverContent className="border-0 p-0 shadow-xl" align="start">
+      <Command
+        style={{ backgroundColor: `var(--color-${bgColor}` }}
+        className="border-input border-0"
+      >
         <CommandInput placeholder={placeholder || "Search..."} />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
@@ -176,40 +186,23 @@ export const MultiSelectPopover = (
     icon: Icon;
     variant?: "default" | "secondary" | "destructive" | "outline" | "ghost";
     className?: string;
-    tooltipClassName?: string;
   },
 ) => {
-  const {
-    icon,
-    className = "",
-    variant = "default",
-    title = "",
-    tooltipClassName = "bottom-11",
-  } = props;
+  const { icon, className = "", variant = "default", title = "" } = props;
   const Icon = icon;
 
   return (
     <Popover>
-      <PopoverTrigger className={className} asChild>
-        <Button
-          variant={variant}
-          aria-label={title}
-          className="tooltip-visible relative"
-        >
-          <Icon />
-
-          {title && (
-            <span
-              className={cn(
-                "tooltip bg-secondary text-primary pointer-events-none absolute z-20 rounded-lg border px-2 py-1 text-[10px] opacity-0 duration-500 ease-in-out",
-                tooltipClassName,
-              )}
-            >
-              {title}
-            </span>
-          )}
-        </Button>
-      </PopoverTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <PopoverTrigger asChild className={className}>
+            <Button variant={variant} aria-label={title}>
+              <Icon />
+            </Button>
+          </PopoverTrigger>
+        </TooltipTrigger>
+        <TooltipContent>{title}</TooltipContent>
+      </Tooltip>
 
       <MultiSelectPopoverContent {...props} />
     </Popover>

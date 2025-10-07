@@ -8,14 +8,7 @@ type Props = {
 
 /** Note add button component */
 const AddNoteButton = ({ onClick }: Props) => {
-  return (
-    <ActionButton
-      onClick={onClick}
-      icon={Plus}
-      title={"Add note"}
-      tooltipClassName="top-11"
-    />
-  );
+  return <ActionButton onClick={onClick} icon={Plus} title={"Add note"} />;
 };
 
 export default AddNoteButton;

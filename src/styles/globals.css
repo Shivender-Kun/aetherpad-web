@@ -1,6 +1,7 @@
 @import "tw-animate-css";
 @import "./_scrollbar.css";
 @import "./_extraStyles.css";
+@import "./_froalaEditor.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -64,6 +65,7 @@ body {
     --blossom: 12, 58%, 92%;
     --clay: 43, 32%, 87%;
     --chalk: 240, 7%, 94%;
+    --default: 0 0% 100%;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -109,6 +111,7 @@ body {
     --blossom: 334, 31%, 32%;
     --clay: 35, 13%, 26%;
     --chalk: 225, 5%, 15%;
+    --default: 0 0% 3.9%;
   }
 }
 
@@ -195,6 +198,7 @@ body {
   --color-blossom: var(--blossom);
   --color-clay: var(--clay);
   --color-chalk: var(--chalk);
+  --color-default: var(--default);
 }
 
 :root {
@@ -241,6 +245,7 @@ body {
   --blossom: oklch(0.93 0.02 34.28);
   --clay: oklch(0.92 0.02 88.61);
   --chalk: oklch(0.95 0 0);
+  --default: oklch(1 0 0);
 }
 
 .dark {
@@ -286,6 +291,7 @@ body {
   --blossom: oklch(0.42 0.08 353.7);
   --clay: oklch(0.39 0.02 76.79);
   --chalk: oklch(0.26 0.01 0);
+  --default: oklch(0.145 0 0);
 }
 
 @layer base {
