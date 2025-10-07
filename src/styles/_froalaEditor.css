@@ -4,6 +4,7 @@
 .fr-newline,
 .fr-placeholder,
 .fr-toolbar,
+.fr-buttons,
 #fr-logo {
   @apply !hidden;
 }
@@ -14,7 +15,9 @@
 
 .dark {
   .fr-btn-grp {
-    filter: invert(0.95);
+    .fr-svg {
+      filter: invert(0.95);
+    }
   }
 }
 
@@ -31,10 +34,18 @@
     @apply !border-input !flex !flex-wrap !gap-4 !border-0 !bg-transparent;
 
     .fr-btn-grp {
-      @apply dark:!bg-primary border-input !m-0 flex rounded-lg border bg-transparent;
+      @apply dark:!bg-secondary border-input !m-0 flex rounded-lg border bg-transparent;
+
+      .fr-dropdown-list {
+        @apply !bg-secondary !text-primary;
+      }
 
       button {
-        @apply dark:!bg-primary rounded-lg border-0 bg-transparent;
+        @apply dark:!bg-secondary rounded-lg border-0 bg-transparent;
+
+        &:after {
+          @apply !border-t-primary;
+        }
       }
     }
   }

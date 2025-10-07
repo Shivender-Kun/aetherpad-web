@@ -1,13 +1,7 @@
-.tooltip-visible:hover {
-  > span.tooltip {
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-
 input:focus {
   background-color: transparent !important;
 }
+
 input:-webkit-autofill {
   background-color: transparent !important;
 }
