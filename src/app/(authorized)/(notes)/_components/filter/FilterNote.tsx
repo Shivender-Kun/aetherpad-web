@@ -13,14 +13,12 @@ const FilterNote = ({ onChange }: Props) => {
 
   return (
     <MultiSelectPopover
-      variant="secondary"
       title="Filter by labels"
       placeholder="Select labels"
       getCurrentSelectedValues={onChange}
       options={options}
       className="rounded-full"
       icon={Tags}
-      tooltipClassName="top-11"
     />
   );
 };
