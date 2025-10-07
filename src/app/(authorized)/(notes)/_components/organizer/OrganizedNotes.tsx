@@ -4,9 +4,9 @@ import { INote } from "@/lib/types";
 import { NOTE_ACTION } from "@/lib/types/enums";
 import React, { useMemo, useState } from "react";
 import useOrganizeItems from "../../_hooks/useOrganizeItems";
+import EditNote from "../../home/_components/EditNoteDialog";
 import InteractiveNote from "../card/InteractiveNote";
 import ArchiveNoteDialog from "../dialog/ArchiveNoteDialog";
-import EditNote from "../dialog/EditNoteDialog";
 import MoveNoteToBin from "../dialog/MoveNoteToBinDialog";
 import UnarchiveNoteDialog from "../dialog/UnarchiveNoteDialog";
 

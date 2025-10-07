@@ -7,8 +7,11 @@ import React, { useState } from "react";
 import "froala-editor/css/froala_editor.pkgd.min.css";
 import "froala-editor/css/froala_style.min.css";
 
-// Import all Froala plugins
-import "froala-editor/js/plugins.pkgd.min.js";
+// Import only the required plugins
+import { MAX_PICTURE_SIZE } from "@/constants/dataLimits";
+import "froala-editor/js/plugins/image.min.js";
+import "froala-editor/js/plugins/link.min.js";
+import "froala-editor/js/plugins/lists.min.js";
 
 // Dynamically import Froala to avoid SSR issues
 const FroalaEditorComponent = dynamic(() => import("react-froala-wysiwyg"), {
@@ -33,33 +36,37 @@ const FroalaEditor: React.FC<FroalaEditorProps> = ({
     if (onModelChange) onModelChange(newModel);
   };
 
+  const toolbarButtons = [
+    "bold",
+    "italic",
+    "underline",
+    "strikeThrough",
+    "|",
+    "formatOL",
+    "formatUL",
+    "|",
+    "insertLink",
+    // "insertImage",
+    "|",
+    "undo",
+    "redo",
+    "clearFormatting",
+  ];
+
+  const pluginsEnabled = ["lists", "link", "image"]; // Explicitly enable only needed plugins
+
   const defaultConfig = {
     placeholderText: "Start typing...",
     charCounterCount: false,
     quickInsertEnabled: false,
-    toolbarButtons: [
-      "bold",
-      "italic",
-      "underline",
-      "strikeThrough",
-      "|",
-      "fontFamily",
-      "fontSize",
-      "color",
-      "|",
-      "paragraphFormat",
-      "align",
-      "formatOL",
-      "formatUL",
-      "|",
-      "insertLink",
-      "insertImage",
-      // "insertVideo",
-      "|",
-      "undo",
-      "redo",
-      "clearFormatting",
-    ],
+    linkAlwaysBlank: true, // Open links in new tab
+    linkInsertButtons: ["linkBack"],
+    // Image configuration (adjust as needed)
+    imageUploadURL: "/api/upload-image",
+    imageMaxSize: MAX_PICTURE_SIZE,
+    imageAllowedTypes: ["jpeg", "jpg", "png", "gif"],
+    pluginsEnabled,
+    toolbarButtons,
     ...config,
   };
 
@@ -74,3 +81,11 @@ const FroalaEditor: React.FC<FroalaEditorProps> = ({
 };
 
 export default FroalaEditor;
+
+// "|",
+// "fontFamily",
+// "fontSize",
+// "color",
+// "paragraphFormat",
+// "align",
+// "insertVideo",
