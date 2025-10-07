@@ -9,6 +9,10 @@
   @apply !hidden;
 }
 
+.fr-wrapper:first-child {
+  @apply !hidden;
+}
+
 .fr-box {
   @apply !flex !h-full !flex-1 !flex-col !overflow-auto;
 }
