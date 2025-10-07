@@ -8,14 +8,7 @@ type Props = {
 
 /** Label edit button component */
 const EditLabelButton = ({ onClick }: Props) => {
-  return (
-    <ActionButton
-      onClick={onClick}
-      icon={Edit3}
-      title={"Edit Label"}
-      tooltipClassName="top-11"
-    />
-  );
+  return <ActionButton onClick={onClick} icon={Edit3} title={"Edit Label"} />;
 };
 
 export default EditLabelButton;
