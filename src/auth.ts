@@ -1,8 +1,19 @@
 import axios from "axios";
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { API } from "./constants/server";
+import { ErrorPayload } from "./lib/types/store";
+import errorProcessor from "./lib/utils/errorProcessor";
 import CookieHandler from "./lib/utils/server/cookieHandler";
+
+class CustomAuthError extends CredentialsSignin {
+  constructor(error: Required<ErrorPayload>) {
+    const { message } = error;
+    super(message);
+    this.message = message;
+    this.code = JSON.stringify(error);
+  }
+}
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   session: {
@@ -43,17 +54,17 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             const csrfMatch = secretCookies[0].match(/_csrf=([^;]+)/);
             _csrf = csrfMatch?.[1] || "";
           }
-          const cookieStore = new CookieHandler();
-          await cookieStore.set({ name: "csrf_token", value: csrfToken });
-          await cookieStore.set({ name: "_csrf", value: _csrf });
 
           return {
             id: String(user._id),
             email: user.email,
             username: user.username,
+            csrfToken,
+            _csrf,
           };
-        } catch {
-          return null;
+        } catch (error) {
+          const errorPayload = errorProcessor(error);
+          throw new CustomAuthError({ status: 500, ...errorPayload });
         }
       },
     }),
@@ -64,7 +75,17 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (user) {
         token.userId = (user as any).id;
         token.username = (user as any).username;
+
+        try {
+          const { csrfToken, _csrf } = user as any;
+          const cookieStore = new CookieHandler();
+          await cookieStore.set({ name: "csrf_token", value: csrfToken });
+          await cookieStore.set({ name: "_csrf", value: _csrf });
+        } catch (error) {
+          console.error("Cookie setting error:", error);
+        }
       }
+
       return token;
     },
 

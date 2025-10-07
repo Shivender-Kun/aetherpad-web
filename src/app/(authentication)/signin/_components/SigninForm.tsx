@@ -13,6 +13,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { userApi } from "@/lib/api";
 import { TUserLoginSchema, userSchema } from "@/lib/schemas";
+import { useAppDispatch } from "@/store/hooks";
+import { setNotification } from "@/store/slices/notifications";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
@@ -23,6 +25,7 @@ import { useForm } from "react-hook-form";
 const SigninForm = () => {
   const [hidePassword, setHidePassword] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const form = useForm<TUserLoginSchema>({
@@ -45,7 +48,19 @@ const SigninForm = () => {
 
   const onSubmit = async (data: TUserLoginSchema) => {
     const response = await userApi.signin({ data, setIsLoading });
-    if (response?.status === 200) router.replace("/home");
+    if (response) {
+      const { error, code } = response;
+      if (error) {
+        const myError = JSON.parse(code || "{}");
+        dispatch(
+          setNotification({
+            type: "error",
+            message:
+              myError.message || "Something went wrong. Please try again.",
+          }),
+        );
+      } else router.replace("/home");
+    }
   };
 
   return (
