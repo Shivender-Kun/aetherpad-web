@@ -118,7 +118,7 @@ const InteractiveNote = ({
 
   /** Note footer options component */
   const FooterOptions = (
-    <div className="flex w-full flex-col gap-4">
+    <div className="relative flex w-full flex-col gap-4">
       <div className="flex w-full justify-between gap-4">
         <div className="flex gap-4" onClick={(e) => e.stopPropagation()}>
           {status !== NOTE_STATUS.ARCHIVED && (
@@ -132,7 +132,11 @@ const InteractiveNote = ({
         <TrashButton onClick={handleTrashClick} />
       </div>
       {status !== NOTE_STATUS.ARCHIVED && showPalette && (
-        <PaletteOptions onClick={handlePaletteColorClick} />
+        <PaletteOptions
+          onClick={handlePaletteColorClick}
+          defaultVal={note.bgColor}
+          className={``}
+        />
       )}
     </div>
   );
