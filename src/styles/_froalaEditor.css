@@ -9,7 +9,7 @@
   @apply !hidden;
 }
 
-.fr-wrapper:first-child {
+.fr-wrapper > div > a {
   @apply !hidden;
 }
 
