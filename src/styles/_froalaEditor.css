@@ -1,0 +1,49 @@
+/* ! Froala Editor Custom Styles */
+
+.fr-second-toolbar,
+.fr-newline,
+.fr-placeholder,
+.fr-toolbar,
+#fr-logo {
+  @apply !hidden;
+}
+
+.fr-box {
+  @apply !flex !h-full !flex-1 !flex-col !overflow-auto;
+}
+
+.dark {
+  .fr-btn-grp {
+    filter: invert(0.95);
+  }
+}
+
+.fr-wrapper {
+  @apply !rounded-lg !border-0 !bg-transparent;
+
+  .fr-view {
+    @apply selection:bg-primary selection:text-primary-foreground dark:!bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 !text-primary h-60 rounded-lg border bg-transparent !py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] md:text-sm;
+  }
+}
+
+.fullscreen {
+  .fr-toolbar {
+    @apply !border-input !flex !flex-wrap !gap-4 !border-0 !bg-transparent;
+
+    .fr-btn-grp {
+      @apply dark:!bg-primary border-input !m-0 flex rounded-lg border bg-transparent;
+
+      button {
+        @apply dark:!bg-primary rounded-lg border-0 bg-transparent;
+      }
+    }
+  }
+
+  .fr-wrapper {
+    @apply !mt-4 !flex !flex-1 !flex-col !overflow-auto;
+
+    .fr-view {
+      @apply !flex-1;
+    }
+  }
+}
