@@ -30,6 +30,10 @@
 
   .fr-view {
     @apply selection:bg-primary selection:text-primary-foreground dark:!bg-input/30 border-input focus-visible:border-ring focus-visible:ring-ring/50 !text-primary h-60 rounded-lg border bg-transparent !py-2 text-base shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] md:text-sm;
+
+    p[data-f-id="pbf"] {
+      @apply !hidden;
+    }
   }
 }
 
