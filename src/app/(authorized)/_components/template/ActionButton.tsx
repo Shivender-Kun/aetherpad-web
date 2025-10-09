@@ -31,7 +31,7 @@ const ActionButton = ({
           aria-label={title}
           style={style}
           className={cn(
-            `flex h-10 w-fit cursor-pointer items-center justify-center rounded-full`,
+            `animate-in fade-in flex h-10 w-fit cursor-pointer items-center justify-center rounded-full duration-500`,
             className,
           )}
           onClick={(e) => {

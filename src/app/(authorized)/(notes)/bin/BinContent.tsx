@@ -15,9 +15,9 @@ const BinContent = () => {
       <PageHeader title="Binned Notes">
         <FilteredSearch onChange={setFilter} enableFilter />
       </PageHeader>
-      <p className="px-3 text-sm text-gray-500">
+      {/* <p className="px-3 text-sm text-gray-500">
         Notes will be kept here for 7 days
-      </p>
+      </p> */}
       <BinnedNotes loadMore={loadMore} />
     </PageWrapper>
   );

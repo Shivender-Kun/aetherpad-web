@@ -11,13 +11,13 @@ const authorizedAPIs = [
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
+  const isLoggedIn = !!req.auth;
+
   const isAuthenticationPage = authenticationPages.some((page) =>
     pathname.startsWith(page),
   );
 
-  const isLoggedIn = !!req.auth;
-
-  if (isAuthenticationPage && isLoggedIn) {
+  if ((isAuthenticationPage || pathname === "/") && isLoggedIn) {
     return Response.redirect(new URL("/home", req.url));
   }
 

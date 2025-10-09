@@ -1,4 +1,8 @@
 const API_ENDPOINTS = (BASE_URL = "/api/v1") => ({
+  // Application Info
+  APP_INFO: `${BASE_URL}/app-info`,
+  CSRF: `${BASE_URL}/csrf`,
+
   // ADMIN API ENDPOINTS
   ADMIN: {
     SIGNIN: `${BASE_URL}/admin/signin`,
