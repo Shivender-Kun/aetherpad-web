@@ -28,7 +28,7 @@ const ArchivedNotes = ({ loadMore }: Props) => {
         className="flex h-full w-full flex-col gap-8 overflow-x-hidden p-1"
       >
         {archivedNotes.length ? (
-          <div className="flex h-full gap-4 overflow-x-hidden max-[668]:justify-center">
+          <div className="flex h-full gap-4 max-[668]:justify-center">
             <OrganizedNotes parentId="notes-container" notes={archivedNotes} />
           </div>
         ) : (
