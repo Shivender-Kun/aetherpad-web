@@ -3,6 +3,7 @@ import { labelsServerApi, userServerApi } from "@/lib/api";
 import { ILabel, IUser, PaginatedData } from "@/lib/types";
 import isSidebarOpen from "@/lib/utils/isSidebarOpen";
 import { ReactNode } from "react";
+import CSRFHandler from "./_components/CSRFHandler";
 import { LayoutHydrator } from "./_components/LayoutHydrator";
 import Header from "./_components/layout/Header";
 import Sidebar from "./_components/layout/Sidebar";
@@ -20,6 +21,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <CSRFHandler />
       <LayoutHydrator {...{ user, labels }} />
       <SidebarProvider defaultOpen={sidebarOpen}>
         <div className="flex h-screen w-screen overflow-hidden">

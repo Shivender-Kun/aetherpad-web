@@ -128,17 +128,19 @@ export default function RootLayout({
       <body
         className={`${poppins.className} bg-background text-foreground antialiased`}
       >
-        <StoreProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
-          </ThemeProvider>
-          <NotificationProvider />
-        </StoreProvider>
+        <NextAuthSessionProvider>
+          <StoreProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+            <NotificationProvider />
+          </StoreProvider>
+        </NextAuthSessionProvider>
       </body>
     </html>
   );
