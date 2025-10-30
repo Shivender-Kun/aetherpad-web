@@ -3,6 +3,7 @@
 import { TextStyleKit } from "@tiptap/extension-text-style";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import React, { useEffect } from "react";
 
 type Props = {
   initialContent: string;
@@ -18,6 +19,10 @@ const WysiwygViewer = ({ initialContent }: Props) => {
     immediatelyRender: false,
   });
 
+  useEffect(() => {
+    editor?.commands.setContent(initialContent);
+  }, [initialContent]);
+
   return (
     <div className="wysiwyg-viewer flex flex-col gap-2">
       <EditorContent editor={editor} />
@@ -25,4 +30,4 @@ const WysiwygViewer = ({ initialContent }: Props) => {
   );
 };
 
-export default WysiwygViewer;
+export default React.memo(WysiwygViewer);
