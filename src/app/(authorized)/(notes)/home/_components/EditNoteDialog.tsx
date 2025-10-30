@@ -205,6 +205,7 @@ const EditNoteDialog = ({
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-1 flex-col gap-4 overflow-hidden"
+            onKeyDown={(e) => e.stopPropagation()} // stop propagation to prevent sidebar action on Ctrl+B
           >
             <FormField
               control={form.control}
