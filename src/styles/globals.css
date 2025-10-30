@@ -1,7 +1,7 @@
 @import "tw-animate-css";
 @import "./_scrollbar.css";
 @import "./_extraStyles.css";
-@import "./_froalaEditor.css";
+@import "./_wysiwygEditor.css";
 
 @custom-variant dark (&:is(.dark *));
 
