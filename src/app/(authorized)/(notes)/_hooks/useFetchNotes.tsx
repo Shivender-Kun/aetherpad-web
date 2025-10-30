@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchActive, fetchArchived, fetchBinned } from "@/store/slices/notes";
 import { useCallback, useEffect } from "react";
-import useDebounce from "./useDebounce";
+import useDebounce from "../../_hooks/useDebounce";
 
 type Props = {
   filter: { search: string; labels: string };

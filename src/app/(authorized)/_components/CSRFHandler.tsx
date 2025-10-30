@@ -2,21 +2,21 @@
 
 import { getCsrf } from "@/lib/api/csrf";
 import { useSession } from "next-auth/react";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
+import useDebounceCallback from "../_hooks/useDebounce";
 
 const CSRFHandler = () => {
   const session = useSession();
 
-  const fetchCsrfToken = useCallback(async () => {
-    try {
-      await getCsrf();
-    } catch (error) {
-      console.error("Error fetching CSRF token:", error);
-    }
-  }, []);
+  const REFRESH_INTERVAL = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
+
+  const fetchCsrfToken = useDebounceCallback(
+    async () => await getCsrf(),
+    REFRESH_INTERVAL,
+  );
 
   useEffect(() => {
-    if (session.status === "authenticated") fetchCsrfToken(); // Fetch CSRF token logic here
+    if (session.status === "authenticated") fetchCsrfToken();
   }, [session.data]);
 
   return null;

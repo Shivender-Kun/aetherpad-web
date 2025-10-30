@@ -1,5 +1,6 @@
 "use client";
 
+import WysiwygViewer from "@/app/_components/wysiwyg/Viewer";
 import {
   Card,
   CardContent,
@@ -10,7 +11,6 @@ import {
 import { INote } from "@/lib/types";
 import { truncateString } from "@/lib/utils";
 import React from "react";
-import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
 import { getMultiSelectOptions } from "../../_utils";
 import NoteLabelsBadges from "../NoteLabelsBadges";
 
@@ -56,7 +56,7 @@ const NoteCard = ({
 
       <CardContent className="flex h-fit flex-col gap-4 px-4">
         <div className="max-h-84 overflow-hidden">
-          <FroalaEditorView model={note.content} />
+          <WysiwygViewer initialContent={note.content} />
         </div>
         {labels}
       </CardContent>

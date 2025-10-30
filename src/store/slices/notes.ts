@@ -297,6 +297,26 @@ const notesSlice = createSlice({
       state.binned.data = action.payload;
       state.binned.initialized = true;
     },
+    /** Reset pinned notes state */
+    resetPinned(state) {
+      state.pinned = { ...initialDataState, data: { list: [] } };
+      state.pinned.initialized = false;
+    },
+    /** Reset unpinned notes state */
+    resetUnpinned(state) {
+      state.unpinned = { ...initialDataState };
+      state.unpinned.initialized = false;
+    },
+    /** Reset archived notes state */
+    resetArchived(state) {
+      state.archived = { ...initialDataState };
+      state.archived.initialized = false;
+    },
+    /** Reset binned notes state */
+    resetBinned(state) {
+      state.binned = { ...initialDataState };
+      state.binned.initialized = false;
+    },
     /** Optimistically update note */
     optimisticNoteUpdate(state, action: OptimisticUpdatePayload) {
       const { note, data, noteAction, actionId } = action.payload;
@@ -615,6 +635,10 @@ export const {
   hydrateBinned,
   hydratePinned,
   hydrateUnpinned,
+  resetPinned,
+  resetUnpinned,
+  resetArchived,
+  resetBinned,
   optimisticNoteUpdate,
   optimisticNoteDelete,
   optimisticNoteAdd,

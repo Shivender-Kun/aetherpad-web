@@ -1,7 +1,7 @@
 import { notesServerApi } from "@/lib/api";
 import { INote, PaginatedData } from "@/lib/types";
 import getRequestContext from "@/lib/utils/server/getRequestContext";
-import { NotesHydrator } from "../_components/NotesHydrator";
+import NotesHydrator from "../_components/NotesHydrator";
 import BinContent from "./BinContent";
 
 export const dynamic = "force-dynamic";

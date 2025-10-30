@@ -1,6 +1,6 @@
 "use client";
 
-import Editor from "@/app/_components/editor";
+import WysiwygEditor from "@/app/_components/wysiwyg/Editor";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import {
@@ -231,9 +231,10 @@ const EditNoteDialog = ({
                 <FormItem className="flex flex-1 flex-col overflow-auto">
                   {/* <FormLabel htmlFor="content">Content</FormLabel> */}
                   <FormControl>
-                    <Editor
+                    <WysiwygEditor
                       initialContent={field.value}
                       onChange={field.onChange}
+                      menuVisible={isFullScreen}
                     />
                   </FormControl>
                   <FormMessage />
