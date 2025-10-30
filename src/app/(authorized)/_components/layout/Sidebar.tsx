@@ -25,20 +25,20 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { USER_ROUTES } from "@/constants/routes";
+import {
+  LABELS_USER_ROUTES,
+  LEGAL_ROUTES,
+  NOTES_USER_ROUTES,
+} from "@/constants/routes";
 import { UserRouteType } from "@/lib/types/routes";
 import { cn } from "@/lib/utils";
 import { useAppSelector } from "@/store/hooks";
 import {
-  BookOpen,
   EllipsisVertical,
-  GlobeLock,
   Heart,
   LogOut,
   NotebookText,
-  ReceiptText,
   Scale,
-  Tags,
   User2,
 } from "lucide-react";
 import Link from "next/link";
@@ -49,18 +49,29 @@ import ConfirmLogoutDialog from "../dialog/ConfirmLogoutDialog";
 const AppSidebar = () => {
   const [confirmLogoutDialog, setConfirmLogoutDialog] = useState(false);
   const { data: user } = useAppSelector((state) => state.user);
+  const {
+    pinned: { initialized: initializedPinned },
+    unpinned: { initialized: initializedUnpinned },
+    archived: { initialized: initializedArchived },
+    binned: { initialized: initializedBinned },
+  } = useAppSelector((state) => state.notes);
+
   const pathname = usePathname();
   const { isMobile } = useSidebar();
 
   const renderMenuOption = (option: UserRouteType) => {
     const MenuIcon = option.icon;
     const isActive = pathname === option.path;
+    const skipFetch =
+      (option.path === "/home" && initializedPinned && initializedUnpinned) ||
+      (option.path === "/archive" && initializedArchived) ||
+      (option.path === "/bin" && initializedBinned);
 
     return (
       <SidebarMenuItem key={option.name}>
         <SidebarMenuButton asChild>
           <Link
-            href={option.path}
+            href={`${option.path}${skipFetch ? "?c=true" : ""}`}
             className={cn(
               "hover:bg-muted rounded-md transition",
               isActive && "bg-muted text-primary font-semibold",
@@ -73,7 +84,8 @@ const AppSidebar = () => {
     );
   };
 
-  const renderAllRoutes = USER_ROUTES.map(renderMenuOption);
+  const renderNotesRoutes = NOTES_USER_ROUTES.map(renderMenuOption);
+  const renderLegalRoutes = LEGAL_ROUTES.map(renderMenuOption);
 
   return (
     <>
@@ -95,7 +107,7 @@ const AppSidebar = () => {
               <NotebookText /> &nbsp; Notes
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>{renderAllRoutes}</SidebarMenu>
+              <SidebarMenu>{renderNotesRoutes}</SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
 
@@ -103,11 +115,7 @@ const AppSidebar = () => {
           <SidebarGroup className="p-4">
             <SidebarGroupContent>
               <SidebarMenu>
-                {renderMenuOption({
-                  name: "Labels",
-                  path: "/labels",
-                  icon: Tags,
-                })}
+                {renderMenuOption(LABELS_USER_ROUTES[0])}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
@@ -118,40 +126,7 @@ const AppSidebar = () => {
               <Scale /> &nbsp; Legal
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Link
-                      href="/about"
-                      className="flex w-full items-center gap-2"
-                    >
-                      <BookOpen />
-                      About Us
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Link
-                      href="/privacy"
-                      className="flex w-full items-center gap-2"
-                    >
-                      <GlobeLock /> Privacy Policy
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Link
-                      href="/terms"
-                      className="flex w-full items-center gap-2"
-                    >
-                      <ReceiptText />
-                      Terms of Use
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
+              <SidebarMenu>{renderLegalRoutes}</SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
