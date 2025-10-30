@@ -218,6 +218,7 @@ const EditNoteDialog = ({
                       placeholder="Title"
                       {...field}
                       autoComplete="off"
+                      autoFocus
                     />
                   </FormControl>
                   <FormMessage />
